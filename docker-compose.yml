@@ -1,0 +1,57 @@
+services:
+  db:
+    image: mysql:8.0
+    platform: linux/amd64
+    container_name: gameweb-db
+    restart: unless-stopped
+    command: --lower-case-table-names=1
+    environment:
+      MYSQL_ROOT_PASSWORD: REDACTED_ROOT_PASSWORD
+      MYSQL_DATABASE: gameweb
+      MYSQL_USER: gameweb
+      MYSQL_PASSWORD: REDACTED_DB_PASSWORD
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gameweb-api
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:4000:4000"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: mysql://gameweb:REDACTED_DB_PASSWORD@db:3306/gameweb
+      PORT: 4000
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./UserInfo.xlsx:/app/UserInfo.xlsx
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gameweb-frontend
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:3000:80"
+    depends_on:
+      - api
+    networks:
+      - default
+
+volumes:
+  mysql_data:

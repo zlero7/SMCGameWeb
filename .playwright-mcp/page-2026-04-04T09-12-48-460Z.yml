@@ -1,0 +1,24 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic "logo" [ref=e6]
+      - heading "세명컴고 게임과 포털" [level=1] [ref=e7]
+    - navigation "메인 네비게이션" [ref=e8]:
+      - link "공지사항" [ref=e9] [cursor=pointer]:
+        - /url: /
+      - link "취업" [ref=e10] [cursor=pointer]:
+        - /url: /careers
+      - link "진학" [ref=e11] [cursor=pointer]:
+        - /url: /admissions
+      - link "학사달력" [ref=e12] [cursor=pointer]:
+        - /url: /calendar
+      - link "과제일정" [ref=e13] [cursor=pointer]:
+        - /url: /assignments
+      - link "관리자" [ref=e14] [cursor=pointer]:
+        - /url: /admin/login
+  - main [ref=e15]:
+    - generic [ref=e16]:
+      - heading "공지사항" [level=2] [ref=e17]
+      - paragraph [ref=e19]: 등록된 공지사항이 없습니다.
+  - contentinfo [ref=e20]:
+    - paragraph [ref=e21]: © 2026 게임소프트웨어과

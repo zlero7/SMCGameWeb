@@ -1,0 +1,44 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img "로고" [ref=e6]
+      - link "세명컴고 게임과 포털" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - heading "세명컴고 게임과 포털" [level=1] [ref=e8]
+    - navigation "메인 네비게이션" [ref=e9]:
+      - link "홈" [ref=e10] [cursor=pointer]:
+        - /url: /
+      - link "공지사항" [ref=e11] [cursor=pointer]:
+        - /url: /notices
+      - link "취업" [ref=e12] [cursor=pointer]:
+        - /url: /careers
+      - link "진학" [ref=e13] [cursor=pointer]:
+        - /url: /admissions
+      - link "학사달력" [ref=e14] [cursor=pointer]:
+        - /url: /calendar
+      - link "과제일정" [ref=e15] [cursor=pointer]:
+        - /url: /assignments
+      - link "실습실 점검" [ref=e16] [cursor=pointer]:
+        - /url: /lab-inspections
+      - link "자료실" [ref=e17] [cursor=pointer]:
+        - /url: /materials
+      - link "수상/포트폴리오" [ref=e18] [cursor=pointer]:
+        - /url: /awards
+      - link "관리자" [ref=e19] [cursor=pointer]:
+        - /url: /admin/login
+  - main [ref=e20]:
+    - generic [ref=e21]:
+      - heading "💼 취업 정보" [level=2] [ref=e23]
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - generic [ref=e28] [cursor=pointer]:
+            - generic [ref=e30]: 게임개발자 채용
+            - paragraph [ref=e31]: 모바일 게임 개발사에서 신입 게임개발자를 채용합니다.
+          - generic [ref=e40]:
+            - generic [ref=e41]:
+              - heading "게임개발자 채용" [level=2] [ref=e43]
+              - button "✕" [ref=e44]
+            - generic [ref=e45]: "모바일 게임 개발사에서 신입 게임개발자를 채용합니다. 요구사항: Unity 또는 Unreal Engine 사용 가능자, JavaScript/Python 이해 위치: 서울 강남구 마감: 2026. 4. 30."
+        - generic [ref=e35] [cursor=pointer]:
+          - generic [ref=e37]: 그래픽디자이너 채용
+          - paragraph [ref=e38]: 게임 캐릭터 및 UI 디자인 경력자 채용

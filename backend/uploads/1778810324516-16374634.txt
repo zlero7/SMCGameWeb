@@ -1,0 +1,12 @@
+11434 포트 사용 확인 명령어
+netstat -abno | findstr :11434
+
+실행중인 ollama.exe 파일 전부 제거
+taskkill /F /IM ollama.exe
+
+빠른 모드로 변수 설정
+set CUDA_VISIBLE_DEVICES=0
+set OLLAMA_FLASH_ATTENTION=1
+
+ollama 실행
+ollama serve

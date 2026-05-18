@@ -1,0 +1,82 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img "로고" [ref=e6]
+      - link "세명컴고 게임과 포털" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - heading "세명컴고 게임과 포털" [level=1] [ref=e8]
+    - navigation "메인 네비게이션" [ref=e9]:
+      - link "홈" [ref=e10] [cursor=pointer]:
+        - /url: /
+      - link "공지사항" [ref=e11] [cursor=pointer]:
+        - /url: /notices
+      - link "취업" [ref=e12] [cursor=pointer]:
+        - /url: /careers
+      - link "진학" [ref=e13] [cursor=pointer]:
+        - /url: /admissions
+      - link "학사달력" [ref=e14] [cursor=pointer]:
+        - /url: /calendar
+      - link "과제일정" [ref=e15] [cursor=pointer]:
+        - /url: /assignments
+      - link "실습실 점검" [ref=e16] [cursor=pointer]:
+        - /url: /lab-inspections
+      - link "자료실" [ref=e17] [cursor=pointer]:
+        - /url: /materials
+      - link "수상/포트폴리오" [ref=e18] [cursor=pointer]:
+        - /url: /awards
+    - link "로그인" [ref=e24] [cursor=pointer]:
+      - /url: /login
+  - main [ref=e23]:
+    - generic [ref=e25]:
+      - heading "홈" [level=2] [ref=e26]
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - heading "📢 공지사항" [level=3] [ref=e29]
+          - paragraph [ref=e30]: 등록된 공지사항이 없습니다.
+          - link "더보기 →" [ref=e31] [cursor=pointer]:
+            - /url: /notices
+        - generic [ref=e32]:
+          - heading "💼 취업 정보" [level=3] [ref=e33]
+          - paragraph [ref=e34]: 등록된 취업 정보가 없습니다.
+          - link "더보기 →" [ref=e35] [cursor=pointer]:
+            - /url: /careers
+        - generic [ref=e36]:
+          - heading "🎓 진학 정보" [level=3] [ref=e37]
+          - paragraph [ref=e38]: 등록된 진학 정보가 없습니다.
+          - link "더보기 →" [ref=e39] [cursor=pointer]:
+            - /url: /admissions
+        - generic [ref=e40]:
+          - heading "📅 학사 일정" [level=3] [ref=e41]
+          - generic [ref=e42]:
+            - generic [ref=e45] [cursor=pointer]:
+              - generic [ref=e46]:
+                - text: 토요휴업일
+                - paragraph
+              - generic [ref=e47]: 2026/04/18
+            - generic [ref=e50] [cursor=pointer]:
+              - generic [ref=e51]:
+                - text: 1학기 1차 정기시험(2026)
+                - paragraph
+              - generic [ref=e52]: 2026/04/22
+            - generic [ref=e55] [cursor=pointer]:
+              - generic [ref=e56]:
+                - text: 1학기 1차 정기시험(2026)
+                - paragraph
+              - generic [ref=e57]: 2026/04/23
+          - link "더보기 →" [ref=e58] [cursor=pointer]:
+            - /url: /calendar
+        - generic [ref=e59]:
+          - heading "📝 과제 일정" [level=3] [ref=e60]
+          - paragraph [ref=e61]: 등록된 과제가 없습니다.
+          - link "더보기 →" [ref=e62] [cursor=pointer]:
+            - /url: /assignments
+        - generic [ref=e63]:
+          - heading "🔧 실습실 점검" [level=3] [ref=e64]
+          - paragraph [ref=e65]: 등록된 점검 사항이 없습니다.
+          - link "더보기 →" [ref=e66] [cursor=pointer]:
+            - /url: /lab-inspections
+        - generic [ref=e67]:
+          - heading "📚 자료실" [level=3] [ref=e68]
+          - paragraph [ref=e69]: 학습 자료를 다운로드받을 수 있습니다.
+          - link "자료실 바로가기 →" [ref=e70] [cursor=pointer]:
+            - /url: /materials

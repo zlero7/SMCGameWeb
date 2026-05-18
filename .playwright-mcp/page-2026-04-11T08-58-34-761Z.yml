@@ -1,0 +1,61 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img "로고" [ref=e6]
+      - link "세명컴고 게임과 포털" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - heading "세명컴고 게임과 포털" [level=1] [ref=e8]
+    - navigation "메인 네비게이션" [ref=e9]:
+      - link "홈" [ref=e10] [cursor=pointer]:
+        - /url: /
+      - link "공지사항" [ref=e11] [cursor=pointer]:
+        - /url: /notices
+      - link "취업" [ref=e12] [cursor=pointer]:
+        - /url: /careers
+      - link "진학" [ref=e13] [cursor=pointer]:
+        - /url: /admissions
+      - link "학사달력" [ref=e14] [cursor=pointer]:
+        - /url: /calendar
+      - link "과제일정" [ref=e15] [cursor=pointer]:
+        - /url: /assignments
+      - link "실습실 점검" [ref=e16] [cursor=pointer]:
+        - /url: /lab-inspections
+      - link "자료실" [ref=e17] [cursor=pointer]:
+        - /url: /materials
+      - link "수상/포트폴리오" [ref=e18] [cursor=pointer]:
+        - /url: /awards
+      - link "관리자" [ref=e19] [cursor=pointer]:
+        - /url: /admin/login
+  - main [ref=e20]:
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - heading "📝 과제일정" [level=2] [ref=e23]
+        - button "글 작성" [ref=e24]
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - generic [ref=e30] [cursor=pointer]:
+              - generic [ref=e31]:
+                - generic [ref=e33]: dd
+                - paragraph [ref=e34]: 테스트에요 26.01.01ㅇ;ㅇ[여
+              - generic [ref=e35]: 2026. 4. 11.
+            - button "삭제" [ref=e36]
+          - generic [ref=e37]: "작성자: 30906"
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - generic [ref=e40] [cursor=pointer]:
+              - generic [ref=e42]:
+                - generic [ref=e43]:
+                  - generic [ref=e45]: test
+                  - paragraph [ref=e46]: test
+                - generic [ref=e47]: 2026. 4. 11.
+              - generic [ref=e51]:
+                - generic [ref=e52]:
+                  - generic [ref=e53]:
+                    - heading "test" [level=2] [ref=e54]
+                    - paragraph [ref=e55]: "날짜: 2026. 4. 11."
+                    - paragraph [ref=e56]: "작성자: admin"
+                  - button "✕" [ref=e57]
+                - generic [ref=e58]: test
+            - button "삭제" [ref=e48]
+          - generic [ref=e49]: "작성자: admin"

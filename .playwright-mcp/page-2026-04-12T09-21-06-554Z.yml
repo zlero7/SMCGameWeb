@@ -1,0 +1,50 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img "로고" [ref=e6]
+      - link "세명컴고 게임과 포털" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - heading "세명컴고 게임과 포털" [level=1] [ref=e8]
+    - navigation "메인 네비게이션" [ref=e9]:
+      - link "홈" [ref=e10] [cursor=pointer]:
+        - /url: /
+      - link "공지사항" [ref=e11] [cursor=pointer]:
+        - /url: /notices
+      - link "취업" [ref=e12] [cursor=pointer]:
+        - /url: /careers
+      - link "진학" [ref=e13] [cursor=pointer]:
+        - /url: /admissions
+      - link "학사달력" [ref=e14] [cursor=pointer]:
+        - /url: /calendar
+      - link "과제일정" [ref=e15] [cursor=pointer]:
+        - /url: /assignments
+      - link "실습실 점검" [ref=e16] [cursor=pointer]:
+        - /url: /lab-inspections
+      - link "자료실" [ref=e17] [cursor=pointer]:
+        - /url: /materials
+      - link "수상/포트폴리오" [ref=e18] [cursor=pointer]:
+        - /url: /awards
+    - generic [ref=e20]:
+      - generic [ref=e21]: 김탁건
+      - link "비밀번호 변경" [ref=e22] [cursor=pointer]:
+        - /url: /change-password
+      - button "로그아웃" [ref=e23]
+  - main [ref=e24]:
+    - generic [ref=e26]:
+      - heading "🔑 비밀번호 변경" [level=2] [ref=e27]
+      - paragraph [ref=e28]: "[20263906]님"
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - generic [ref=e31]: 현재 비밀번호
+          - textbox "현재 비밀번호" [active] [ref=e32]
+        - generic [ref=e33]:
+          - generic [ref=e34]: 새 비밀번호
+          - textbox "새 비밀번호" [ref=e35]:
+            - /placeholder: 4자 이상
+        - generic [ref=e36]:
+          - generic [ref=e37]: 새 비밀번호 확인
+          - textbox "새 비밀번호 확인" [ref=e38]:
+            - /placeholder: 비밀번호 다시 입력
+        - button "비밀번호 변경" [ref=e39]
+        - link "← 홈으로 돌아가기" [ref=e41] [cursor=pointer]:
+          - /url: /

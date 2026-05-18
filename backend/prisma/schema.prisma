@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Notice {
+  id           Int       @id @default(autoincrement())
+  title        String
+  content      String    @db.LongText
+  date         DateTime  @default(now())
+  author       String    @default("관리자")
+  imageUrl     String?
+  videoUrl     String?
+  attachments  String?   @db.LongText
+  expiresAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Career {
+  id           Int       @id @default(autoincrement())
+  title        String
+  description  String    @db.LongText
+  requirements String?   @db.LongText
+  location     String?
+  deadline     DateTime?
+  applyLink    String?
+  author       String    @default("관리자")
+  imageUrl     String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Admission {
+  id           Int       @id @default(autoincrement())
+  program      String
+  requirements String?   @db.LongText
+  deadline     DateTime?
+  author       String    @default("관리자")
+  imageUrl     String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model CalendarEvent {
+  id          Int      @id @default(autoincrement())
+  title       String
+  start       DateTime
+  end         DateTime
+  type        String   @default("general")
+  description String?  @db.LongText
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Assignment {
+  id          Int      @id @default(autoincrement())
+  courseId    String
+  title       String
+  dueDate     DateTime
+  description String?  @db.LongText
+  attachments String?  @db.LongText
+  author      String   @default("관리자")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  passwordHash String
+  name         String?
+  studentId    String?
+  role         String   @default("student")
+  awards       Award[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model LabInspection {
+  id          Int       @id @default(autoincrement())
+  title       String
+  content     String    @db.LongText
+  author      String
+  status      String    @default("pending")
+  isPublic    Boolean   @default(true)
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Material {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String?  @db.LongText
+  category      String
+  fileUrl       String
+  fileName      String
+  fileSize      Int?
+  fileType      String?
+  isPublic      Boolean  @default(true)
+  downloadCount Int      @default(0)
+  author        String   @default("관리자")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Award {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String   @db.LongText
+  category    String
+  imageUrl    String?
+  videoUrl    String?
+  attachments String?  @db.LongText
+  author      String   @default("관리자")
+  userId      Int?
+  user        User?    @relation(fields: [userId], references: [id])
+  isPublic    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

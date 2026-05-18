@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Notice {
+  id           Int       @id @default(autoincrement())
+  title        String
+  content      String    @db.Text
+  date         DateTime  @default(now())
+  author       String    @default("관리자")
+  imageUrl     String?
+  videoUrl     String?
+  attachments  String?   @db.Text
+  expiresAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Career {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String    @db.Text
+  requirements String   @db.Text
+  location    String
+  deadline    DateTime?
+  applyLink   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Admission {
+  id          Int       @id @default(autoincrement())
+  program     String
+  requirements String   @db.Text
+  deadline    DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model CalendarEvent {
+  id          Int       @id @default(autoincrement())
+  title       String
+  start       DateTime
+  end         DateTime
+  type        String    @default("general")
+  description String?   @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Assignment {
+  id          Int       @id @default(autoincrement())
+  courseId    String
+  title       String
+  dueDate     DateTime
+  description String?   @db.Text
+  attachments String?   @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  passwordHash String
+  name         String?
+  role         String   @default("student")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model LabInspection {
+  id          Int       @id @default(autoincrement())
+  title       String
+  content     String    @db.Text
+  author      String
+  status      String    @default("pending") // pending, planned, completed
+  isPublic    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Material {
+  id          Int       @id @default(autoincrement())
+  title       String    // 자료 제목
+  description String?   @db.Text  // 자료 설명
+  category    String    // 카테고리 (과목/유형)
+  fileUrl     String    // 파일 URL (백엔드에서 serving)
+  fileName    String    // 원본 파일명
+  fileSize    Int?      // 파일 크기 (바이트)
+  fileType    String?   // MIME 타입 (image, pdf, video, etc)
+  isPublic    Boolean   @default(true)  // 공개 여부
+  downloadCount Int     @default(0)  // 다운로드 횟수
+  author      String    @default("관리자")  // 등록자
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

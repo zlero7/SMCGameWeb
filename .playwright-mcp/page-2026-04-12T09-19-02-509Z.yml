@@ -1,0 +1,81 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img "로고" [ref=e6]
+      - link "세명컴고 게임과 포털" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - heading "세명컴고 게임과 포털" [level=1] [ref=e8]
+    - navigation "메인 네비게이션" [ref=e9]:
+      - link "홈" [ref=e10] [cursor=pointer]:
+        - /url: /
+      - link "공지사항" [ref=e11] [cursor=pointer]:
+        - /url: /notices
+      - link "취업" [ref=e12] [cursor=pointer]:
+        - /url: /careers
+      - link "진학" [ref=e13] [cursor=pointer]:
+        - /url: /admissions
+      - link "학사달력" [ref=e14] [cursor=pointer]:
+        - /url: /calendar
+      - link "과제일정" [ref=e15] [cursor=pointer]:
+        - /url: /assignments
+      - link "실습실 점검" [ref=e16] [cursor=pointer]:
+        - /url: /lab-inspections
+      - link "자료실" [ref=e17] [cursor=pointer]:
+        - /url: /materials
+      - link "수상/포트폴리오" [ref=e18] [cursor=pointer]:
+        - /url: /awards
+    - generic [ref=e35]:
+      - generic [ref=e36]: 김탁건
+      - button "로그아웃" [ref=e37]
+  - main [ref=e21]:
+    - generic [ref=e38]:
+      - complementary [ref=e39]:
+        - navigation [ref=e40]:
+          - link "⚙️대시보드" [ref=e41] [cursor=pointer]:
+            - /url: /admin
+          - link "📢공지사항" [ref=e42] [cursor=pointer]:
+            - /url: /admin/notices
+          - link "💼취업 정보" [ref=e43] [cursor=pointer]:
+            - /url: /admin/careers
+          - link "🎓진학 정보" [ref=e44] [cursor=pointer]:
+            - /url: /admin/admissions
+          - link "🔧실습실 점검" [ref=e45] [cursor=pointer]:
+            - /url: /admin/lab-inspections
+          - link "📚자료실" [ref=e46] [cursor=pointer]:
+            - /url: /admin/materials
+          - link "🏆수상/포트폴리오" [ref=e47] [cursor=pointer]:
+            - /url: /admin/awards
+        - generic [ref=e48]:
+          - generic [ref=e49]: 20263906 (admin)
+          - button "로그아웃" [ref=e50]
+      - main [ref=e51]:
+        - generic [ref=e52]:
+          - heading "⚙️ 관리자 패널" [level=1] [ref=e53]
+          - paragraph [ref=e54]: 좌측 메뉴를 선택하여 관리하세요.
+          - generic [ref=e55]:
+            - heading "관리 메뉴" [level=2] [ref=e56]
+            - generic [ref=e57]:
+              - link "📢 공지사항 관리 공지사항 작성, 수정, 삭제" [ref=e58] [cursor=pointer]:
+                - /url: /admin/notices
+                - heading "📢 공지사항 관리" [level=3] [ref=e59]
+                - paragraph [ref=e60]: 공지사항 작성, 수정, 삭제
+              - link "💼 취업 정보 관리 취업 공고 작성, 수정, 삭제" [ref=e61] [cursor=pointer]:
+                - /url: /admin/careers
+                - heading "💼 취업 정보 관리" [level=3] [ref=e62]
+                - paragraph [ref=e63]: 취업 공고 작성, 수정, 삭제
+              - link "🎓 진학 정보 관리 진학 안내 작성, 수정, 삭제" [ref=e64] [cursor=pointer]:
+                - /url: /admin/admissions
+                - heading "🎓 진학 정보 관리" [level=3] [ref=e65]
+                - paragraph [ref=e66]: 진학 안내 작성, 수정, 삭제
+              - link "🔧 실습실 점검 관리 실습실 점검 게시판 관리" [ref=e67] [cursor=pointer]:
+                - /url: /admin/lab-inspections
+                - heading "🔧 실습실 점검 관리" [level=3] [ref=e68]
+                - paragraph [ref=e69]: 실습실 점검 게시판 관리
+              - link "📚 자료실 관리 학습 자료 업로드, 수정, 삭제" [ref=e70] [cursor=pointer]:
+                - /url: /admin/materials
+                - heading "📚 자료실 관리" [level=3] [ref=e71]
+                - paragraph [ref=e72]: 학습 자료 업로드, 수정, 삭제
+              - link "🏆 수상/포트폴리오 관리 수상 내역, 포트폴리오 관리" [ref=e73] [cursor=pointer]:
+                - /url: /admin/awards
+                - heading "🏆 수상/포트폴리오 관리" [level=3] [ref=e74]
+                - paragraph [ref=e75]: 수상 내역, 포트폴리오 관리

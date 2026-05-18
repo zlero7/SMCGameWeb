@@ -1,0 +1,68 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img "로고" [ref=e6]
+      - link "세명컴고 게임과 포털" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - heading "세명컴고 게임과 포털" [level=1] [ref=e8]
+    - navigation "메인 네비게이션" [ref=e9]:
+      - link "홈" [ref=e10] [cursor=pointer]:
+        - /url: /
+      - link "공지사항" [ref=e11] [cursor=pointer]:
+        - /url: /notices
+      - link "취업" [ref=e12] [cursor=pointer]:
+        - /url: /careers
+      - link "진학" [ref=e13] [cursor=pointer]:
+        - /url: /admissions
+      - link "학사달력" [ref=e14] [cursor=pointer]:
+        - /url: /calendar
+      - link "과제일정" [ref=e15] [cursor=pointer]:
+        - /url: /assignments
+      - link "실습실 점검" [ref=e16] [cursor=pointer]:
+        - /url: /lab-inspections
+      - link "자료실" [ref=e17] [cursor=pointer]:
+        - /url: /materials
+      - link "수상/포트폴리오" [ref=e18] [cursor=pointer]:
+        - /url: /awards
+    - generic [ref=e20]:
+      - generic [ref=e21]: 김탁건
+      - button "로그아웃" [ref=e22]
+  - main [ref=e23]:
+    - generic [ref=e24]:
+      - heading "홈" [level=2] [ref=e25]
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - heading "📢 공지사항" [level=3] [ref=e28]
+          - paragraph [ref=e29]: 등록된 공지사항이 없습니다.
+          - link "더보기 →" [ref=e30] [cursor=pointer]:
+            - /url: /notices
+        - generic [ref=e31]:
+          - heading "💼 취업 정보" [level=3] [ref=e32]
+          - paragraph [ref=e33]: 등록된 취업 정보가 없습니다.
+          - link "더보기 →" [ref=e34] [cursor=pointer]:
+            - /url: /careers
+        - generic [ref=e35]:
+          - heading "🎓 진학 정보" [level=3] [ref=e36]
+          - paragraph [ref=e37]: 등록된 진학 정보가 없습니다.
+          - link "더보기 →" [ref=e38] [cursor=pointer]:
+            - /url: /admissions
+        - generic [ref=e39]:
+          - heading "📅 학사 일정" [level=3] [ref=e40]
+          - paragraph [ref=e41]: 등록된 일정이 없습니다.
+          - link "더보기 →" [ref=e42] [cursor=pointer]:
+            - /url: /calendar
+        - generic [ref=e43]:
+          - heading "📝 과제 일정" [level=3] [ref=e44]
+          - paragraph [ref=e45]: 등록된 과제가 없습니다.
+          - link "더보기 →" [ref=e46] [cursor=pointer]:
+            - /url: /assignments
+        - generic [ref=e47]:
+          - heading "🔧 실습실 점검" [level=3] [ref=e48]
+          - paragraph [ref=e49]: 등록된 점검 사항이 없습니다.
+          - link "더보기 →" [ref=e50] [cursor=pointer]:
+            - /url: /lab-inspections
+        - generic [ref=e51]:
+          - heading "📚 자료실" [level=3] [ref=e52]
+          - paragraph [ref=e53]: 학습 자료를 다운로드받을 수 있습니다.
+          - link "자료실 바로가기 →" [ref=e54] [cursor=pointer]:
+            - /url: /materials

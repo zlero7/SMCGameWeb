@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npx tsc *)",
+      "Bash(npx vite *)",
+      "mcp__Claude_in_Chrome__list_connected_browsers",
+      "Bash(npx prisma *)",
+      "Bash(docker compose *)",
+      "Bash(docker-compose up *)",
+      "Bash(docker info *)",
+      "Bash(findstr \"OSType\\\\|OS Type\\\\|Server Version\\\\|platform\")",
+      "Bash(findstr \"3306\\\\|3307\\\\|4000\")",
+      "Bash(node -e ' *)",
+      "Bash(npm run *)",
+      "Bash(curl -s -X POST http://localhost:4000/api/auth/login -H \"Content-Type: application/json\" -d \"{\\\\\"username\\\\\":\\\\\"admin\\\\\",\\\\\"password\\\\\":\\\\\"admin1234\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:3001/api/auth/login -H \"Content-Type: application/json\" -d \"{\\\\\"username\\\\\":\\\\\"admin\\\\\",\\\\\"password\\\\\":\\\\\"admin1234\\\\\"}\")",
+      "PowerShell(Get-WindowsFeature -Name Hyper-V, Containers -ErrorAction SilentlyContinue)",
+      "PowerShell(wsl --status 2>&1)",
+      "Bash(sc query *)",
+      "Bash(net start *)",
+      "Bash(findstr \"3306\")",
+      "Bash(dir \"C:\\\\Program Files\\\\MySQL\\\\MySQL Server 9.6\\\\data\" /OD /B)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(npm install *)",
+      "Bash(node -e \"const {marked}=require\\('marked'\\); console.log\\(marked.parse\\('**hello**'\\)\\)\")",
+      "Bash(docker version *)",
+      "Bash(wsl -d Ubuntu -- docker info)",
+      "WebFetch(domain:media.discordapp.net)",
+      "Bash(grep -v \"^materials$\")",
+      "Bash(grep -v \"^1778810324515-869563542.txt$\")",
+      "Bash(grep -v \"^1778810324516-16374634.txt$\")",
+      "Bash(xargs rm -f)",
+      "Bash(git -C \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1\" init)",
+      "Bash(git -C \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1\" status)",
+      "Bash(git -C \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1\" add .)",
+      "Bash(git -C \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1\" status --short)"
+    ]
+  }
+}
