@@ -22,6 +22,7 @@ import AssignmentManager from './pages/admin/AssignmentManager'
 import LabInspectionManager from './pages/admin/LabInspectionManager'
 import MaterialsManager from './pages/admin/MaterialsManager'
 import AwardManager from './pages/admin/AwardManager'
+import CalendarManager from './pages/admin/CalendarManager'
 import UserManager from './pages/admin/UserManager'
 import AdminGuard from './components/AdminGuard'
 import AdminLayout from './components/AdminLayout'
@@ -205,6 +206,7 @@ function App() {
                   <Route path="notices" element={<NoticeManager />} />
                   <Route path="careers" element={<CareerManager />} />
                   <Route path="admissions" element={<AdmissionManager />} />
+                  <Route path="calendar" element={<CalendarManager />} />
                   <Route path="lab-inspections" element={<LabInspectionManager />} />
                   <Route path="materials" element={<MaterialsManager />} />
                   <Route path="awards" element={<AwardManager />} />

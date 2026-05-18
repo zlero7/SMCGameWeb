@@ -51,6 +51,7 @@ function AdminLayout() {
     { path: '/admin/notices', label: '공지사항', icon: '📢' },
     { path: '/admin/careers', label: '취업 정보', icon: '💼' },
     { path: '/admin/admissions', label: '진학 정보', icon: '🎓' },
+    { path: '/admin/calendar', label: '학사 일정', icon: '📅' },
     { path: '/admin/lab-inspections', label: '실습실 점검', icon: '🔧' },
     { path: '/admin/materials', label: '자료실', icon: '📚' },
     { path: '/admin/awards', label: '수상/포트폴리오', icon: '🏆' },

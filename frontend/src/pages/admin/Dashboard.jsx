@@ -59,6 +59,12 @@ function Dashboard() {
             <p className="m-0 text-sm text-gray-500">진학 안내 작성, 수정, 삭제</p>
           </Link>
           
+          {/* 학사 일정 관리 */}
+          <Link to="/admin/calendar" className="block p-4 border border-gray-200 rounded-xl bg-white hover:bg-gray-50 no-underline text-inherit">
+            <h3 className="m-0 mb-2 text-base">📅 학사 일정 관리</h3>
+            <p className="m-0 text-sm text-gray-500">NEIS 학사일정 조회 및 추가 일정 관리</p>
+          </Link>
+
           {/* 실습실 점검 관리 */}
           <Link to="/admin/lab-inspections" className="block p-4 border border-gray-200 rounded-xl bg-white hover:bg-gray-50 no-underline text-inherit">
             <h3 className="m-0 mb-2 text-base">🔧 실습실 점검 관리</h3>
