@@ -39,7 +39,7 @@ function AssignmentManager() {
   const [courses, setCourses] = useState([])
   
   // 폼 상태
-  const [form, setForm] = useState({ courseId: '', title: '', dueDate: '', description: '' })
+  const [form, setForm] = useState({ courseId: '', title: '', dueDate: '', content: '' })
   
   // 편집 상태
   const [editing, setEditing] = useState(null)
@@ -85,7 +85,7 @@ function AssignmentManager() {
       }
       
       // 폼 초기화 및 목록 갱신
-      setForm({ courseId: '', title: '', dueDate: '', description: '' })
+      setForm({ courseId: '', title: '', dueDate: '', content: '' })
       setEditing(null)
       loadData()
     } catch (err) {
@@ -101,7 +101,7 @@ function AssignmentManager() {
       courseId: item.courseId, 
       title: item.title, 
       dueDate: item.dueDate.split('T')[0],  // YYYY-MM-DD
-      description: item.description || '' 
+      content: item.description || ''
     })
     setEditing(item.id)
   }
@@ -161,8 +161,8 @@ function AssignmentManager() {
         />
         <textarea
           placeholder="설명 (선택)"
-          value={form.description}
-          onChange={e => setForm({ ...form, description: e.target.value })}
+          value={form.content}
+          onChange={e => setForm({ ...form, content: e.target.value })}
           className="w-full px-4 py-3 mb-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#4a90d9] focus:shadow-[0_0_0_3px_rgba(74,144,217,0.15)]"
           rows={3}
         />
@@ -174,7 +174,7 @@ function AssignmentManager() {
               type="button" 
               onClick={() => { 
                 setEditing(null); 
-                setForm({ courseId: '', title: '', dueDate: '', description: '' }) 
+                setForm({ courseId: '', title: '', dueDate: '', content: '' }) 
               }} 
               className="px-6 py-3 bg-gray-500 text-white rounded-lg text-sm font-semibold hover:bg-gray-600 transition-colors"
             >
