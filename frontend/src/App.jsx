@@ -131,7 +131,7 @@ function PublicLayout() {
         </div>
       </header>
       {/* 퍼블릭 컨텐츠 — 중앙 정렬 유지 */}
-      <main className="w-[min(1200px,92%)] mx-auto pt-5 w-full">
+      <main className="w-[min(1200px,92%)] mx-auto pt-5">
         <Outlet />
       </main>
     </div>
