@@ -36,7 +36,7 @@ function Assignments() {
   
   // 폼 상태 (모달용)
   const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState({ title: '', content: '', author: '' })
+  const [form, setForm] = useState({ title: '', content: '', dueDate: '', author: '' })
   const [submitting, setSubmitting] = useState(false)
 
   // 페이지 로드 시 목록 조회
@@ -62,18 +62,22 @@ function Assignments() {
       alert('제목과 내용을 입력해주세요.')
       return
     }
+    if (!form.dueDate) {
+      alert('마감일을 선택해주세요.')
+      return
+    }
     setSubmitting(true)
     try {
       const response = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ ...form, author: user?.name || user?.username || '학생' })
+        body: JSON.stringify({ ...form, dueDate: new Date(form.dueDate).toISOString(), author: user?.name || user?.username || '학생' })
       })
       const data = await response.json()
       if (!response.ok) {
         throw new Error(data.error || 'Failed to submit')
       }
-      setForm({ title: '', content: '', author: '' })
+      setForm({ title: '', content: '', dueDate: '', author: '' })
       setShowForm(false)
       loadAssignments()
       alert('작성되었습니다!')
@@ -106,7 +110,7 @@ function Assignments() {
 
   const handleCloseForm = () => {
     setShowForm(false)
-    setForm({ title: '', content: '', author: '' })
+    setForm({ title: '', content: '', dueDate: '', author: '' })
   }
 
   if (loading) return <div className="text-gray-500 p-4 text-center">로딩 중...</div>
@@ -178,7 +182,16 @@ function Assignments() {
                 value={form.content}
                 onChange={e => setForm({ ...form, content: e.target.value })}
                 className="w-full px-4 py-3 mb-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#4a90d9] focus:shadow-[0_0_0_3px_rgba(74,144,217,0.15)]"
-                rows={6}
+                rows={5}
+                required
+              />
+              <label className="block text-xs text-gray-500 mb-1 ml-1">마감일</label>
+              <input
+                type="date"
+                value={form.dueDate}
+                onChange={e => setForm({ ...form, dueDate: e.target.value })}
+                min={new Date().toISOString().split('T')[0]}
+                className="w-full px-4 py-3 mb-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#4a90d9] focus:shadow-[0_0_0_3px_rgba(74,144,217,0.15)]"
                 required
               />
               <button type="submit" disabled={submitting} className="w-full mt-2 px-6 py-3 bg-[#4a90d9] text-white rounded-lg text-sm font-semibold hover:bg-[#3561b0] transition-colors disabled:opacity-50">
