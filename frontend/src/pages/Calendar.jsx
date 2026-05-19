@@ -127,41 +127,45 @@ function Calendar() {
         <button onClick={nextMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors font-bold text-gray-600">▶</button>
       </div>
 
-      <div className="grid grid-cols-7 gap-1">
-        {weekDays.map(day => (
-          <div key={day} className="text-center font-bold text-gray-500 py-2 bg-gray-50">
+      <div className="grid grid-cols-7 border-l border-t border-gray-100 rounded-lg overflow-hidden">
+        {weekDays.map((day, i) => (
+          <div key={day} className={`text-center text-xs font-bold py-2.5 border-r border-b border-gray-100 bg-gray-50 ${i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : 'text-gray-500'}`}>
             {day}
           </div>
         ))}
         {days.map((item, idx) => {
           const dayEvents = getEventsForDate(item.date)
           const isToday = item.date && item.date.toDateString() === new Date().toDateString()
+          const isSun = item.date && item.date.getDay() === 0
+          const isSat = item.date && item.date.getDay() === 6
 
           return (
             <div
               key={idx}
-              className={`min-h-[80px] border p-1 ${isToday ? 'bg-cyan-50' : ''}`}
+              className={`min-h-[110px] border-r border-b border-gray-100 p-2 ${isToday ? 'bg-cyan-50' : item.day ? 'hover:bg-gray-50' : 'bg-gray-50/50'} transition-colors`}
             >
               {item.day && (
-                <div className="space-y-1">
-                  <div className={`text-sm font-bold ${isToday ? 'text-cyan-600' : 'text-gray-700'}`}>
+                <>
+                  <div className={`text-sm font-bold mb-1.5 w-6 h-6 flex items-center justify-center rounded-full ${
+                    isToday ? 'bg-cyan-500 text-white' : isSun ? 'text-red-400' : isSat ? 'text-blue-400' : 'text-gray-700'
+                  }`}>
                     {item.day}
                   </div>
-                  <div>
-                    {dayEvents.slice(0, 2).map((ev, i) => (
+                  <div className="space-y-0.5">
+                    {dayEvents.slice(0, 3).map((ev, i) => (
                       <div
                         key={i}
-                        className={`text-xs p-1 rounded truncate mb-0.5 ${getEventColor(ev.type, ev.source)}`}
+                        className={`text-[11px] px-1.5 py-0.5 rounded truncate ${getEventColor(ev.type, ev.source)}`}
                         title={ev.title}
                       >
                         {ev.title}
                       </div>
                     ))}
-                    {dayEvents.length > 2 && (
-                      <div className="text-xs text-gray-500">+{dayEvents.length - 2}개</div>
+                    {dayEvents.length > 3 && (
+                      <div className="text-[11px] text-gray-400 pl-1">+{dayEvents.length - 3}개</div>
                     )}
                   </div>
-                </div>
+                </>
               )}
             </div>
           )

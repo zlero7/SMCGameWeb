@@ -135,7 +135,7 @@ function PublicLayout() {
           <UserMenu />
         </div>
       </header>
-      <main className="flex-1 px-6 pt-5 pb-8">
+      <main className="flex-1 px-6 pt-5 pb-8 bg-[#f0f2f8]">
         <Outlet />
       </main>
     </div>

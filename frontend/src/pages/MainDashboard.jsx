@@ -221,51 +221,52 @@ export default function MainDashboard() {
     }
   }
 
+  const today = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })
+
   return (
-    <>
-      {/* ── 히어로 배너 ── */}
-      <div className="bg-gradient-to-r from-[#1c2438] to-[#1e3a5f] rounded-2xl overflow-hidden mb-5">
-        <div className="px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <p className="text-cyan-400 text-xs font-semibold tracking-widest uppercase mb-2">세명컴퓨터고등학교</p>
-            <h1 className="text-white text-2xl md:text-3xl font-bold mb-1 leading-tight">게임과 포털</h1>
-            <p className="text-gray-400 text-sm">공지·취업·진학·자료·일정 — 한 곳에서 확인하세요</p>
-          </div>
-          <div className="flex flex-wrap gap-2 shrink-0">
-            {[
-              { to: '/notices', label: '공지사항', icon: '📢' },
-              { to: '/careers', label: '취업 정보', icon: '💼' },
-              { to: '/admissions', label: '진학 정보', icon: '🎓' },
-              { to: '/materials', label: '자료실', icon: '📚' },
-              { to: '/awards', label: '수상·포트폴리오', icon: '🏆' },
-            ].map(({ to, label, icon }) => (
-              <Link key={to} to={to} className="no-underline px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg transition-colors">
-                {icon} {label}
-              </Link>
-            ))}
-          </div>
+    <div className="space-y-4">
+
+      {/* ── 환영 배너 ── */}
+      <div className="bg-gradient-to-r from-[#1c2438] to-[#2d3a5a] rounded-xl px-7 py-5 flex items-center justify-between">
+        <div>
+          <p className="text-cyan-400 text-xs font-medium mb-1">{today}</p>
+          <h1 className="text-white text-xl font-bold mb-0.5">세명컴고 게임과 포털</h1>
+          <p className="text-gray-400 text-sm">공지·취업·진학·자료·일정 — 한 곳에서 확인하세요</p>
+        </div>
+        <div className="hidden md:flex flex-wrap gap-2 shrink-0">
+          {[
+            { to: '/notices', label: '공지사항' },
+            { to: '/careers', label: '취업 정보' },
+            { to: '/admissions', label: '진학 정보' },
+            { to: '/materials', label: '자료실' },
+            { to: '/awards', label: '수상·포트폴리오' },
+          ].map(({ to, label }) => (
+            <Link key={to} to={to} className="no-underline px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg transition-colors">{label}</Link>
+          ))}
         </div>
       </div>
 
-      {/* ── 메인 2컬럼 ── */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-5 mb-5">
+      {/* ── 메인 2컬럼: 공지사항(넓) + 학사/과제(좁) ── */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 items-stretch">
 
-        {/* ── 왼쪽: 공지사항 (넓게) ── */}
-        <div className="xl:col-span-2 bg-white rounded-2xl shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b-2 border-cyan-400">
-            <h2 className="text-base font-bold text-gray-800 m-0">📢 공지사항</h2>
-            <Link to="/notices" className="text-xs text-cyan-500 no-underline hover:underline font-medium">전체 보기 →</Link>
+        {/* 공지사항 */}
+        <div className="xl:col-span-2 bg-white rounded-xl shadow-sm overflow-hidden flex flex-col">
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center text-sm">📢</div>
+              <h2 className="font-bold text-gray-800 text-sm m-0">공지사항</h2>
+            </div>
+            <Link to="/notices" className="text-xs text-cyan-500 no-underline hover:underline">전체 보기</Link>
           </div>
-          <div className="divide-y divide-gray-50">
+          <div className="px-5 py-1 flex-1">
             {notices.length === 0 ? (
-              <p className="text-gray-400 text-sm text-center py-10">등록된 공지사항이 없습니다.</p>
+              <p className="text-gray-400 text-sm text-center py-8">등록된 공지사항이 없습니다.</p>
             ) : notices.map(n => (
               <div key={n.id} onClick={() => handleItemClick(n, 'notice')}
-                className="flex items-center gap-4 px-6 py-4 hover:bg-cyan-50 cursor-pointer transition-colors group">
-                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-cyan-600 transition-colors">{n.title}</p>
-                  <p className="text-xs text-gray-400 mt-0.5 truncate">{(() => { const t = stripHtml(n.content); return t.slice(0, 80) + (t.length > 80 ? '...' : '') })()}</p>
+                className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-gray-50 -mx-5 px-5 transition-colors">
+                <div className="flex-1 min-w-0 pr-3">
+                  <p className="text-sm font-medium text-gray-800 truncate">{n.title}</p>
+                  <p className="text-xs text-gray-400">{(() => { const t = stripHtml(n.content); return t.slice(0, 60) + (t.length > 60 ? '...' : '') })()}</p>
                 </div>
                 <span className="text-xs text-gray-400 shrink-0">{new Date(n.date).toLocaleDateString('ko-KR')}</span>
               </div>
@@ -273,23 +274,26 @@ export default function MainDashboard() {
           </div>
         </div>
 
-        {/* ── 오른쪽 사이드: 학사일정 + 과제 ── */}
-        <div className="flex flex-col gap-5">
+        {/* 오른쪽: 학사일정 + 과제 */}
+        <div className="flex flex-col gap-4">
 
           {/* 학사 일정 */}
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-4 border-b-2 border-cyan-400">
-              <h2 className="text-base font-bold text-gray-800 m-0">📅 학사 일정</h2>
-              <Link to="/calendar" className="text-xs text-cyan-500 no-underline hover:underline font-medium">더보기 →</Link>
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden flex flex-col flex-1">
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-cyan-50 flex items-center justify-center text-sm">📅</div>
+                <h2 className="font-bold text-gray-800 text-sm m-0">학사 일정</h2>
+              </div>
+              <Link to="/calendar" className="text-xs text-cyan-500 no-underline hover:underline">더보기</Link>
             </div>
-            <div className="px-5 py-3 space-y-2">
+            <div className="px-5 py-1">
               {calendar.length === 0 ? (
-                <p className="text-gray-400 text-sm text-center py-4">예정된 일정이 없습니다.</p>
+                <p className="text-gray-400 text-sm text-center py-6">예정된 일정이 없습니다.</p>
               ) : calendar.map((c, idx) => (
                 <div key={idx} onClick={() => handleItemClick(c, 'calendar')}
-                  className="flex items-center gap-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg px-2 -mx-2 transition-colors">
-                  <div className="shrink-0 w-10 h-10 rounded-lg bg-cyan-50 flex flex-col items-center justify-center">
-                    <span className="text-[10px] text-cyan-500 font-bold leading-none">{c.start ? c.start.substring(4,6) : '--'}월</span>
+                  className="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-gray-50 -mx-5 px-5 transition-colors">
+                  <div className="shrink-0 w-9 h-9 rounded-lg bg-cyan-50 flex flex-col items-center justify-center">
+                    <span className="text-[9px] text-cyan-500 font-bold leading-none">{c.start ? c.start.substring(4,6) : '--'}월</span>
                     <span className="text-sm text-cyan-700 font-bold leading-none">{c.start ? c.start.substring(6,8) : '--'}</span>
                   </div>
                   <p className="text-sm text-gray-700 font-medium truncate flex-1">{c.title}</p>
@@ -299,20 +303,23 @@ export default function MainDashboard() {
           </div>
 
           {/* 과제 일정 */}
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-4 border-b-2 border-cyan-400">
-              <h2 className="text-base font-bold text-gray-800 m-0">📝 과제 일정</h2>
-              <Link to="/assignments" className="text-xs text-cyan-500 no-underline hover:underline font-medium">더보기 →</Link>
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden flex flex-col flex-1">
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center text-sm">📝</div>
+                <h2 className="font-bold text-gray-800 text-sm m-0">과제 일정</h2>
+              </div>
+              <Link to="/assignments" className="text-xs text-cyan-500 no-underline hover:underline">더보기</Link>
             </div>
-            <div className="px-5 py-3 space-y-2">
+            <div className="px-5 py-1">
               {assignments.length === 0 ? (
-                <p className="text-gray-400 text-sm text-center py-4">등록된 과제가 없습니다.</p>
+                <p className="text-gray-400 text-sm text-center py-6">등록된 과제가 없습니다.</p>
               ) : assignments.map(a => (
                 <div key={a.id} onClick={() => handleItemClick(a, 'assignment')}
-                  className="flex items-center gap-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg px-2 -mx-2 transition-colors">
-                  <span className="shrink-0 text-xs bg-orange-50 text-orange-600 font-bold px-2 py-1 rounded-md">{a.courseId}</span>
+                  className="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-gray-50 -mx-5 px-5 transition-colors">
+                  <span className="shrink-0 text-xs bg-orange-50 text-orange-600 font-bold px-2 py-0.5 rounded-md">{a.courseId}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-700 font-medium truncate">{a.title}</p>
+                    <p className="text-sm font-medium text-gray-800 truncate">{a.title}</p>
                     <p className="text-xs text-gray-400">{new Date(a.dueDate).toLocaleDateString('ko-KR')} 마감</p>
                   </div>
                 </div>
@@ -324,72 +331,81 @@ export default function MainDashboard() {
       </div>
 
       {/* ── 취업 / 진학 / 실습실 점검 ── */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
         {/* 취업 정보 */}
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b-2 border-indigo-400">
-            <h2 className="text-base font-bold text-gray-800 m-0">💼 취업 정보</h2>
-            <Link to="/careers" className="text-xs text-indigo-500 no-underline hover:underline font-medium">더보기 →</Link>
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg bg-indigo-50 flex items-center justify-center text-sm">💼</div>
+              <h2 className="font-bold text-gray-800 text-sm m-0">취업 정보</h2>
+            </div>
+            <Link to="/careers" className="text-xs text-cyan-500 no-underline hover:underline">더보기</Link>
           </div>
-          <div className="divide-y divide-gray-50">
+          <div className="px-5 py-1">
             {careers.length === 0 ? (
               <p className="text-gray-400 text-sm text-center py-8">등록된 취업 정보가 없습니다.</p>
             ) : careers.map(c => (
               <div key={c.id} onClick={() => handleItemClick(c, 'career')}
-                className="flex items-center gap-3 px-5 py-3.5 hover:bg-indigo-50 cursor-pointer transition-colors group">
-                <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-indigo-600 transition-colors">{c.title}</p>
-                  <p className="text-xs text-gray-400 mt-0.5 truncate">{(() => { const t = stripHtml(c.description); return t.slice(0, 50) + (t.length > 50 ? '...' : '') })()}</p>
+                className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-gray-50 -mx-5 px-5 transition-colors">
+                <div className="flex-1 min-w-0 pr-3">
+                  <p className="text-sm font-medium text-gray-800 truncate">{c.title}</p>
+                  <p className="text-xs text-gray-400 truncate">{(() => { const t = stripHtml(c.description); return t.slice(0, 40) + (t.length > 40 ? '...' : '') })()}</p>
                 </div>
+                <span className="text-xs px-2 py-0.5 rounded-full font-medium shrink-0 bg-indigo-50 text-indigo-500">채용</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* 진학 정보 */}
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b-2 border-violet-400">
-            <h2 className="text-base font-bold text-gray-800 m-0">🎓 진학 정보</h2>
-            <Link to="/admissions" className="text-xs text-violet-500 no-underline hover:underline font-medium">더보기 →</Link>
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg bg-violet-50 flex items-center justify-center text-sm">🎓</div>
+              <h2 className="font-bold text-gray-800 text-sm m-0">진학 정보</h2>
+            </div>
+            <Link to="/admissions" className="text-xs text-cyan-500 no-underline hover:underline">더보기</Link>
           </div>
-          <div className="divide-y divide-gray-50">
+          <div className="px-5 py-1">
             {admissions.length === 0 ? (
               <p className="text-gray-400 text-sm text-center py-8">등록된 진학 정보가 없습니다.</p>
             ) : admissions.map(a => (
               <div key={a.id} onClick={() => handleItemClick(a, 'admission')}
-                className="flex items-center gap-3 px-5 py-3.5 hover:bg-violet-50 cursor-pointer transition-colors group">
-                <div className="w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-violet-600 transition-colors">{a.program}</p>
-                  <p className="text-xs text-gray-400 mt-0.5 truncate">{(() => { const t = stripHtml(a.requirements); return t.slice(0, 50) + (t.length > 50 ? '...' : '') })()}</p>
+                className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-gray-50 -mx-5 px-5 transition-colors">
+                <div className="flex-1 min-w-0 pr-3">
+                  <p className="text-sm font-medium text-gray-800 truncate">{a.program}</p>
+                  <p className="text-xs text-gray-400 truncate">{(() => { const t = stripHtml(a.requirements); return t.slice(0, 40) + (t.length > 40 ? '...' : '') })()}</p>
                 </div>
+                <span className="text-xs px-2 py-0.5 rounded-full font-medium shrink-0 bg-violet-50 text-violet-500">진학</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* 실습실 점검 */}
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b-2 border-orange-400">
-            <h2 className="text-base font-bold text-gray-800 m-0">🔧 실습실 점검</h2>
-            <Link to="/lab-inspections" className="text-xs text-orange-500 no-underline hover:underline font-medium">더보기 →</Link>
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg bg-orange-50 flex items-center justify-center text-sm">🔧</div>
+              <h2 className="font-bold text-gray-800 text-sm m-0">실습실 점검</h2>
+            </div>
+            <Link to="/lab-inspections" className="text-xs text-cyan-500 no-underline hover:underline">더보기</Link>
           </div>
-          <div className="divide-y divide-gray-50">
+          <div className="px-5 py-1">
             {labInspections.length === 0 ? (
               <p className="text-gray-400 text-sm text-center py-8">등록된 점검 사항이 없습니다.</p>
             ) : labInspections.map(item => (
               <div key={item.id} onClick={() => handleItemClick(item, 'labInspection')}
-                className="flex items-center gap-3 px-5 py-3.5 hover:bg-orange-50 cursor-pointer transition-colors">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-800 truncate">{item.title}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">{item.author} · {new Date(item.createdAt).toLocaleDateString('ko-KR')}</p>
+                className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-gray-50 -mx-5 px-5 transition-colors">
+                <div className="flex-1 min-w-0 pr-3">
+                  <p className="text-sm font-medium text-gray-800 truncate">{item.title}</p>
+                  <p className="text-xs text-gray-400">{item.author} · {new Date(item.createdAt).toLocaleDateString('ko-KR')}</p>
                 </div>
-                <span className={`text-xs px-2 py-0.5 rounded-full font-semibold shrink-0 ${
-                  item.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-600'
+                <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${
+                  item.status === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-orange-50 text-orange-500'
                 }`}>
-                  {item.status === 'completed' ? '완료' : '대기'}
+                  {item.status === 'completed' ? '처리완료' : '대기중'}
                 </span>
               </div>
             ))}
@@ -397,23 +413,27 @@ export default function MainDashboard() {
         </div>
       </div>
 
-      {/* ── 자료실 띠 ── */}
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-5">
-        <div className="flex items-center justify-between px-6 py-4 border-b-2 border-emerald-400">
-          <h2 className="text-base font-bold text-gray-800 m-0">📚 자료실</h2>
-          <Link to="/materials" className="text-xs text-emerald-600 no-underline hover:underline font-medium">전체 보기 →</Link>
+      {/* ── 자료실 ── */}
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center text-sm">📚</div>
+            <h2 className="font-bold text-gray-800 text-sm m-0">자료실</h2>
+          </div>
+          <Link to="/materials" className="text-xs text-cyan-500 no-underline hover:underline">전체 보기</Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-50">
           {materials.length === 0 ? (
             <p className="text-gray-400 text-sm text-center py-8 col-span-3">등록된 자료가 없습니다.</p>
           ) : materials.map(m => (
             <div key={m.id} onClick={() => handleItemClick(m, 'material')}
-              className="flex items-center gap-4 px-6 py-4 hover:bg-emerald-50 cursor-pointer transition-colors group">
-              <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0 text-xl group-hover:scale-110 transition-transform">📄</div>
+              className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50 cursor-pointer transition-colors">
+              <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 text-lg">📄</div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-emerald-700 transition-colors">{m.title}</p>
-                <p className="text-xs text-gray-400 mt-0.5">{m.category || '일반'} · {m.downloadCount || 0}회 다운로드</p>
+                <p className="text-sm font-medium text-gray-800 truncate">{m.title}</p>
+                <p className="text-xs text-gray-400">{m.category || '일반'} · {m.downloadCount || 0}회 다운로드</p>
               </div>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 font-medium shrink-0">다운로드</span>
             </div>
           ))}
         </div>
@@ -508,6 +528,6 @@ export default function MainDashboard() {
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }
