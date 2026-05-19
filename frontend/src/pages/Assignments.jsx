@@ -29,7 +29,7 @@ import PageBanner from '../components/PageBanner'
  * Assignments - 과제 일정 페이지 컴포넌트
  */
 function Assignments() {
-  const { isLoggedIn, user } = useAuth()
+  const { isLoggedIn, user, token } = useAuth()
   const [assignments, setAssignments] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -66,7 +66,7 @@ function Assignments() {
     try {
       const response = await fetch('/api/assignments', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ ...form, author: user?.name || user?.username || '학생' })
       })
       const data = await response.json()
@@ -92,7 +92,7 @@ function Assignments() {
     }
     if (!confirm('삭제하시겠습니까?')) return
     try {
-      const response = await fetch(`/api/assignments/${id}`, { method: 'DELETE' })
+      const response = await fetch(`/api/assignments/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
       if (!response.ok) {
         const data = await response.json()
         throw new Error(data.error || 'Failed to delete')

@@ -37,7 +37,7 @@ import PageBanner from '../components/PageBanner'
  * LabInspections - 실습실 점검 페이지 컴포넌트
  */
 function LabInspections() {
-  const { isLoggedIn, user } = useAuth()
+  const { isLoggedIn, user, token } = useAuth()
   // 목록 상태
   const [inspections, setInspections] = useState([])
   const [loading, setLoading] = useState(true)
@@ -80,7 +80,7 @@ function LabInspections() {
     try {
       const response = await fetch('/api/lab-inspections', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ ...form, author: user?.name || user?.username || '학생' })
       })
       const data = await response.json()

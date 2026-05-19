@@ -263,9 +263,9 @@ export default function MainDashboard() {
               <p className="text-gray-400 text-sm text-center py-8">등록된 공지사항이 없습니다.</p>
             ) : notices.map(n => (
               <div key={n.id} onClick={() => handleItemClick(n, 'notice')}
-                className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-gray-50 -mx-5 px-5 transition-colors">
+                className="group flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-cyan-50 -mx-5 px-5 transition-all duration-150">
                 <div className="flex-1 min-w-0 pr-3">
-                  <p className="text-sm font-medium text-gray-800 truncate">{n.title}</p>
+                  <p className="text-sm font-medium text-gray-800 truncate group-hover:text-cyan-600 transition-colors">{n.title}</p>
                   <p className="text-xs text-gray-400">{(() => { const t = stripHtml(n.content); return t.slice(0, 60) + (t.length > 60 ? '...' : '') })()}</p>
                 </div>
                 <span className="text-xs text-gray-400 shrink-0">{new Date(n.date).toLocaleDateString('ko-KR')}</span>
@@ -291,12 +291,12 @@ export default function MainDashboard() {
                 <p className="text-gray-400 text-sm text-center py-6">예정된 일정이 없습니다.</p>
               ) : calendar.map((c, idx) => (
                 <div key={idx} onClick={() => handleItemClick(c, 'calendar')}
-                  className="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-gray-50 -mx-5 px-5 transition-colors">
-                  <div className="shrink-0 w-9 h-9 rounded-lg bg-cyan-50 flex flex-col items-center justify-center">
+                  className="group flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-cyan-50 -mx-5 px-5 transition-all duration-150">
+                  <div className="shrink-0 w-9 h-9 rounded-lg bg-cyan-50 flex flex-col items-center justify-center group-hover:bg-cyan-100 transition-colors">
                     <span className="text-[9px] text-cyan-500 font-bold leading-none">{c.start ? c.start.substring(4,6) : '--'}월</span>
                     <span className="text-sm text-cyan-700 font-bold leading-none">{c.start ? c.start.substring(6,8) : '--'}</span>
                   </div>
-                  <p className="text-sm text-gray-700 font-medium truncate flex-1">{c.title}</p>
+                  <p className="text-sm text-gray-700 font-medium truncate flex-1 group-hover:text-cyan-600 transition-colors">{c.title}</p>
                 </div>
               ))}
             </div>
@@ -316,10 +316,10 @@ export default function MainDashboard() {
                 <p className="text-gray-400 text-sm text-center py-6">등록된 과제가 없습니다.</p>
               ) : assignments.map(a => (
                 <div key={a.id} onClick={() => handleItemClick(a, 'assignment')}
-                  className="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-gray-50 -mx-5 px-5 transition-colors">
-                  <span className="shrink-0 text-xs bg-orange-50 text-orange-600 font-bold px-2 py-0.5 rounded-md">{a.courseId}</span>
+                  className="group flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-orange-50 -mx-5 px-5 transition-all duration-150">
+                  <span className="shrink-0 text-xs bg-orange-50 text-orange-600 font-bold px-2 py-0.5 rounded-md group-hover:bg-orange-100 transition-colors">{a.courseId}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-800 truncate">{a.title}</p>
+                    <p className="text-sm font-medium text-gray-800 truncate group-hover:text-orange-600 transition-colors">{a.title}</p>
                     <p className="text-xs text-gray-400">{new Date(a.dueDate).toLocaleDateString('ko-KR')} 마감</p>
                   </div>
                 </div>
@@ -347,9 +347,9 @@ export default function MainDashboard() {
               <p className="text-gray-400 text-sm text-center py-8">등록된 취업 정보가 없습니다.</p>
             ) : careers.map(c => (
               <div key={c.id} onClick={() => handleItemClick(c, 'career')}
-                className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-gray-50 -mx-5 px-5 transition-colors">
+                className="group flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-indigo-50 -mx-5 px-5 transition-all duration-150">
                 <div className="flex-1 min-w-0 pr-3">
-                  <p className="text-sm font-medium text-gray-800 truncate">{c.title}</p>
+                  <p className="text-sm font-medium text-gray-800 truncate group-hover:text-indigo-600 transition-colors">{c.title}</p>
                   <p className="text-xs text-gray-400 truncate">{(() => { const t = stripHtml(c.description); return t.slice(0, 40) + (t.length > 40 ? '...' : '') })()}</p>
                 </div>
                 <span className="text-xs px-2 py-0.5 rounded-full font-medium shrink-0 bg-indigo-50 text-indigo-500">채용</span>
@@ -372,9 +372,9 @@ export default function MainDashboard() {
               <p className="text-gray-400 text-sm text-center py-8">등록된 진학 정보가 없습니다.</p>
             ) : admissions.map(a => (
               <div key={a.id} onClick={() => handleItemClick(a, 'admission')}
-                className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-gray-50 -mx-5 px-5 transition-colors">
+                className="group flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-violet-50 -mx-5 px-5 transition-all duration-150">
                 <div className="flex-1 min-w-0 pr-3">
-                  <p className="text-sm font-medium text-gray-800 truncate">{a.program}</p>
+                  <p className="text-sm font-medium text-gray-800 truncate group-hover:text-violet-600 transition-colors">{a.program}</p>
                   <p className="text-xs text-gray-400 truncate">{(() => { const t = stripHtml(a.requirements); return t.slice(0, 40) + (t.length > 40 ? '...' : '') })()}</p>
                 </div>
                 <span className="text-xs px-2 py-0.5 rounded-full font-medium shrink-0 bg-violet-50 text-violet-500">진학</span>
@@ -397,9 +397,9 @@ export default function MainDashboard() {
               <p className="text-gray-400 text-sm text-center py-8">등록된 점검 사항이 없습니다.</p>
             ) : labInspections.map(item => (
               <div key={item.id} onClick={() => handleItemClick(item, 'labInspection')}
-                className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-gray-50 -mx-5 px-5 transition-colors">
+                className="group flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-orange-50 -mx-5 px-5 transition-all duration-150">
                 <div className="flex-1 min-w-0 pr-3">
-                  <p className="text-sm font-medium text-gray-800 truncate">{item.title}</p>
+                  <p className="text-sm font-medium text-gray-800 truncate group-hover:text-orange-600 transition-colors">{item.title}</p>
                   <p className="text-xs text-gray-400">{item.author} · {new Date(item.createdAt).toLocaleDateString('ko-KR')}</p>
                 </div>
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${
@@ -427,10 +427,10 @@ export default function MainDashboard() {
             <p className="text-gray-400 text-sm text-center py-8 col-span-3">등록된 자료가 없습니다.</p>
           ) : materials.map(m => (
             <div key={m.id} onClick={() => handleItemClick(m, 'material')}
-              className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50 cursor-pointer transition-colors">
-              <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 text-lg">📄</div>
+              className="group flex items-center gap-3 px-5 py-3.5 hover:bg-emerald-50 cursor-pointer transition-all duration-150">
+              <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 text-lg group-hover:bg-emerald-100 transition-colors">📄</div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-800 truncate">{m.title}</p>
+                <p className="text-sm font-medium text-gray-800 truncate group-hover:text-emerald-700 transition-colors">{m.title}</p>
                 <p className="text-xs text-gray-400">{m.category || '일반'} · {m.downloadCount || 0}회 다운로드</p>
               </div>
               <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 font-medium shrink-0">다운로드</span>
