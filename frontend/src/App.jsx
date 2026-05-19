@@ -43,8 +43,8 @@ function UserMenu() {
   if (isLoggedIn) {
     return (
       <div className="flex items-center gap-3">
-        <span className="text-sm font-medium text-gray-700">{user?.name || user?.username || '사용자'}</span>
-        <button onClick={() => setShowSettings(true)} className="p-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors text-xl" title="설정">⚙️</button>
+        <span className="text-sm font-medium text-white/90">{user?.name || user?.username || '사용자'}</span>
+        <button onClick={() => setShowSettings(true)} className="p-2 rounded-lg border border-white/30 hover:bg-white/10 transition-colors text-xl" title="설정">⚙️</button>
 
         {showSettings && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowSettings(false)}>
@@ -100,7 +100,7 @@ function UserMenu() {
   }
 
   return (
-    <Link to="/login" className="px-3 py-1.5 rounded-lg bg-cyan-500 text-white text-sm font-semibold hover:bg-cyan-600 transition-colors">로그인</Link>
+    <Link to="/login" className="px-3 py-1.5 rounded-lg bg-cyan-500 text-white text-sm font-semibold hover:bg-cyan-400 transition-colors no-underline">로그인</Link>
   )
 }
 
@@ -108,16 +108,16 @@ function UserMenu() {
 function PublicLayout() {
   const navLinkClass = ({ isActive }) =>
     isActive
-      ? 'nav-link-active text-gray-800 font-bold no-underline text-sm border-b-2 border-cyan-400 pb-1'
-      : 'nav-link no-underline text-gray-800 font-semibold text-sm hover:text-cyan-500 hover:border-b-2 hover:border-cyan-300 pb-1 transition-all duration-200'
+      ? 'nav-link-active text-cyan-400 font-bold no-underline text-sm border-b-2 border-cyan-400 pb-1'
+      : 'nav-link no-underline text-white/70 font-medium text-sm hover:text-cyan-400 pb-1 transition-all duration-200'
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="site-header sticky top-0 z-50 flex items-center px-5 py-3 border-b border-gray-200 bg-white">
+      <header className="sticky top-0 z-50 flex items-center px-6 py-3 border-b border-white/10 bg-[#1c2438]">
         <div className="flex items-center gap-2 shrink-0">
           <img src="/logo.svg" alt="로고" className="h-9 align-middle" />
-          <Link to="/" className="no-underline text-inherit">
-            <h1 className="text-xs uppercase tracking-widest m-0 text-gray-800 font-bold">세명컴고 게임과 포털</h1>
+          <Link to="/" className="no-underline">
+            <h1 className="text-xs uppercase tracking-widest m-0 text-white font-bold">세명컴고 게임과 포털</h1>
           </Link>
         </div>
         <nav className="flex-1 flex justify-center gap-5 items-center" aria-label="메인 네비게이션">
@@ -131,12 +131,11 @@ function PublicLayout() {
           <NavLink to="/materials" className={navLinkClass}>자료실</NavLink>
           <NavLink to="/awards" className={navLinkClass}>수상/포트폴리오</NavLink>
         </nav>
-        <div className="flex items-center gap-3 shrink-0 pl-4 border-l border-gray-300">
+        <div className="flex items-center gap-3 shrink-0 pl-4 border-l border-white/20">
           <UserMenu />
         </div>
       </header>
-      {/* 퍼블릭 컨텐츠 — 중앙 정렬 유지 */}
-      <main className="w-[min(1200px,92%)] mx-auto pt-5">
+      <main className="flex-1 px-6 pt-5 pb-8">
         <Outlet />
       </main>
     </div>

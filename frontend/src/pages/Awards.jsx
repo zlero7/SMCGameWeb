@@ -11,6 +11,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { marked } from 'marked'
+import PageBanner from '../components/PageBanner'
 
 marked.setOptions({ breaks: true, gfm: true })
 
@@ -108,20 +109,19 @@ function Awards() {
   if (error) return <div className="text-red-500 p-4">오류: {error}</div>
 
   return (
-    <div className="bg-white rounded-xl p-5 shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
-      <div className="border-b-2 border-cyan-400 pb-2 mb-4">
-        <h2 className="text-xl uppercase tracking-widest">🏆 수상 및 포트폴리오</h2>
-      </div>
-      
+    <>
+      <PageBanner icon="🏆" title="수상 / 포트폴리오" subtitle="학생들의 수상 내역과 포트폴리오를 확인하세요" />
+      <div className="bg-white rounded-2xl shadow-sm p-5">
+
       {/* 카테고리 탭 */}
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-5">
         {['all', 'award', 'portfolio'].map(cat => (
           <button
             key={cat}
             onClick={() => setCategory(cat)}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-              category === cat 
-                ? 'bg-cyan-500 text-white' 
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              category === cat
+                ? 'bg-cyan-500 text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
@@ -247,7 +247,8 @@ function Awards() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }
 

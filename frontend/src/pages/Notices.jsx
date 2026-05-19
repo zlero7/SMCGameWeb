@@ -10,6 +10,7 @@
 import React, { useEffect, useState } from 'react'
 import { fetchNotices } from '../services/api'
 import AccordionCard from '../components/AccordionCard'
+import PageBanner from '../components/PageBanner'
 
 function Notices() {
   const [notices, setNotices] = useState([])
@@ -27,28 +28,30 @@ function Notices() {
   if (error) return <div className="text-red-500 p-4">오류: {error}</div>
 
   return (
-    <div className="bg-white rounded-xl p-5 shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
-      <h2 className="text-xl uppercase tracking-widest border-b-2 border-cyan-400 pb-2 mb-4">📢 공지사항</h2>
-      {notices.length === 0 ? (
-        <p>등록된 공지사항이 없습니다.</p>
-      ) : (
-        <div className="space-y-3">
-          {notices.map(notice => (
-            <AccordionCard 
-              key={notice.id}
-              id={notice.id}
-              title={notice.title}
-              content={notice.content}
-              date={notice.date}
-              author={notice.author}
-              imageUrl={notice.imageUrl}
-              videoUrl={notice.videoUrl}
-              attachments={notice.attachments}
-            />
-          ))}
-        </div>
-      )}
-    </div>
+    <>
+      <PageBanner icon="📢" title="공지사항" subtitle="관리자가 작성한 공지사항을 확인하세요" />
+      <div className="bg-white rounded-2xl shadow-sm p-5">
+        {notices.length === 0 ? (
+          <p className="text-gray-500 text-center py-8">등록된 공지사항이 없습니다.</p>
+        ) : (
+          <div className="space-y-3">
+            {notices.map(notice => (
+              <AccordionCard
+                key={notice.id}
+                id={notice.id}
+                title={notice.title}
+                content={notice.content}
+                date={notice.date}
+                author={notice.author}
+                imageUrl={notice.imageUrl}
+                videoUrl={notice.videoUrl}
+                attachments={notice.attachments}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   )
 }
 

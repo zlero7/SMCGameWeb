@@ -20,6 +20,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { fetchMaterials, fetchMaterialCategories } from '../services/api'
+import PageBanner from '../components/PageBanner'
 
 /**
  * Materials - 자료실 페이지 컴포넌트
@@ -106,63 +107,57 @@ function Materials() {
   if (error) return <div className="text-red-500 p-4">오류: {error}</div>
 
   return (
-    <div className="bg-white rounded-xl p-5 shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
-      <h2 className="text-xl uppercase tracking-widest border-b-2 border-cyan-400 pb-2 mb-4">📚 자료실</h2>
-      
-      {/* 카테고리 필터 */}
-      {categories.length > 0 && (
-        <div className="mb-5">
-          <select 
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="w-full max-w-[300px] px-4 py-3 mb-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#4a90d9] focus:shadow-[0_0_0_3px_rgba(74,144,217,0.15)]"
-          >
-            <option value="">전체 카테고리</option>
-            {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
-        </div>
-      )}
+    <>
+      <PageBanner icon="📚" title="자료실" subtitle="학습 자료를 다운로드하세요" />
+      <div className="bg-white rounded-2xl shadow-sm p-5">
 
-      {/* 자료 목록 */}
-      {filteredMaterials.length === 0 ? (
-        <p>등록된 자료가 없습니다.</p>
-      ) : (
-        <div className="grid grid-cols-[2fr_1fr] gap-4">
-          {filteredMaterials.map(material => (
-            <div key={material.id} className="bg-white border border-gray-200 rounded-xl p-4 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] transition-all">
-              <div className="flex items-start gap-3">
-                <span className="text-3xl">
-                  {getFileIcon(material.fileType, material.fileName)}
-                </span>
-                <div className="flex-1">
-                  <h3 className="m-0 mb-2 text-base">{material.title}</h3>
-                  {material.description && (
-                    <p className="text-gray-500 text-sm m-0 mb-2">
-                      {material.description.slice(0, 100)}
-                      {material.description.length > 100 ? '...' : ''}
-                    </p>
-                  )}
-                  <div className="text-xs text-gray-500">
-                    <span>📂 {material.category}</span> • 
-                    <span> 📄 {material.fileName}</span> • 
-                    <span> 💾 {formatFileSize(material.fileSize)}</span> • 
-                    <span> ⬇️ {material.downloadCount || 0}회</span>
+        {/* 카테고리 필터 */}
+        {categories.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-5">
+            <button onClick={() => setSelectedCategory('')}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${!selectedCategory ? 'bg-cyan-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+              전체
+            </button>
+            {categories.map(cat => (
+              <button key={cat} onClick={() => setSelectedCategory(cat)}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${selectedCategory === cat ? 'bg-cyan-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+                {cat}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* 자료 목록 */}
+        {filteredMaterials.length === 0 ? (
+          <p className="text-gray-500 text-center py-8">등록된 자료가 없습니다.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {filteredMaterials.map(material => (
+              <div key={material.id} className="border border-gray-100 rounded-xl p-4 hover:shadow-md hover:-translate-y-0.5 transition-all">
+                <div className="flex items-start gap-3 mb-3">
+                  <span className="text-3xl shrink-0">{getFileIcon(material.fileType, material.fileName)}</span>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="m-0 mb-1 text-sm font-bold text-gray-800 truncate">{material.title}</h3>
+                    {material.description && (
+                      <p className="text-gray-500 text-xs m-0 mb-1 line-clamp-2">{material.description.slice(0, 80)}{material.description.length > 80 ? '...' : ''}</p>
+                    )}
+                    <div className="text-xs text-gray-400 flex flex-wrap gap-2 mt-1">
+                      <span>📂 {material.category}</span>
+                      <span>💾 {formatFileSize(material.fileSize)}</span>
+                      <span>⬇️ {material.downloadCount || 0}회</span>
+                    </div>
                   </div>
                 </div>
+                <button onClick={() => handleDownload(material)}
+                  className="w-full py-2 bg-cyan-500 text-white rounded-lg text-sm font-semibold hover:bg-cyan-400 transition-colors">
+                  ⬇️ 다운로드
+                </button>
               </div>
-              <button 
-                onClick={() => handleDownload(material)}
-                className="w-full mt-3 px-6 py-3 bg-[#4a90d9] text-white rounded-lg text-sm font-semibold hover:bg-[#3561b0] transition-colors"
-              >
-                ⬇️ 다운로드
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   )
 }
 

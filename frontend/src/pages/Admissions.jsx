@@ -19,6 +19,7 @@
 import React, { useEffect, useState } from 'react'
 import { fetchAdmissions } from '../services/api'
 import AccordionCard from '../components/AccordionCard'
+import PageBanner from '../components/PageBanner'
 
 /**
  * Admissions - 진학 정보 페이지 컴포넌트
@@ -40,31 +41,30 @@ function Admissions() {
   if (error) return <div className="text-red-500 p-4">오류: {error}</div>
 
   return (
-    <div className="bg-white rounded-xl p-5 shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
-      <div className="border-b-2 border-cyan-400 pb-2 mb-4">
-        <h2 className="text-xl uppercase tracking-widest">🎓 진학 정보</h2>
+    <>
+      <PageBanner icon="🎓" title="진학 정보" subtitle="대학 진학 정보와 입시 안내를 확인하세요" />
+      <div className="bg-white rounded-2xl shadow-sm p-5">
+        {admissions.length === 0 ? (
+          <p className="text-gray-500 text-center py-8">등록된 진학 정보가 없습니다.</p>
+        ) : (
+          <div className="space-y-3">
+            {admissions.map(admission => {
+              let content = admission.requirements || '요구사항 없음'
+              if (admission.deadline) content += `\n마감: ${new Date(admission.deadline).toLocaleDateString('ko-KR')}`
+              return (
+                <AccordionCard
+                  key={admission.id}
+                  title={admission.program}
+                  content={content}
+                  imageUrl={admission.imageUrl}
+                  author={admission.author}
+                />
+              )
+            })}
+          </div>
+        )}
       </div>
-      
-      {admissions.length === 0 ? (
-        <p>등록된 진학 정보가 없습니다.</p>
-      ) : (
-        <div className="space-y-3">
-          {admissions.map(admission => {
-            let content = admission.requirements || '요구사항 없음'
-            if (admission.deadline) content += `\n마감: ${new Date(admission.deadline).toLocaleDateString('ko-KR')}`
-            return (
-              <AccordionCard 
-                key={admission.id}
-                title={admission.program} 
-                content={content}
-                imageUrl={admission.imageUrl}
-                author={admission.author}
-              />
-            )
-          })}
-        </div>
-      )}
-    </div>
+    </>
   )
 }
 

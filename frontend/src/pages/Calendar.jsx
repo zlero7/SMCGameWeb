@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import PageBanner from '../components/PageBanner'
 
 function Calendar() {
   const [events, setEvents] = useState([])
@@ -114,17 +115,16 @@ function Calendar() {
   if (error) return <div className="text-red-500 p-4">오류: {error}</div>
 
   return (
-    <div className="bg-white rounded-xl p-5 shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
-      <div className="border-b-2 border-cyan-400 pb-2 mb-4">
-        <h2 className="text-xl uppercase tracking-widest">📅 학사일정</h2>
-      </div>
+    <>
+      <PageBanner icon="📅" title="학사 일정" subtitle="NEIS 연동 학교 행사 및 학사 일정을 확인하세요" />
+      <div className="bg-white rounded-2xl shadow-sm p-5">
 
       <div className="flex justify-between items-center mb-4">
-        <button onClick={prevMonth} className="p-2 hover:bg-gray-100 rounded">◀</button>
-        <h3 className="text-lg font-bold">
+        <button onClick={prevMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors font-bold text-gray-600">◀</button>
+        <h3 className="text-lg font-bold text-gray-800">
           {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월
         </h3>
-        <button onClick={nextMonth} className="p-2 hover:bg-gray-100 rounded">▶</button>
+        <button onClick={nextMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors font-bold text-gray-600">▶</button>
       </div>
 
       <div className="grid grid-cols-7 gap-1">
@@ -168,14 +168,15 @@ function Calendar() {
         })}
       </div>
 
-      <div className="flex gap-4 mt-4 text-sm flex-wrap">
+      <div className="flex gap-4 mt-4 text-sm flex-wrap text-gray-500">
         <span className="flex items-center gap-1"><span className="w-3 h-3 bg-blue-100 rounded"></span> 방학 (NEIS)</span>
         <span className="flex items-center gap-1"><span className="w-3 h-3 bg-red-100 rounded"></span> 시험 (NEIS)</span>
         <span className="flex items-center gap-1"><span className="w-3 h-3 bg-green-100 rounded"></span> 행사 (NEIS)</span>
         <span className="flex items-center gap-1"><span className="w-3 h-3 bg-purple-100 rounded"></span> 공휴일 (NEIS)</span>
         <span className="flex items-center gap-1"><span className="w-3 h-3 bg-orange-100 border-l-2 border-orange-400 rounded"></span> 추가 일정</span>
       </div>
-    </div>
+      </div>
+    </>
   )
 }
 

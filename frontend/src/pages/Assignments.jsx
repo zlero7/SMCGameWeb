@@ -23,6 +23,7 @@ import React, { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { fetchAssignments } from '../services/api'
 import AccordionCard from '../components/AccordionCard'
+import PageBanner from '../components/PageBanner'
 
 /**
  * Assignments - 과제 일정 페이지 컴포넌트
@@ -112,20 +113,19 @@ function Assignments() {
   if (error) return <div className="text-red-500 p-4">오류: {error}</div>
 
   return (
-    <div className="bg-white rounded-xl p-5 shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
-      {/* 헤더: 제목 + 글 작성 버튼 */}
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="text-xl uppercase tracking-widest border-b-2 border-cyan-400 pb-2 mb-0">📝 과제일정</h2>
-        <button onClick={() => {
-          if (!isLoggedIn) {
-            alert('로그인이 필요한 작업입니다.')
-            return
-          }
-          setShowForm(true)
-        }} className="px-6 py-3 bg-[#4a90d9] text-white rounded-lg text-sm font-semibold hover:bg-[#3561b0] transition-colors">
-          글 작성
-        </button>
-      </div>
+    <>
+      <PageBanner
+        icon="📝"
+        title="과제 일정"
+        subtitle="과제 마감일과 일정을 확인하세요"
+        right={
+          <button onClick={() => { if (!isLoggedIn) { alert('로그인이 필요한 작업입니다.'); return; } setShowForm(true) }}
+            className="px-4 py-2 bg-cyan-500 text-white rounded-lg text-sm font-semibold hover:bg-cyan-400 transition-colors">
+            글 작성
+          </button>
+        }
+      />
+      <div className="bg-white rounded-2xl shadow-sm p-5">
       
       {assignments.length === 0 ? (
         <p>등록된 과제가 없습니다.</p>
@@ -188,7 +188,8 @@ function Assignments() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }
 

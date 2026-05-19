@@ -19,6 +19,7 @@
 import React, { useEffect, useState } from 'react'
 import { fetchCareers } from '../services/api'
 import AccordionCard from '../components/AccordionCard'
+import PageBanner from '../components/PageBanner'
 
 /**
  * Careers - 취업 정보 페이지 컴포넌트
@@ -40,33 +41,32 @@ function Careers() {
   if (error) return <div className="text-red-500 p-4">오류: {error}</div>
 
   return (
-    <div className="bg-white rounded-xl p-5 shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
-      <div className="border-b-2 border-cyan-400 pb-2 mb-4">
-        <h2 className="text-xl uppercase tracking-widest">💼 취업 정보</h2>
+    <>
+      <PageBanner icon="💼" title="취업 정보" subtitle="채용 공고와 취업 정보를 확인하세요" />
+      <div className="bg-white rounded-2xl shadow-sm p-5">
+        {careers.length === 0 ? (
+          <p className="text-gray-500 text-center py-8">등록된 취업 정보가 없습니다.</p>
+        ) : (
+          <div className="space-y-3">
+            {careers.map(career => {
+              let content = career.description || ''
+              if (career.requirements) content += `\n\n요구사항: ${career.requirements}`
+              if (career.location && career.location.trim()) content += `\n위치: ${career.location}`
+              if (career.deadline) content += `\n마감: ${new Date(career.deadline).toLocaleDateString('ko-KR')}`
+              return (
+                <AccordionCard
+                  key={career.id}
+                  title={career.title}
+                  content={content}
+                  imageUrl={career.imageUrl}
+                  author={career.author}
+                />
+              )
+            })}
+          </div>
+        )}
       </div>
-      
-      {careers.length === 0 ? (
-        <p>등록된 취업 정보가 없습니다.</p>
-      ) : (
-        <div className="space-y-3">
-          {careers.map(career => {
-            let content = career.description || ''
-            if (career.requirements) content += `\n\n요구사항: ${career.requirements}`
-            if (career.location && career.location.trim()) content += `\n위치: ${career.location}`
-            if (career.deadline) content += `\n마감: ${new Date(career.deadline).toLocaleDateString('ko-KR')}`
-            return (
-              <AccordionCard 
-                key={career.id}
-                title={career.title} 
-                content={content}
-                imageUrl={career.imageUrl}
-                author={career.author}
-              />
-            )
-          })}
-        </div>
-      )}
-    </div>
+    </>
   )
 }
 
