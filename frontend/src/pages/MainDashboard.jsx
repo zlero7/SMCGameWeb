@@ -221,204 +221,199 @@ export default function MainDashboard() {
     }
   }
 
-  return (
-    <>
-      <div className="bg-white rounded-xl p-5 shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
-        <h2 className="text-xl uppercase tracking-widest border-b-2 border-cyan-400 pb-2 mb-4">홈</h2>
-        
-        {/* 섹션별 카드 그리드 (반응형) */}
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4">
-          
-          {/* 공지사항 */}
-          <div className="bg-white border border-gray-200 rounded-xl p-4 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] transition-all">
-            <h3 className="border-b-2 border-cyan-400 pb-2 mb-3 m-0 text-base">📢 공지사항</h3>
+      {/* ── 히어로 배너 ── */}
+      <div className="bg-gradient-to-r from-[#1c2438] to-[#1e3a5f] rounded-2xl overflow-hidden mb-5">
+        <div className="px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <p className="text-cyan-400 text-xs font-semibold tracking-widest uppercase mb-2">세명컴퓨터고등학교</p>
+            <h1 className="text-white text-2xl md:text-3xl font-bold mb-1 leading-tight">게임과 포털</h1>
+            <p className="text-gray-400 text-sm">공지·취업·진학·자료·일정 — 한 곳에서 확인하세요</p>
+          </div>
+          <div className="flex flex-wrap gap-2 shrink-0">
+            {[
+              { to: '/notices', label: '공지사항', icon: '📢' },
+              { to: '/careers', label: '취업 정보', icon: '💼' },
+              { to: '/admissions', label: '진학 정보', icon: '🎓' },
+              { to: '/materials', label: '자료실', icon: '📚' },
+              { to: '/awards', label: '수상·포트폴리오', icon: '🏆' },
+            ].map(({ to, label, icon }) => (
+              <Link key={to} to={to} className="no-underline px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg transition-colors">
+                {icon} {label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── 메인 2컬럼 ── */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-5 mb-5">
+
+        {/* ── 왼쪽: 공지사항 (넓게) ── */}
+        <div className="xl:col-span-2 bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between px-6 py-4 border-b-2 border-cyan-400">
+            <h2 className="text-base font-bold text-gray-800 m-0">📢 공지사항</h2>
+            <Link to="/notices" className="text-xs text-cyan-500 no-underline hover:underline font-medium">전체 보기 →</Link>
+          </div>
+          <div className="divide-y divide-gray-50">
             {notices.length === 0 ? (
-              <p className="text-gray-500 m-0 text-sm">등록된 공지사항이 없습니다.</p>
-            ) : (
-              <div className="space-y-1">
-                {notices.map(n => (
-                  <div key={n.id} className="py-1" onClick={() => handleItemClick(n, 'notice')}>
-                    <div className="border border-gray-200 rounded-lg overflow-hidden hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                      <div className="p-3 flex justify-between items-center">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-semibold">{n.title}</span>
-                          </div>
-                          <p className="text-gray-500 text-sm m-0">{(() => { const t = stripHtml(n.content); return t.slice(0, 60) + (t.length > 60 ? '...' : '') })()}</p>
-                        </div>
-                        <span className="text-gray-500 text-xs whitespace-nowrap">{new Date(n.date).toLocaleDateString('ko-KR')}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              <p className="text-gray-400 text-sm text-center py-10">등록된 공지사항이 없습니다.</p>
+            ) : notices.map(n => (
+              <div key={n.id} onClick={() => handleItemClick(n, 'notice')}
+                className="flex items-center gap-4 px-6 py-4 hover:bg-cyan-50 cursor-pointer transition-colors group">
+                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-cyan-600 transition-colors">{n.title}</p>
+                  <p className="text-xs text-gray-400 mt-0.5 truncate">{(() => { const t = stripHtml(n.content); return t.slice(0, 80) + (t.length > 80 ? '...' : '') })()}</p>
+                </div>
+                <span className="text-xs text-gray-400 shrink-0">{new Date(n.date).toLocaleDateString('ko-KR')}</span>
               </div>
-            )}
-            <Link to="/notices" className="block mt-3 text-cyan-400 no-underline">더보기 →</Link>
+            ))}
           </div>
+        </div>
 
-          {/* 취업 정보 */}
-          <div className="bg-white border border-gray-200 rounded-xl p-4 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] transition-all">
-            <h3 className="border-b-2 border-cyan-400 pb-2 mb-3 m-0 text-base">💼 취업 정보</h3>
-            {careers.length === 0 ? (
-              <p className="text-gray-500 m-0 text-sm">등록된 취업 정보가 없습니다.</p>
-            ) : (
-              <div className="space-y-1">
-                {careers.map(c => (
-                  <div key={c.id} className="py-1" onClick={() => handleItemClick(c, 'career')}>
-                    <div className="border border-gray-200 rounded-lg overflow-hidden hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                      <div className="p-3 flex justify-between items-center">
-                        <div className="flex-1">
-                          <span className="font-semibold">{c.title}</span>
-                          <p className="text-gray-500 text-sm m-0">{(() => { const t = stripHtml(c.description); return t.slice(0, 60) + (t.length > 60 ? '...' : '') })()}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-            <Link to="/careers" className="block mt-3 text-cyan-400 no-underline">더보기 →</Link>
-          </div>
-
-          {/* 진학 정보 */}
-          <div className="bg-white border border-gray-200 rounded-xl p-4 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] transition-all">
-            <h3 className="border-b-2 border-cyan-400 pb-2 mb-3 m-0 text-base">🎓 진학 정보</h3>
-            {admissions.length === 0 ? (
-              <p className="text-gray-500 m-0 text-sm">등록된 진학 정보가 없습니다.</p>
-            ) : (
-              <div className="space-y-1">
-                {admissions.map(a => (
-                  <div key={a.id} className="py-1" onClick={() => handleItemClick(a, 'admission')}>
-                    <div className="border border-gray-200 rounded-lg overflow-hidden hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                      <div className="p-3 flex justify-between items-center">
-                        <div className="flex-1">
-                          <span className="font-semibold">{a.program}</span>
-                          <p className="text-gray-500 text-sm m-0">{(() => { const t = stripHtml(a.requirements); return t.slice(0, 60) + (t.length > 60 ? '...' : '') })()}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-            <Link to="/admissions" className="block mt-3 text-cyan-400 no-underline">더보기 →</Link>
-          </div>
+        {/* ── 오른쪽 사이드: 학사일정 + 과제 ── */}
+        <div className="flex flex-col gap-5">
 
           {/* 학사 일정 */}
-          <div className="bg-white border border-gray-200 rounded-xl p-4 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] transition-all">
-            <h3 className="border-b-2 border-cyan-400 pb-2 mb-3 m-0 text-base">📅 학사 일정</h3>
-            {calendar.length === 0 ? (
-              <p className="text-gray-500 m-0 text-sm">등록된 일정이 없습니다.</p>
-            ) : (
-              <div className="space-y-1">
-                {calendar.map((c, idx) => (
-                  <div key={idx} className="py-1" onClick={() => handleItemClick(c, 'calendar')}>
-                    <div className="border border-gray-200 rounded-lg overflow-hidden hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                      <div className="p-3 flex justify-between items-center">
-                        <div className="flex-1">
-                          <span className="font-semibold">{c.title}</span>
-                          <p className="text-gray-500 text-sm m-0">{(() => { const t = stripHtml(c.description); return t.slice(0, 60) + (t.length > 60 ? '...' : '') })()}</p>
-                        </div>
-                        <span className="text-gray-500 text-xs whitespace-nowrap">
-                          {c.start ? `${c.start.substring(0,4)}/${c.start.substring(4,6)}/${c.start.substring(6,8)}` : ''}
-                        </span>
-                      </div>
-                    </div>
+          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-4 border-b-2 border-cyan-400">
+              <h2 className="text-base font-bold text-gray-800 m-0">📅 학사 일정</h2>
+              <Link to="/calendar" className="text-xs text-cyan-500 no-underline hover:underline font-medium">더보기 →</Link>
+            </div>
+            <div className="px-5 py-3 space-y-2">
+              {calendar.length === 0 ? (
+                <p className="text-gray-400 text-sm text-center py-4">예정된 일정이 없습니다.</p>
+              ) : calendar.map((c, idx) => (
+                <div key={idx} onClick={() => handleItemClick(c, 'calendar')}
+                  className="flex items-center gap-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg px-2 -mx-2 transition-colors">
+                  <div className="shrink-0 w-10 h-10 rounded-lg bg-cyan-50 flex flex-col items-center justify-center">
+                    <span className="text-[10px] text-cyan-500 font-bold leading-none">{c.start ? c.start.substring(4,6) : '--'}월</span>
+                    <span className="text-sm text-cyan-700 font-bold leading-none">{c.start ? c.start.substring(6,8) : '--'}</span>
                   </div>
-                ))}
-              </div>
-            )}
-            <Link to="/calendar" className="block mt-3 text-cyan-400 no-underline">더보기 →</Link>
+                  <p className="text-sm text-gray-700 font-medium truncate flex-1">{c.title}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* 과제 일정 */}
-          <div className="bg-white border border-gray-200 rounded-xl p-4 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] transition-all">
-            <h3 className="border-b-2 border-cyan-400 pb-2 mb-3 m-0 text-base">📝 과제 일정</h3>
-            {assignments.length === 0 ? (
-              <p className="text-gray-500 m-0 text-sm">등록된 과제가 없습니다.</p>
-            ) : (
-              <div className="space-y-1">
-                {assignments.map(a => (
-                  <div key={a.id} className="py-1" onClick={() => handleItemClick(a, 'assignment')}>
-                    <div className="border border-gray-200 rounded-lg overflow-hidden hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                      <div className="p-3 flex justify-between items-center">
-                        <div className="flex-1">
-                          <span className="font-semibold">[{a.courseId}] {a.title}</span>
-                          <p className="text-gray-500 text-sm m-0">{(() => { const t = stripHtml(a.description); return t.slice(0, 60) + (t.length > 60 ? '...' : '') })()}</p>
-                        </div>
-                        <span className="text-gray-500 text-xs whitespace-nowrap">{new Date(a.dueDate).toLocaleDateString('ko-KR')}</span>
-                      </div>
-                    </div>
+          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-4 border-b-2 border-cyan-400">
+              <h2 className="text-base font-bold text-gray-800 m-0">📝 과제 일정</h2>
+              <Link to="/assignments" className="text-xs text-cyan-500 no-underline hover:underline font-medium">더보기 →</Link>
+            </div>
+            <div className="px-5 py-3 space-y-2">
+              {assignments.length === 0 ? (
+                <p className="text-gray-400 text-sm text-center py-4">등록된 과제가 없습니다.</p>
+              ) : assignments.map(a => (
+                <div key={a.id} onClick={() => handleItemClick(a, 'assignment')}
+                  className="flex items-center gap-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg px-2 -mx-2 transition-colors">
+                  <span className="shrink-0 text-xs bg-orange-50 text-orange-600 font-bold px-2 py-1 rounded-md">{a.courseId}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-gray-700 font-medium truncate">{a.title}</p>
+                    <p className="text-xs text-gray-400">{new Date(a.dueDate).toLocaleDateString('ko-KR')} 마감</p>
                   </div>
-                ))}
-              </div>
-            )}
-            <Link to="/assignments" className="block mt-3 text-cyan-400 no-underline">더보기 →</Link>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* 실습실 점검 */}
-          <div className="bg-white border border-gray-200 rounded-xl p-4 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] transition-all">
-            <h3 className="border-b-2 border-cyan-400 pb-2 mb-3 m-0 text-base">🔧 실습실 점검</h3>
+        </div>
+      </div>
+
+      {/* ── 취업 / 진학 / 실습실 점검 ── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+
+        {/* 취업 정보 */}
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b-2 border-indigo-400">
+            <h2 className="text-base font-bold text-gray-800 m-0">💼 취업 정보</h2>
+            <Link to="/careers" className="text-xs text-indigo-500 no-underline hover:underline font-medium">더보기 →</Link>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {careers.length === 0 ? (
+              <p className="text-gray-400 text-sm text-center py-8">등록된 취업 정보가 없습니다.</p>
+            ) : careers.map(c => (
+              <div key={c.id} onClick={() => handleItemClick(c, 'career')}
+                className="flex items-center gap-3 px-5 py-3.5 hover:bg-indigo-50 cursor-pointer transition-colors group">
+                <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-indigo-600 transition-colors">{c.title}</p>
+                  <p className="text-xs text-gray-400 mt-0.5 truncate">{(() => { const t = stripHtml(c.description); return t.slice(0, 50) + (t.length > 50 ? '...' : '') })()}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 진학 정보 */}
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b-2 border-violet-400">
+            <h2 className="text-base font-bold text-gray-800 m-0">🎓 진학 정보</h2>
+            <Link to="/admissions" className="text-xs text-violet-500 no-underline hover:underline font-medium">더보기 →</Link>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {admissions.length === 0 ? (
+              <p className="text-gray-400 text-sm text-center py-8">등록된 진학 정보가 없습니다.</p>
+            ) : admissions.map(a => (
+              <div key={a.id} onClick={() => handleItemClick(a, 'admission')}
+                className="flex items-center gap-3 px-5 py-3.5 hover:bg-violet-50 cursor-pointer transition-colors group">
+                <div className="w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-violet-600 transition-colors">{a.program}</p>
+                  <p className="text-xs text-gray-400 mt-0.5 truncate">{(() => { const t = stripHtml(a.requirements); return t.slice(0, 50) + (t.length > 50 ? '...' : '') })()}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 실습실 점검 */}
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b-2 border-orange-400">
+            <h2 className="text-base font-bold text-gray-800 m-0">🔧 실습실 점검</h2>
+            <Link to="/lab-inspections" className="text-xs text-orange-500 no-underline hover:underline font-medium">더보기 →</Link>
+          </div>
+          <div className="divide-y divide-gray-50">
             {labInspections.length === 0 ? (
-              <p className="text-gray-500 m-0 text-sm">등록된 점검 사항이 없습니다.</p>
-            ) : (
-              <div className="space-y-1">
-                {labInspections.map(item => (
-                  <div key={item.id} className="py-1" onClick={() => handleItemClick(item, 'labInspection')}>
-                    <div className="border border-gray-200 rounded-lg overflow-hidden hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                      <div className="p-3 flex justify-between items-center">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-semibold">{item.title}</span>
-                            {item.status && (
-                              <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
-                                item.status === 'completed' ? 'bg-green-100 text-green-700' :
-                                item.status === 'planned' ? 'bg-orange-100 text-orange-700' :
-                                'bg-red-100 text-red-700'
-                              }`}>
-                                {item.status === 'completed' ? '완료' : item.status === 'planned' ? '예정' : '대기'}
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-gray-500 text-sm m-0">{(() => { const t = stripHtml(item.content); return t.slice(0, 60) + (t.length > 60 ? '...' : '') })()}</p>
-                        </div>
-                        <span className="text-gray-500 text-xs whitespace-nowrap">{new Date(item.createdAt).toLocaleDateString('ko-KR')}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              <p className="text-gray-400 text-sm text-center py-8">등록된 점검 사항이 없습니다.</p>
+            ) : labInspections.map(item => (
+              <div key={item.id} onClick={() => handleItemClick(item, 'labInspection')}
+                className="flex items-center gap-3 px-5 py-3.5 hover:bg-orange-50 cursor-pointer transition-colors">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-gray-800 truncate">{item.title}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">{item.author} · {new Date(item.createdAt).toLocaleDateString('ko-KR')}</p>
+                </div>
+                <span className={`text-xs px-2 py-0.5 rounded-full font-semibold shrink-0 ${
+                  item.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-600'
+                }`}>
+                  {item.status === 'completed' ? '완료' : '대기'}
+                </span>
               </div>
-            )}
-            <Link to="/lab-inspections" className="block mt-3 text-cyan-400 no-underline">더보기 →</Link>
+            ))}
           </div>
+        </div>
+      </div>
 
-          {/* 자료실 */}
-          <div className="bg-white border border-gray-200 rounded-xl p-4 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] transition-all">
-            <h3 className="border-b-2 border-cyan-400 pb-2 mb-3 m-0 text-base">📚 자료실</h3>
-            {materials.length === 0 ? (
-              <p className="text-gray-500 m-0 text-sm">등록된 자료가 없습니다.</p>
-            ) : (
-              <div className="space-y-1">
-                {materials.map(m => (
-                  <div key={m.id} className="py-1" onClick={() => handleItemClick(m, 'material')}>
-                    <div className="border border-gray-200 rounded-lg overflow-hidden hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                      <div className="p-3 flex justify-between items-center">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-semibold">{m.title}</span>
-                            {m.category && <span className="text-xs text-gray-400">[{m.category}]</span>}
-                          </div>
-                          <p className="text-gray-500 text-sm m-0">{(() => { const t = stripHtml(m.description); return t.slice(0, 60) + (t.length > 60 ? '...' : '') })()}</p>
-                        </div>
-                        <span className="text-gray-500 text-xs whitespace-nowrap">{m.downloadCount || 0}down</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+      {/* ── 자료실 띠 ── */}
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-5">
+        <div className="flex items-center justify-between px-6 py-4 border-b-2 border-emerald-400">
+          <h2 className="text-base font-bold text-gray-800 m-0">📚 자료실</h2>
+          <Link to="/materials" className="text-xs text-emerald-600 no-underline hover:underline font-medium">전체 보기 →</Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+          {materials.length === 0 ? (
+            <p className="text-gray-400 text-sm text-center py-8 col-span-3">등록된 자료가 없습니다.</p>
+          ) : materials.map(m => (
+            <div key={m.id} onClick={() => handleItemClick(m, 'material')}
+              className="flex items-center gap-4 px-6 py-4 hover:bg-emerald-50 cursor-pointer transition-colors group">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0 text-xl group-hover:scale-110 transition-transform">📄</div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-emerald-700 transition-colors">{m.title}</p>
+                <p className="text-xs text-gray-400 mt-0.5">{m.category || '일반'} · {m.downloadCount || 0}회 다운로드</p>
               </div>
-            )}
-            <Link to="/materials" className="block mt-3 text-cyan-400 no-underline">더보기 →</Link>
-          </div>
+            </div>
+          ))}
         </div>
       </div>
 
