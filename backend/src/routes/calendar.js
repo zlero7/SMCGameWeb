@@ -142,40 +142,107 @@ export async function getNeisEvents(req, res) {
   }
 }
 
-// GET /api/calendar/ics - Export as ICS format
+// GET /api/calendar/ics/export - Export as ICS format (DB + NEIS)
 export async function exportCalendarICS(req, res) {
   try {
-    const events = await prisma.calendarEvent.findMany({
-      orderBy: { start: 'asc' }
-    })
+    const { fromYmd, toYmd } = req.query
 
-    const formatDate = (date) => {
-      return new Date(date).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
+    // DB 이벤트 조회
+    let where = {}
+    if (fromYmd && toYmd) {
+      const y1 = parseInt(fromYmd.substring(0,4)), m1 = parseInt(fromYmd.substring(4,6))-1, d1 = parseInt(fromYmd.substring(6,8))
+      const y2 = parseInt(toYmd.substring(0,4)), m2 = parseInt(toYmd.substring(4,6))-1, d2 = parseInt(toYmd.substring(6,8))
+      where.start = { gte: new Date(y1, m1, d1) }
+      where.end = { lte: new Date(y2, m2, d2, 23, 59, 59) }
+    }
+    const dbEvents = await prisma.calendarEvent.findMany({ where, orderBy: { start: 'asc' } })
+
+    // NEIS 이벤트 조회
+    let neisEvents = []
+    if (fromYmd && toYmd) {
+      try {
+        neisEvents = await getNeisCalendar(fromYmd, toYmd)
+      } catch {}
     }
 
-    const icsContent = [
+    // ICS 특수문자 이스케이프
+    const esc = (s) => (s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n')
+
+    // ICS 줄 폴딩 (75바이트 제한)
+    const fold = (line) => {
+      const bytes = Buffer.from(line, 'utf8')
+      if (bytes.length <= 75) return line
+      let result = '', offset = 0
+      while (offset < bytes.length) {
+        const chunk = bytes.slice(offset, offset + (offset === 0 ? 75 : 74)).toString('utf8')
+        result += (offset === 0 ? '' : '\r\n ') + chunk
+        offset += Buffer.from(chunk, 'utf8').length
+      }
+      return result
+    }
+
+    // YYYYMMDD 다음 날 계산 (전일 이벤트 DTEND는 exclusive)
+    const nextDay = (ymd8) => {
+      const d = new Date(
+        parseInt(ymd8.substring(0,4)),
+        parseInt(ymd8.substring(4,6)) - 1,
+        parseInt(ymd8.substring(6,8)) + 1
+      )
+      return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`
+    }
+
+    const formatDt = (date) => new Date(date).toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z'
+
+    const vevents = []
+
+    // DB 이벤트 (Date 객체)
+    dbEvents.forEach(ev => {
+      vevents.push([
+        'BEGIN:VEVENT',
+        fold(`SUMMARY:${esc(ev.title)}`),
+        fold(`DTSTART:${formatDt(ev.start)}`),
+        fold(`DTEND:${formatDt(ev.end)}`),
+        ev.description ? fold(`DESCRIPTION:${esc(ev.description)}`) : null,
+        fold(`CATEGORIES:${esc(ev.type || 'general')}`),
+        `UID:db-${ev.id}@smc-gameweb`,
+        'END:VEVENT'
+      ].filter(Boolean).join('\r\n'))
+    })
+
+    // NEIS 이벤트 (YYYYMMDD 전일 이벤트)
+    neisEvents.forEach((ev, i) => {
+      const start = ev.start || ''
+      const end = ev.end || ev.start || ''
+      if (!start) return
+      vevents.push([
+        'BEGIN:VEVENT',
+        fold(`SUMMARY:${esc(ev.title)}`),
+        `DTSTART;VALUE=DATE:${start}`,
+        `DTEND;VALUE=DATE:${nextDay(end)}`,
+        ev.description ? fold(`DESCRIPTION:${esc(ev.description)}`) : null,
+        fold(`CATEGORIES:${esc(ev.type || 'general')}`),
+        `UID:neis-${start}-${i}@smc-gameweb`,
+        'END:VEVENT'
+      ].filter(Boolean).join('\r\n'))
+    })
+
+    const ics = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//GameWeb//Department Site//KO',
+      'PRODID:-//SMC GameWeb//School Calendar//KO',
       'CALSCALE:GREGORIAN',
       'METHOD:PUBLISH',
-      ...events.map(event => [
-        'BEGIN:VEVENT',
-        `DTSTART:${formatDate(event.start)}`,
-        `DTEND:${formatDate(event.end)}`,
-        `SUMMARY:${event.title}`,
-        event.description ? `DESCRIPTION:${event.description}` : '',
-        `CATEGORIES:${event.type}`,
-        `UID:${event.id}@gameweb`,
-        'END:VEVENT'
-      ].join('\n')),
+      'X-WR-CALNAME:세명컴고 게임과 학사일정',
+      'X-WR-TIMEZONE:Asia/Seoul',
+      ...vevents,
       'END:VCALENDAR'
-    ].join('\n')
+    ].join('\r\n')
 
     res.setHeader('Content-Type', 'text/calendar; charset=utf-8')
-    res.setHeader('Content-Disposition', 'attachment; filename="gameweb-calendar.ics"')
-    res.send(icsContent)
+    res.setHeader('Content-Disposition', 'attachment; filename="smc-gameweb-calendar.ics"')
+    res.send(ics)
   } catch (error) {
+    console.error('ICS export error:', error)
     res.status(500).json({ error: 'Failed to export calendar' })
   }
 }
