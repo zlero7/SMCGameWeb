@@ -2,41 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 
-/* ── 미니 바차트 (CSS only) ── */
-const BarChart = ({ data, color = 'bg-indigo-400' }) => {
-  const max = Math.max(...data, 1)
-  return (
-    <div className="flex items-end gap-1 h-16 w-full">
-      {data.map((v, i) => (
-        <div key={i} className="flex-1 flex flex-col justify-end">
-          <div
-            className={`${color} rounded-t opacity-80 hover:opacity-100 transition-opacity`}
-            style={{ height: `${Math.max(4, (v / max) * 100)}%` }}
-            title={v}
-          />
-        </div>
-      ))}
-    </div>
-  )
-}
-
-/* ── 미니 스파크라인 (SVG) ── */
-const Sparkline = ({ data, color = '#6366f1' }) => {
-  const max = Math.max(...data, 1)
-  const min = Math.min(...data, 0)
-  const w = 80, h = 32
-  const pts = data.map((v, i) => {
-    const x = (i / (data.length - 1)) * w
-    const y = h - ((v - min) / (max - min || 1)) * h
-    return `${x},${y}`
-  }).join(' ')
-  return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="overflow-visible">
-      <polyline points={pts} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
-
 /* ── 통계 카드 ── */
 const StatCard = ({ label, value, trend, trendUp, color, bg, icon, to }) => (
   <Link to={to} className="no-underline">
@@ -77,6 +42,7 @@ export default function Dashboard() {
   const [recentNotices, setRecentNotices] = useState([])
   const [recentMaterials, setRecentMaterials] = useState([])
   const [recentAwards, setRecentAwards] = useState([])
+  const [recentLabInspections, setRecentLabInspections] = useState([])
 
   useEffect(() => {
     const load = async () => {
@@ -88,8 +54,9 @@ export default function Dashboard() {
           api('/api/users'),
           api('/api/careers'),
           api('/api/admissions'),
+          api('/api/lab-inspections'),
         ])
-        const [notices, materials, awards, users, careers, admissions] = results
+        const [notices, materials, awards, users, careers, admissions, labInspections] = results
 
         const count = (r) => {
           if (r.status !== 'fulfilled') return null
@@ -118,15 +85,16 @@ export default function Dashboard() {
           const list = awards.value?.data || awards.value || []
           setRecentAwards(list.slice(0, 5))
         }
+        if (labInspections.status === 'fulfilled') {
+          const list = labInspections.value?.data || labInspections.value || []
+          setRecentLabInspections(list.slice(0, 8))
+        }
       } catch {}
     }
     load()
   }, [])
 
   const today = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })
-  const monthLabels = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
-  const dummyBar = [12, 19, 8, 25, 14, 22, 17, 28, 20, 15, 24, 30]
-  const dummyLine = [5, 12, 8, 18, 14, 22, 16, 25, 19, 28, 22, 30]
 
   const menuCards = [
     { to: '/admin/notices', label: '공지사항', desc: '작성 · 수정 · 삭제', bg: 'bg-blue-50', color: 'text-blue-500', icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" /></svg> },
@@ -184,56 +152,30 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* ── 차트 영역 ── */}
-      <div className="grid grid-cols-1 xl:grid-cols-5 gap-4">
-        {/* 막대 차트 */}
-        <div className="xl:col-span-3 bg-white rounded-xl shadow-sm p-5">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <p className="text-xs text-gray-400 mb-0.5">월별 콘텐츠 현황</p>
-              <h3 className="font-bold text-gray-800">콘텐츠 통계</h3>
-            </div>
-            <div className="flex gap-3 text-xs text-gray-400">
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-indigo-400 inline-block"/>공지</span>
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-cyan-400 inline-block"/>자료</span>
-            </div>
+      {/* ── 실습실 점검 목록 ── */}
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+          <div>
+            <p className="text-xs text-gray-400 mb-0.5">최근 접수 현황</p>
+            <h3 className="font-bold text-gray-800 text-sm">실습실 점검 목록</h3>
           </div>
-          <BarChart data={dummyBar} color="bg-indigo-300" />
-          <div className="flex justify-between mt-2">
-            {monthLabels.map(m => (
-              <span key={m} className="text-[9px] text-gray-300 flex-1 text-center">{m}</span>
-            ))}
-          </div>
+          <Link to="/admin/lab-inspections" className="text-xs text-cyan-500 no-underline hover:underline">전체 보기</Link>
         </div>
-
-        {/* 콘텐츠 요약 */}
-        <div className="xl:col-span-2 bg-white rounded-xl shadow-sm p-5">
-          <div className="mb-4">
-            <p className="text-xs text-gray-400 mb-0.5">콘텐츠 비교</p>
-            <h3 className="font-bold text-gray-800">카테고리별 현황</h3>
-          </div>
-          <div className="space-y-4">
-            {[
-              { label: '공지사항', val: stats.notices, max: 50, color: 'bg-blue-400' },
-              { label: '취업 정보', val: stats.careers, max: 30, color: 'bg-indigo-400' },
-              { label: '자료실', val: stats.materials, max: 40, color: 'bg-emerald-400' },
-              { label: '수상 내역', val: stats.awards, max: 20, color: 'bg-amber-400' },
-              { label: '사용자', val: stats.users, max: 100, color: 'bg-rose-400' },
-            ].map(({ label, val, max, color }) => (
-              <div key={label}>
-                <div className="flex justify-between text-xs text-gray-500 mb-1">
-                  <span>{label}</span>
-                  <span className="font-semibold text-gray-700">{val ?? '--'}</span>
+        <div className="px-5 py-1">
+          {recentLabInspections.length === 0
+            ? <p className="text-sm text-gray-400 text-center py-8">접수된 점검 요청이 없습니다</p>
+            : recentLabInspections.map((item, i) => (
+              <div key={item.id ?? i} className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
+                <div className="flex-1 min-w-0 pr-3">
+                  <p className="text-sm font-medium text-gray-800 truncate">{item.title}</p>
+                  <p className="text-xs text-gray-400">{item.author} · {item.createdAt ? new Date(item.createdAt).toLocaleDateString('ko-KR') : ''}</p>
                 </div>
-                <div className="w-full bg-gray-100 rounded-full h-1.5">
-                  <div
-                    className={`${color} h-1.5 rounded-full transition-all duration-700`}
-                    style={{ width: val != null ? `${Math.min(100, (val / max) * 100)}%` : '0%' }}
-                  />
-                </div>
+                <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${item.status === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-orange-50 text-orange-500'}`}>
+                  {item.status === 'completed' ? '처리완료' : '대기중'}
+                </span>
               </div>
-            ))}
-          </div>
+            ))
+          }
         </div>
       </div>
 
