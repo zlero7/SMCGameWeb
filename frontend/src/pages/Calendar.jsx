@@ -124,21 +124,7 @@ function Calendar() {
         <h3 className="text-lg font-bold text-gray-800">
           {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월
         </h3>
-        <div className="flex items-center gap-2">
-          <a
-            href={(() => {
-              const y = currentDate.getFullYear()
-              const m = (currentDate.getMonth() + 1).toString().padStart(2, '0')
-              return `/api/calendar/ics/export?fromYmd=${y}${m}01&toYmd=${y}${m}31`
-            })()}
-            download="smc-gameweb-calendar.ics"
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-white text-xs font-semibold rounded-lg transition-colors no-underline"
-            title="이 달 일정을 캘린더 앱으로 내보내기"
-          >
-            📅 ICS 내보내기
-          </a>
-          <button onClick={nextMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors font-bold text-gray-600">▶</button>
-        </div>
+        <button onClick={nextMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors font-bold text-gray-600">▶</button>
       </div>
 
       <div className="grid grid-cols-7 border-l border-t border-gray-100 rounded-lg overflow-hidden">
