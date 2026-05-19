@@ -130,6 +130,90 @@ body.dark .shadow-lg {
   box-shadow: 0 8px 20px rgba(0,0,0,.3) !important;
 }
 
+/* ── 헤더 다크 모드 ── */
+body.dark .site-header {
+  background-color: #1c2438 !important;
+  border-bottom-color: #2d3a5a !important;
+}
+body.dark .site-header h1 { color: #e2e8f0 !important; }
+body.dark .nav-link       { color: #cbd5e1 !important; }
+body.dark .nav-link:hover { color: #22d3ee !important; border-bottom-color: #22d3ee !important; }
+body.dark .nav-link-active { color: #22d3ee !important; border-bottom-color: #22d3ee !important; }
+body.dark .border-l { border-color: #2d3a5a !important; }
+
+/* ── 색상 계열 배경 (다크) ── */
+body.dark .bg-cyan-50    { background-color: #0d2535 !important; }
+body.dark .bg-indigo-50  { background-color: #181830 !important; }
+body.dark .bg-violet-50  { background-color: #1a1530 !important; }
+body.dark .bg-orange-50  { background-color: #2a1a0a !important; }
+body.dark .bg-emerald-50 { background-color: #0a2018 !important; }
+body.dark .bg-amber-50   { background-color: #281e08 !important; }
+body.dark .bg-blue-50    { background-color: #0d1a30 !important; }
+body.dark .bg-rose-50    { background-color: #2a0d18 !important; }
+body.dark .bg-teal-50    { background-color: #082a28 !important; }
+body.dark .bg-green-50   { background-color: #0a2410 !important; }
+body.dark .bg-green-100  { background-color: #0d2e12 !important; }
+body.dark .bg-orange-100 { background-color: #2e1a08 !important; }
+body.dark .bg-red-100    { background-color: #2e0d0d !important; }
+body.dark .bg-blue-100   { background-color: #0d1c36 !important; }
+body.dark .bg-amber-100  { background-color: #2e240a !important; }
+
+/* ── 색상 계열 호버 배경 (다크) ── */
+body.dark .hover\:bg-cyan-50:hover    { background-color: #112d40 !important; }
+body.dark .hover\:bg-indigo-50:hover  { background-color: #1c1c38 !important; }
+body.dark .hover\:bg-violet-50:hover  { background-color: #1e1838 !important; }
+body.dark .hover\:bg-orange-50:hover  { background-color: #30200e !important; }
+body.dark .hover\:bg-emerald-50:hover { background-color: #0e2820 !important; }
+body.dark .hover\:bg-blue-50:hover    { background-color: #0f2038 !important; }
+
+/* ── 색상 계열 텍스트 (다크) ── */
+body.dark .text-cyan-400   { color: #22d3ee !important; }
+body.dark .text-cyan-500   { color: #22d3ee !important; }
+body.dark .text-cyan-600   { color: #06b6d4 !important; }
+body.dark .text-cyan-700   { color: #22d3ee !important; }
+body.dark .text-indigo-500 { color: #818cf8 !important; }
+body.dark .text-indigo-600 { color: #818cf8 !important; }
+body.dark .text-violet-500 { color: #a78bfa !important; }
+body.dark .text-violet-600 { color: #a78bfa !important; }
+body.dark .text-orange-500 { color: #fb923c !important; }
+body.dark .text-orange-600 { color: #fb923c !important; }
+body.dark .text-orange-700 { color: #fb923c !important; }
+body.dark .text-emerald-500 { color: #34d399 !important; }
+body.dark .text-emerald-600 { color: #34d399 !important; }
+body.dark .text-emerald-700 { color: #34d399 !important; }
+body.dark .text-amber-500  { color: #fbbf24 !important; }
+body.dark .text-amber-600  { color: #fbbf24 !important; }
+body.dark .text-green-700  { color: #4ade80 !important; }
+body.dark .text-blue-500   { color: #60a5fa !important; }
+body.dark .text-rose-500   { color: #fb7185 !important; }
+body.dark .text-teal-500   { color: #2dd4bf !important; }
+body.dark .text-red-600    { color: #f87171 !important; }
+
+/* ── hover 텍스트 (다크) ── */
+body.dark .hover\:text-cyan-500:hover   { color: #22d3ee !important; }
+body.dark .hover\:text-cyan-600:hover   { color: #22d3ee !important; }
+body.dark .hover\:text-indigo-600:hover { color: #818cf8 !important; }
+body.dark .hover\:text-violet-600:hover { color: #a78bfa !important; }
+body.dark .hover\:text-emerald-700:hover { color: #34d399 !important; }
+body.dark .hover\:text-gray-600:hover   { color: #e2e8f0 !important; }
+
+/* ── 구분선 (다크) ── */
+body.dark .border-gray-50  { border-color: #2d3748 !important; }
+body.dark .border-gray-100 { border-color: #2d3748 !important; }
+body.dark .divide-gray-50  > :not([hidden]) ~ :not([hidden]) { border-color: #2d3748 !important; }
+body.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]) { border-color: #2d3748 !important; }
+body.dark .divide-x > :not([hidden]) ~ :not([hidden]) { border-color: #2d3748 !important; }
+
+/* ── 로그인 버튼 (항상 선명하게) ── */
+body.dark a.bg-cyan-500 { color: #fff !important; }
+
+/* ── 리치 텍스트 다크 ── */
+body.dark .rich-content            { color: #d1d5db; }
+body.dark .rich-content blockquote { background: #252535 !important; border-color: #4b5563 !important; color: #9ca3af !important; }
+body.dark .rich-content th         { background: #252535 !important; }
+body.dark .rich-content td, body.dark .rich-content th { border-color: #374151 !important; }
+body.dark .rich-content code       { background: #252535 !important; border-color: #374151 !important; color: #f472b6 !important; }
+
 /* ── 리치 텍스트 콘텐츠 렌더링 (AccordionCard 상세 모달) ── */
 .rich-content {
   font-size: 1rem;

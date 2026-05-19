@@ -108,19 +108,19 @@ function UserMenu() {
 function PublicLayout() {
   const navLinkClass = ({ isActive }) =>
     isActive
-      ? 'text-gray-800 font-bold no-underline text-sm border-b-2 border-gray-400 pb-1'
-      : 'no-underline text-gray-800 font-semibold text-sm hover:text-gray-600 hover:border-b-2 hover:border-gray-300 pb-1 transition-all duration-200'
+      ? 'nav-link-active text-gray-800 font-bold no-underline text-sm border-b-2 border-cyan-400 pb-1'
+      : 'nav-link no-underline text-gray-800 font-semibold text-sm hover:text-cyan-500 hover:border-b-2 hover:border-cyan-300 pb-1 transition-all duration-200'
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-50 flex items-center justify-between px-5 py-3.5 border-b border-gray-200 bg-white">
-        <div className="flex items-center gap-3">
-          <img src="/logo.svg" alt="로고" className="h-10 mr-3 align-middle" />
+      <header className="site-header sticky top-0 z-50 flex items-center px-5 py-3 border-b border-gray-200 bg-white">
+        <div className="flex items-center gap-2 shrink-0">
+          <img src="/logo.svg" alt="로고" className="h-9 align-middle" />
           <Link to="/" className="no-underline text-inherit">
-            <h1 className="text-sm uppercase tracking-widest m-0 text-gray-800">세명컴고 게임과 포털</h1>
+            <h1 className="text-xs uppercase tracking-widest m-0 text-gray-800 font-bold">세명컴고 게임과 포털</h1>
           </Link>
         </div>
-        <nav className="flex gap-4.5 items-center" aria-label="메인 네비게이션">
+        <nav className="flex-1 flex justify-center gap-5 items-center" aria-label="메인 네비게이션">
           <NavLink to="/" className={navLinkClass}>홈</NavLink>
           <NavLink to="/notices" className={navLinkClass}>공지사항</NavLink>
           <NavLink to="/careers" className={navLinkClass}>취업</NavLink>
@@ -131,7 +131,7 @@ function PublicLayout() {
           <NavLink to="/materials" className={navLinkClass}>자료실</NavLink>
           <NavLink to="/awards" className={navLinkClass}>수상/포트폴리오</NavLink>
         </nav>
-        <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray-300">
+        <div className="flex items-center gap-3 shrink-0 pl-4 border-l border-gray-300">
           <UserMenu />
         </div>
       </header>
