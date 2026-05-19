@@ -221,6 +221,8 @@ export default function MainDashboard() {
     }
   }
 
+  return (
+    <>
       {/* ── 히어로 배너 ── */}
       <div className="bg-gradient-to-r from-[#1c2438] to-[#1e3a5f] rounded-2xl overflow-hidden mb-5">
         <div className="px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
