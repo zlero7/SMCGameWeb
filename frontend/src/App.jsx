@@ -63,6 +63,11 @@ function UserMenu() {
                 <button onClick={() => setShowFontModal(true)} className="w-full px-4 py-2 text-left rounded-lg hover:bg-gray-100 flex items-center justify-between">
                   <span>글꼴 설정</span><span>🔤</span>
                 </button>
+                {(user?.role === 'admin' || user?.role === 'teacher') && (
+                  <button onClick={() => { setShowSettings(false); navigate('/admin') }} className="w-full px-4 py-2 text-left rounded-lg hover:bg-blue-50 text-blue-600 flex items-center justify-between">
+                    <span>관리자 페이지로 이동</span><span>🛠️</span>
+                  </button>
+                )}
                 <button onClick={() => { setShowSettings(false); handleLogout() }} className="w-full px-4 py-2 text-left rounded-lg hover:bg-gray-100 text-red-600">로그아웃</button>
               </div>
             </div>
