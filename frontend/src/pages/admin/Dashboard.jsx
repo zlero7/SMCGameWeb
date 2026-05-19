@@ -152,100 +152,105 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* ── 실습실 점검 목록 ── */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
-          <div>
-            <p className="text-xs text-gray-400 mb-0.5">최근 접수 현황</p>
-            <h3 className="font-bold text-gray-800 text-sm">실습실 점검 목록</h3>
+      {/* ── 실습실 점검 + 최근 콘텐츠 좌우 배치 ── */}
+      <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 items-start">
+
+        {/* 왼쪽: 실습실 점검 목록 */}
+        <div className="xl:col-span-3 bg-white rounded-xl shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+            <div>
+              <p className="text-xs text-gray-400 mb-0.5">최근 접수 현황</p>
+              <h3 className="font-bold text-gray-800 text-sm">실습실 점검 목록</h3>
+            </div>
+            <Link to="/admin/lab-inspections" className="text-xs text-cyan-500 no-underline hover:underline">전체 보기</Link>
           </div>
-          <Link to="/admin/lab-inspections" className="text-xs text-cyan-500 no-underline hover:underline">전체 보기</Link>
-        </div>
-        <div className="px-5 py-1">
-          {recentLabInspections.length === 0
-            ? <p className="text-sm text-gray-400 text-center py-8">접수된 점검 요청이 없습니다</p>
-            : recentLabInspections.map((item, i) => (
-              <div key={item.id ?? i} className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
-                <div className="flex-1 min-w-0 pr-3">
-                  <p className="text-sm font-medium text-gray-800 truncate">{item.title}</p>
-                  <p className="text-xs text-gray-400">{item.author} · {item.createdAt ? new Date(item.createdAt).toLocaleDateString('ko-KR') : ''}</p>
+          <div className="px-5 py-1">
+            {recentLabInspections.length === 0
+              ? <p className="text-sm text-gray-400 text-center py-8">접수된 점검 요청이 없습니다</p>
+              : recentLabInspections.map((item, i) => (
+                <div key={item.id ?? i} className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
+                  <div className="flex-1 min-w-0 pr-3">
+                    <p className="text-sm font-medium text-gray-800 truncate">{item.title}</p>
+                    <p className="text-xs text-gray-400">{item.author} · {item.createdAt ? new Date(item.createdAt).toLocaleDateString('ko-KR') : ''}</p>
+                  </div>
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${item.status === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-orange-50 text-orange-500'}`}>
+                    {item.status === 'completed' ? '처리완료' : '대기중'}
+                  </span>
                 </div>
-                <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${item.status === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-orange-50 text-orange-500'}`}>
-                  {item.status === 'completed' ? '처리완료' : '대기중'}
-                </span>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-
-      {/* ── 최근 콘텐츠 3열 ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-
-        {/* 최근 공지사항 */}
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
-            <h2 className="font-bold text-gray-800 text-sm">최근 공지사항</h2>
-            <Link to="/admin/notices" className="text-xs text-cyan-500 no-underline hover:underline">전체 보기</Link>
-          </div>
-          <div className="px-5 py-1">
-            {recentNotices.length === 0
-              ? <p className="text-sm text-gray-400 text-center py-6">등록된 공지가 없습니다</p>
-              : recentNotices.map((n, i) => (
-                <TableRow
-                  key={n.id ?? i}
-                  left={n.title}
-                  mid={n.createdAt ? new Date(n.createdAt).toLocaleDateString('ko-KR') : ''}
-                  badge="공지"
-                  badgeColor="bg-blue-50 text-blue-500"
-                />
               ))
             }
           </div>
         </div>
 
-        {/* 최근 자료 */}
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
-            <h2 className="font-bold text-gray-800 text-sm">최근 자료실</h2>
-            <Link to="/admin/materials" className="text-xs text-cyan-500 no-underline hover:underline">전체 보기</Link>
-          </div>
-          <div className="px-5 py-1">
-            {recentMaterials.length === 0
-              ? <p className="text-sm text-gray-400 text-center py-6">등록된 자료가 없습니다</p>
-              : recentMaterials.map((m, i) => (
-                <TableRow
-                  key={m.id ?? i}
-                  left={m.title}
-                  mid={m.category}
-                  badge={m.fileSize ? `${(m.fileSize / 1024).toFixed(0)}KB` : '파일'}
-                  badgeColor="bg-emerald-50 text-emerald-600"
-                />
-              ))
-            }
-          </div>
-        </div>
+        {/* 오른쪽: 최근 공지·자료·수상 세로 스택 */}
+        <div className="xl:col-span-2 flex flex-col gap-4">
 
-        {/* 최근 수상 */}
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
-            <h2 className="font-bold text-gray-800 text-sm">수상/포트폴리오</h2>
-            <Link to="/admin/awards" className="text-xs text-cyan-500 no-underline hover:underline">전체 보기</Link>
+          {/* 최근 공지사항 */}
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+              <h2 className="font-bold text-gray-800 text-sm">최근 공지사항</h2>
+              <Link to="/admin/notices" className="text-xs text-cyan-500 no-underline hover:underline">전체 보기</Link>
+            </div>
+            <div className="px-5 py-1">
+              {recentNotices.length === 0
+                ? <p className="text-sm text-gray-400 text-center py-4">등록된 공지가 없습니다</p>
+                : recentNotices.slice(0, 4).map((n, i) => (
+                  <TableRow
+                    key={n.id ?? i}
+                    left={n.title}
+                    mid={n.createdAt ? new Date(n.createdAt).toLocaleDateString('ko-KR') : ''}
+                    badge="공지"
+                    badgeColor="bg-blue-50 text-blue-500"
+                  />
+                ))
+              }
+            </div>
           </div>
-          <div className="px-5 py-1">
-            {recentAwards.length === 0
-              ? <p className="text-sm text-gray-400 text-center py-6">등록된 수상 내역이 없습니다</p>
-              : recentAwards.map((a, i) => (
-                <TableRow
-                  key={a.id ?? i}
-                  left={a.title}
-                  mid={a.author}
-                  badge="수상"
-                  badgeColor="bg-amber-50 text-amber-600"
-                />
-              ))
-            }
+
+          {/* 최근 자료실 */}
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+              <h2 className="font-bold text-gray-800 text-sm">최근 자료실</h2>
+              <Link to="/admin/materials" className="text-xs text-cyan-500 no-underline hover:underline">전체 보기</Link>
+            </div>
+            <div className="px-5 py-1">
+              {recentMaterials.length === 0
+                ? <p className="text-sm text-gray-400 text-center py-4">등록된 자료가 없습니다</p>
+                : recentMaterials.slice(0, 3).map((m, i) => (
+                  <TableRow
+                    key={m.id ?? i}
+                    left={m.title}
+                    mid={m.category}
+                    badge={m.fileSize ? `${(m.fileSize / 1024).toFixed(0)}KB` : '파일'}
+                    badgeColor="bg-emerald-50 text-emerald-600"
+                  />
+                ))
+              }
+            </div>
           </div>
+
+          {/* 수상/포트폴리오 */}
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+              <h2 className="font-bold text-gray-800 text-sm">수상/포트폴리오</h2>
+              <Link to="/admin/awards" className="text-xs text-cyan-500 no-underline hover:underline">전체 보기</Link>
+            </div>
+            <div className="px-5 py-1">
+              {recentAwards.length === 0
+                ? <p className="text-sm text-gray-400 text-center py-4">등록된 수상 내역이 없습니다</p>
+                : recentAwards.slice(0, 3).map((a, i) => (
+                  <TableRow
+                    key={a.id ?? i}
+                    left={a.title}
+                    mid={a.author}
+                    badge="수상"
+                    badgeColor="bg-amber-50 text-amber-600"
+                  />
+                ))
+              }
+            </div>
+          </div>
+
         </div>
       </div>
 
