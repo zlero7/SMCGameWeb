@@ -156,15 +156,15 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 items-start">
 
         {/* 왼쪽: 실습실 점검 목록 */}
-        <div className="xl:col-span-3 bg-white rounded-xl shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+        <div className="xl:col-span-3 bg-white rounded-xl shadow-sm overflow-hidden flex flex-col self-stretch">
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 shrink-0">
             <div>
               <p className="text-xs text-gray-400 mb-0.5">최근 접수 현황</p>
               <h3 className="font-bold text-gray-800 text-sm">실습실 점검 목록</h3>
             </div>
             <Link to="/admin/lab-inspections" className="text-xs text-cyan-500 no-underline hover:underline">전체 보기</Link>
           </div>
-          <div className="px-5 py-1">
+          <div className="px-5 py-1 flex-1">
             {recentLabInspections.length === 0
               ? <p className="text-sm text-gray-400 text-center py-8">접수된 점검 요청이 없습니다</p>
               : recentLabInspections.map((item, i) => (
