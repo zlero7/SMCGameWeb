@@ -10,6 +10,7 @@ import { PrismaClient } from '@prisma/client'
 import multer from 'multer'
 import path from 'path'
 import fs from 'fs'
+import { authMiddleware, adminOnly } from '../middleware/auth.js'
 
 const prisma = new PrismaClient()
 const router = express.Router()
@@ -98,7 +99,7 @@ router.get('/:id', async (req, res) => {
  * POST /api/materials - 자료 업로드 (관리자만)
  *multipart/form-data 사용
  */
-router.post('/', upload.single('file'), async (req, res) => {
+router.post('/', authMiddleware, adminOnly, upload.single('file'), async (req, res) => {
   try {
     const { title, description, category, isPublic } = req.body
     
@@ -135,7 +136,7 @@ router.post('/', upload.single('file'), async (req, res) => {
 /**
  * PUT /api/materials/:id - 자료 수정 (관리자만)
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', authMiddleware, adminOnly, async (req, res) => {
   try {
     const { id } = req.params
     const { title, description, category, isPublic } = req.body
@@ -160,7 +161,7 @@ router.put('/:id', async (req, res) => {
 /**
  * DELETE /api/materials/:id - 자료 삭제 (관리자만)
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authMiddleware, adminOnly, async (req, res) => {
   try {
     const { id } = req.params
     

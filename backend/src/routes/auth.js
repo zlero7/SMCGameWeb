@@ -189,44 +189,49 @@ export async function login(req, res) {
   }
 }
 
-// Register (initial admin setup)
+// Register (관리자 전용 — index.js에서 superAdminOnly 미들웨어로 보호됨)
 export async function register(req, res) {
   try {
-const { username, password, role = 'student', name } = req.body
-    
+    const { username, password, role = 'student', name } = req.body
+
     if (!username || !password) {
-      return res.status(400).json({ error: 'Username and password required' })
+      return res.status(400).json({ error: '아이디와 비밀번호는 필수입니다' })
     }
-    
+
+    if (password.length < 4) {
+      return res.status(400).json({ error: '비밀번호는 4자 이상이어야 합니다' })
+    }
+
     const existing = await prisma.user.findUnique({ where: { username } })
     if (existing) {
-      return res.status(400).json({ error: 'Username already exists' })
+      return res.status(400).json({ error: '이미 존재하는 아이디입니다' })
     }
-    
+
     const passwordHash = await bcrypt.hash(password, 10)
-    
+    // 허용된 역할만 저장
+    const allowedRoles = ['student', 'teacher', 'admin']
+    const safeRole = allowedRoles.includes(role) ? role : 'student'
+
     const user = await prisma.user.create({
-      data: { username, passwordHash, role, name }
+      data: { username, passwordHash, role: safeRole, name }
     })
 
     res.json({ id: user.id, username: user.username, role: user.role })
   } catch (error) {
-    res.status(500).json({ error: 'Registration failed' })
+    res.status(500).json({ error: '계정 생성 실패' })
   }
 }
 
 // Get current user
 export async function me(req, res) {
   try {
-    console.log('me() called, req.user:', req.user)
     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
       select: { id: true, username: true, role: true, name: true }
     })
     res.json(user)
   } catch (error) {
-    console.error('me() error:', error)
-    res.status(500).json({ error: 'Failed to get user', message: error.message })
+    res.status(500).json({ error: '사용자 정보 조회 실패' })
   }
 }
 

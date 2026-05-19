@@ -34,7 +34,18 @@
       "Bash(git -C \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1\" init)",
       "Bash(git -C \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1\" status)",
       "Bash(git -C \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1\" add .)",
-      "Bash(git -C \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1\" status --short)"
+      "Bash(git -C \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1\" status --short)",
+      "Bash(git -C 'C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1' commit -m ' *)",
+      "Bash(git -C \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1\" config user.name \"anaf-4\")",
+      "Bash(git -C \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1\" config user.email \"anaf-4@users.noreply.github.com\")",
+      "Bash(git config *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1\" -Force | Select-Object Name, @{Name='Type';Expression={if\\($_.PSIsContainer\\){'Directory'}else{'File'}}} | Sort-Object Name)",
+      "Bash(node --input-type=module)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(docker-compose -f \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\GameWeb1\\\\GameWeb1\\\\docker-compose.yml\" ps)"
     ]
   }
 }

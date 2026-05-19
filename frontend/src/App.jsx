@@ -23,7 +23,9 @@ import LabInspectionManager from './pages/admin/LabInspectionManager'
 import MaterialsManager from './pages/admin/MaterialsManager'
 import AwardManager from './pages/admin/AwardManager'
 import CalendarManager from './pages/admin/CalendarManager'
+import AssignmentManager from './pages/admin/AssignmentManager'
 import UserManager from './pages/admin/UserManager'
+import NotFound from './pages/NotFound'
 import AdminGuard from './components/AdminGuard'
 import AdminLayout from './components/AdminLayout'
 import ErrorBoundary from './components/ErrorBoundary'
@@ -37,7 +39,6 @@ function UserMenu() {
   const [showSettings, setShowSettings] = useState(false)
   const [showFontModal, setShowFontModal] = useState(false)
 
-  console.log('[UserMenu] fonts:', fonts, 'fontFamily:', fontFamily)
 
   const handleLogout = () => {
     logout()
@@ -197,6 +198,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/change-password" element={<ChangePassword />} />
                 <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="*" element={<NotFound />} />
                 <Route path="/admin" element={
                   <AdminGuard>
                     <AdminLayout />
@@ -207,6 +209,7 @@ function App() {
                   <Route path="careers" element={<CareerManager />} />
                   <Route path="admissions" element={<AdmissionManager />} />
                   <Route path="calendar" element={<CalendarManager />} />
+                  <Route path="assignments" element={<AssignmentManager />} />
                   <Route path="lab-inspections" element={<LabInspectionManager />} />
                   <Route path="materials" element={<MaterialsManager />} />
                   <Route path="awards" element={<AwardManager />} />
