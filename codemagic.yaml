@@ -29,11 +29,6 @@ workflows:
           echo "VITE_API_BASE_URL=$VITE_API_BASE_URL" > .env.mobile
           npm run build:mobile
 
-      - name: CocoaPods 설치
-        script: |
-          cd frontend/ios/App
-          pod install
-
       - name: iOS 무서명 IPA 빌드
         script: |
           xcodebuild \
