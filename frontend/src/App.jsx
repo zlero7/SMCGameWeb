@@ -42,54 +42,54 @@ function UserMenu() {
 
   if (isLoggedIn) {
     return (
-      <div className="flex items-center gap-3">
-        <span className="text-sm font-medium text-white/90">{user?.name || user?.username || '사용자'}</span>
-        <button onClick={() => setShowSettings(true)} className="p-2 rounded-lg border border-white/30 hover:bg-white/10 transition-colors text-xl" title="설정">⚙️</button>
+      <div className="flex items-center gap-2">
+        <span className="hidden sm:block text-sm font-medium text-white/90 truncate max-w-[80px]">{user?.name || user?.username || '사용자'}</span>
+        <button onClick={() => setShowSettings(true)} className="p-2 rounded-lg border border-white/30 hover:bg-white/10 transition-colors text-xl min-w-[40px] min-h-[40px] flex items-center justify-center" title="설정">⚙️</button>
 
         {showSettings && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowSettings(false)}>
-            <div className="bg-white rounded-xl p-6 w-80 shadow-lg" onClick={e => e.stopPropagation()}>
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowSettings(false)}>
+            <div className="bg-white rounded-xl p-5 w-full max-w-xs shadow-lg" onClick={e => e.stopPropagation()}>
               <h3 className="text-lg font-bold mb-4">설정</h3>
-              <div className="mb-4 p-4 bg-gray-50 rounded-lg text-sm">
+              <div className="mb-4 p-3 bg-gray-50 rounded-lg text-sm">
                 <p className="font-semibold text-gray-800">{user?.name || user?.username || '사용자'}</p>
                 <p className="text-gray-500">@{user?.username}</p>
                 <p className="text-gray-500 text-xs mt-1">역할: {user?.role === 'admin' ? '관리자' : user?.role === 'teacher' ? '교사' : '학생'}</p>
               </div>
-              <div className="space-y-2">
-                <button onClick={() => { setShowSettings(false); navigate('/change-password') }} className="w-full px-4 py-2 text-left rounded-lg hover:bg-gray-100">비밀번호 변경</button>
-                <button onClick={() => { setShowSettings(false); toggleTheme() }} className="w-full px-4 py-2 text-left rounded-lg hover:bg-gray-100 flex items-center justify-between">
+              <div className="space-y-1">
+                <button onClick={() => { setShowSettings(false); navigate('/change-password') }} className="w-full px-4 py-3 text-left rounded-lg hover:bg-gray-100 text-sm">비밀번호 변경</button>
+                <button onClick={() => { setShowSettings(false); toggleTheme() }} className="w-full px-4 py-3 text-left rounded-lg hover:bg-gray-100 flex items-center justify-between text-sm">
                   <span>테마 설정</span><span>{isDark ? '🌙' : '☀️'}</span>
                 </button>
-                <button onClick={() => setShowFontModal(true)} className="w-full px-4 py-2 text-left rounded-lg hover:bg-gray-100 flex items-center justify-between">
+                <button onClick={() => setShowFontModal(true)} className="w-full px-4 py-3 text-left rounded-lg hover:bg-gray-100 flex items-center justify-between text-sm">
                   <span>글꼴 설정</span><span>🔤</span>
                 </button>
                 {(user?.role === 'admin' || user?.role === 'teacher') && (
-                  <button onClick={() => { setShowSettings(false); navigate('/admin') }} className="w-full px-4 py-2 text-left rounded-lg hover:bg-blue-50 text-blue-600 flex items-center justify-between">
-                    <span>관리자 페이지로 이동</span><span>🛠️</span>
+                  <button onClick={() => { setShowSettings(false); navigate('/admin') }} className="w-full px-4 py-3 text-left rounded-lg hover:bg-blue-50 text-blue-600 flex items-center justify-between text-sm">
+                    <span>관리자 페이지</span><span>🛠️</span>
                   </button>
                 )}
-                <button onClick={() => { setShowSettings(false); handleLogout() }} className="w-full px-4 py-2 text-left rounded-lg hover:bg-gray-100 text-red-600">로그아웃</button>
+                <button onClick={() => { setShowSettings(false); handleLogout() }} className="w-full px-4 py-3 text-left rounded-lg hover:bg-gray-100 text-red-600 text-sm">로그아웃</button>
               </div>
             </div>
           </div>
         )}
 
         {showFontModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowFontModal(false)}>
-            <div className="bg-white rounded-2xl shadow-xl w-[28rem] max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
-              <div className="px-6 pt-6"><h3 className="text-xl font-bold mb-5 text-center">글꼴 선택</h3></div>
-              <div className="flex-1 overflow-y-auto px-6">
-                <div className="space-y-3 pb-3">
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowFontModal(false)}>
+            <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
+              <div className="px-5 pt-5"><h3 className="text-xl font-bold mb-4 text-center">글꼴 선택</h3></div>
+              <div className="flex-1 overflow-y-auto px-5">
+                <div className="space-y-2 pb-3">
                   {fonts.map(font => (
                     <button key={font.id} onClick={() => { setFontFamily(font.id); setShowFontModal(false) }}
                       style={{ fontFamily: font.family, borderRadius: '0.75rem' }}
-                      className={`w-full px-5 py-4 text-left border-2 transition-all hover:scale-[1.02] ${fontFamily === font.family ? 'border-cyan-500 bg-cyan-50 text-cyan-700 shadow-md' : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'}`}>
-                      <span className="text-lg">{font.name}</span>
+                      className={`w-full px-4 py-3 text-left border-2 transition-all ${fontFamily === font.family ? 'border-cyan-500 bg-cyan-50 text-cyan-700 shadow-md' : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'}`}>
+                      <span className="text-base">{font.name}</span>
                     </button>
                   ))}
                 </div>
               </div>
-              <div className="px-6 pb-6">
+              <div className="px-5 pb-5">
                 <button onClick={() => setShowFontModal(false)} className="w-full px-4 py-3 rounded-xl border border-gray-200 hover:bg-gray-50 font-medium">취소</button>
               </div>
             </div>
@@ -100,42 +100,92 @@ function UserMenu() {
   }
 
   return (
-    <Link to="/login" className="px-3 py-1.5 rounded-lg bg-cyan-500 text-white text-sm font-semibold hover:bg-cyan-400 transition-colors no-underline">로그인</Link>
+    <Link to="/login" className="px-3 py-2 rounded-lg bg-cyan-500 text-white text-sm font-semibold hover:bg-cyan-400 transition-colors no-underline min-h-[40px] flex items-center">로그인</Link>
   )
 }
 
-/* ── 일반(퍼블릭) 레이아웃 — 헤더 + 중앙 정렬 컨텐츠 ── */
+/* ── 일반(퍼블릭) 레이아웃 ── */
 function PublicLayout() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
   const navLinkClass = ({ isActive }) =>
     isActive
       ? 'nav-link-active text-cyan-400 font-bold no-underline text-sm border-b-2 border-cyan-400 pb-1'
       : 'nav-link no-underline text-white/70 font-medium text-sm hover:text-cyan-400 pb-1 transition-all duration-200'
 
+  const mobileNavLinkClass = ({ isActive }) =>
+    isActive
+      ? 'block px-4 py-3 text-cyan-400 font-bold no-underline text-sm bg-white/10 rounded-lg'
+      : 'block px-4 py-3 text-white/80 font-medium no-underline text-sm hover:bg-white/10 rounded-lg transition-colors'
+
+  const navItems = [
+    { to: '/', label: '홈', exact: true },
+    { to: '/notices', label: '공지사항' },
+    { to: '/careers', label: '취업' },
+    { to: '/admissions', label: '진학' },
+    { to: '/calendar', label: '학사달력' },
+    { to: '/assignments', label: '과제일정' },
+    { to: '/lab-inspections', label: '실습실 점검' },
+    { to: '/materials', label: '자료실' },
+    { to: '/awards', label: '수상/포트폴리오' },
+  ]
+
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-50 flex items-center px-6 py-3 border-b border-white/10 bg-[#1c2438]">
-        <div className="flex items-center gap-2 shrink-0">
-          <img src="/logo.svg" alt="로고" className="h-9 align-middle" />
-          <Link to="/" className="no-underline">
-            <h1 className="text-xs uppercase tracking-widest m-0 text-white font-bold">세명컴고 게임과 포털</h1>
-          </Link>
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#1c2438]">
+        {/* 메인 헤더 바 */}
+        <div className="flex items-center px-4 py-3 gap-3">
+          {/* 로고 */}
+          <div className="flex items-center gap-2 shrink-0">
+            <img src="/logo.svg" alt="로고" className="h-8 align-middle" />
+            <Link to="/" className="no-underline" onClick={() => setMobileMenuOpen(false)}>
+              <h1 className="text-xs uppercase tracking-widest m-0 text-white font-bold hidden sm:block">세명컴고 게임과 포털</h1>
+              <h1 className="text-xs uppercase tracking-widest m-0 text-white font-bold sm:hidden">세명컴고</h1>
+            </Link>
+          </div>
+
+          {/* 데스크탑 네비게이션 */}
+          <nav className="hidden lg:flex flex-1 justify-center gap-4 items-center" aria-label="메인 네비게이션">
+            {navItems.map(({ to, label }) => (
+              <NavLink key={to} to={to} end={to === '/'} className={navLinkClass}>{label}</NavLink>
+            ))}
+          </nav>
+
+          {/* 오른쪽: 유저메뉴 + 햄버거 */}
+          <div className="ml-auto flex items-center gap-2">
+            <UserMenu />
+            {/* 햄버거 버튼 (모바일/태블릿) */}
+            <button
+              className="lg:hidden p-2 rounded-lg border border-white/30 hover:bg-white/10 transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center"
+              onClick={() => setMobileMenuOpen(v => !v)}
+              aria-label="메뉴"
+            >
+              {mobileMenuOpen ? (
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
-        <nav className="flex-1 flex justify-center gap-5 items-center" aria-label="메인 네비게이션">
-          <NavLink to="/" className={navLinkClass}>홈</NavLink>
-          <NavLink to="/notices" className={navLinkClass}>공지사항</NavLink>
-          <NavLink to="/careers" className={navLinkClass}>취업</NavLink>
-          <NavLink to="/admissions" className={navLinkClass}>진학</NavLink>
-          <NavLink to="/calendar" className={navLinkClass}>학사달력</NavLink>
-          <NavLink to="/assignments" className={navLinkClass}>과제일정</NavLink>
-          <NavLink to="/lab-inspections" className={navLinkClass}>실습실 점검</NavLink>
-          <NavLink to="/materials" className={navLinkClass}>자료실</NavLink>
-          <NavLink to="/awards" className={navLinkClass}>수상/포트폴리오</NavLink>
-        </nav>
-        <div className="flex items-center gap-3 shrink-0 pl-4 border-l border-white/20">
-          <UserMenu />
-        </div>
+
+        {/* 모바일 드롭다운 메뉴 */}
+        {mobileMenuOpen && (
+          <nav className="lg:hidden border-t border-white/10 px-3 py-2 grid grid-cols-2 gap-1" aria-label="모바일 네비게이션">
+            {navItems.map(({ to, label }) => (
+              <NavLink key={to} to={to} end={to === '/'} className={mobileNavLinkClass} onClick={() => setMobileMenuOpen(false)}>
+                {label}
+              </NavLink>
+            ))}
+          </nav>
+        )}
       </header>
-      <main className="flex-1 px-6 pt-5 pb-8 bg-[#f0f2f8]">
+
+      <main className="flex-1 px-3 sm:px-6 pt-4 pb-8 bg-[#f0f2f8]">
         <Outlet />
       </main>
     </div>
@@ -151,8 +201,6 @@ function App() {
           <BrowserRouter>
             <TitleUpdater />
             <Routes>
-
-              {/* ── 어드민 라우트 — 풀스크린, 헤더·여백 제약 없음 ── */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<AdminGuard><AdminLayout /></AdminGuard>}>
                 <Route index element={<Dashboard />} />
@@ -167,7 +215,6 @@ function App() {
                 <Route path="users" element={<UserManager />} />
               </Route>
 
-              {/* ── 퍼블릭 라우트 — PublicLayout(헤더 + 중앙 정렬) 안에 렌더링 ── */}
               <Route element={<PublicLayout />}>
                 <Route path="/" element={<MainDashboard />} />
                 <Route path="/notices" element={<Notices />} />
@@ -182,7 +229,6 @@ function App() {
                 <Route path="/change-password" element={<ChangePassword />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
-
             </Routes>
           </BrowserRouter>
         </ErrorBoundary>

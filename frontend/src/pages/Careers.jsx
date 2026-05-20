@@ -43,7 +43,7 @@ function Careers() {
   return (
     <>
       <PageBanner icon="💼" title="취업 정보" subtitle="채용 공고와 취업 정보를 확인하세요" />
-      <div className="bg-white rounded-2xl shadow-sm p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-5">
         {careers.length === 0 ? (
           <p className="text-gray-500 text-center py-8">등록된 취업 정보가 없습니다.</p>
         ) : (

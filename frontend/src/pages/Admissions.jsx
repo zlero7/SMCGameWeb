@@ -43,7 +43,7 @@ function Admissions() {
   return (
     <>
       <PageBanner icon="🎓" title="진학 정보" subtitle="대학 진학 정보와 입시 안내를 확인하세요" />
-      <div className="bg-white rounded-2xl shadow-sm p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-5">
         {admissions.length === 0 ? (
           <p className="text-gray-500 text-center py-8">등록된 진학 정보가 없습니다.</p>
         ) : (

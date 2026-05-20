@@ -152,26 +152,27 @@ export default function AccordionCard({ id, title, content, date, status, author
 
       {/* 상세 내용 모달 */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100]" onClick={handleClose}>
-          <div 
-            className="bg-white rounded-xl p-8 w-[min(800px,90%)] max-h-[85vh] overflow-auto shadow-[0_8px_40px_rgba(0,0,0,0.3)]" 
+        <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-[100] p-0 sm:p-4" onClick={handleClose}>
+          <div
+            className="bg-white rounded-t-2xl sm:rounded-xl p-4 sm:p-8 w-full sm:w-[min(800px,90%)] max-h-[90vh] sm:max-h-[85vh] overflow-auto shadow-[0_8px_40px_rgba(0,0,0,0.3)]"
             onClick={e => e.stopPropagation()}
           >
-            <div className="flex justify-between items-start mb-6 pb-4 border-b border-gray-200">
-              <div className="flex-1 pr-4">
-                <h2 className="m-0 text-2xl font-bold text-gray-800">{title}</h2>
-                {date && <p className="text-gray-500 text-sm mt-2">날짜: {new Date(date).toLocaleDateString('ko-KR')}</p>}
+            <div className="sm:hidden w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
+            <div className="flex justify-between items-start mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-gray-200">
+              <div className="flex-1 pr-3">
+                <h2 className="m-0 text-lg sm:text-2xl font-bold text-gray-800">{title}</h2>
+                {date && <p className="text-gray-500 text-sm mt-1">날짜: {new Date(date).toLocaleDateString('ko-KR')}</p>}
                 {author && <p className="text-gray-500 text-sm">작성자: {author}</p>}
               </div>
               {status && (
-                <span className="text-sm px-3 py-1.5 rounded-full font-semibold shrink-0"
+                <span className="text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full font-semibold shrink-0"
                   style={{ backgroundColor: statusStyle.bg, color: statusStyle.color }}>
                   {statusStyle.label}
                 </span>
               )}
-              <button 
-                onClick={handleClose} 
-                className="ml-3 px-5 py-2 bg-[#4a90d9] text-white rounded-lg text-base font-semibold hover:bg-[#3561b0] transition-colors shrink-0"
+              <button
+                onClick={handleClose}
+                className="ml-2 sm:ml-3 p-2 sm:px-5 sm:py-2 bg-[#4a90d9] text-white rounded-lg text-base font-semibold hover:bg-[#3561b0] transition-colors shrink-0 min-w-[40px] min-h-[40px] flex items-center justify-center"
               >
                 ✕
               </button>

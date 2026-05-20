@@ -123,7 +123,7 @@ function LabInspections() {
           </button>
         }
       />
-      <div className="bg-white rounded-2xl shadow-sm p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-5">
 
       {/* 목록 */}
       {inspections.length === 0 ? (
@@ -145,33 +145,31 @@ function LabInspections() {
 
       {/* 글 작성 모달 폼 */}
       {showForm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={handleCloseForm}>
-          <div className="bg-white rounded-xl p-6 max-w-[600px] w-[90%] max-h-[90vh] overflow-auto shadow-[0_4px_20px_rgba(0,0,0,0.15)]" onClick={e => e.stopPropagation()}>
-            {/* 모달 헤더 */}
+        <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4" onClick={handleCloseForm}>
+          <div className="bg-white rounded-t-2xl sm:rounded-xl p-4 sm:p-6 w-full sm:max-w-[600px] max-h-[90vh] overflow-auto shadow-[0_4px_20px_rgba(0,0,0,0.15)]" onClick={e => e.stopPropagation()}>
+            <div className="sm:hidden w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
             <div className="flex justify-between items-center mb-4">
-              <h2 className="m-0 text-xl">실습실 점검 작성</h2>
-              <button onClick={handleCloseForm} className="px-4 py-2 bg-gray-500 text-white rounded-lg text-sm hover:bg-gray-600 transition-colors">취소</button>
+              <h2 className="m-0 text-lg font-bold">실습실 점검 작성</h2>
+              <button onClick={handleCloseForm} className="p-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition-colors">✕</button>
             </div>
-            
-            {/* 입력 폼 */}
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="space-y-3">
               <input
                 type="text"
                 placeholder="제목"
                 value={form.title}
                 onChange={e => setForm({ ...form, title: e.target.value })}
-                className="w-full px-4 py-3 mb-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#4a90d9] focus:shadow-[0_0_0_3px_rgba(74,144,217,0.15)]"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#4a90d9]"
                 required
               />
               <textarea
                 placeholder="내용"
                 value={form.content}
                 onChange={e => setForm({ ...form, content: e.target.value })}
-                className="w-full px-4 py-3 mb-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#4a90d9] focus:shadow-[0_0_0_3px_rgba(74,144,217,0.15)]"
-                rows={6}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#4a90d9]"
+                rows={5}
                 required
               />
-              <button type="submit" disabled={submitting} className="w-full mt-2 px-6 py-3 bg-[#4a90d9] text-white rounded-lg text-sm font-semibold hover:bg-[#3561b0] transition-colors disabled:opacity-50">
+              <button type="submit" disabled={submitting} className="w-full py-3 bg-[#4a90d9] text-white rounded-lg text-sm font-semibold hover:bg-[#3561b0] transition-colors disabled:opacity-50">
                 {submitting ? '작성 중...' : '등록하기'}
               </button>
             </form>

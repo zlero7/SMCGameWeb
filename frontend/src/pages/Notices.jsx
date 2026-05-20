@@ -30,7 +30,7 @@ function Notices() {
   return (
     <>
       <PageBanner icon="📢" title="공지사항" subtitle="관리자가 작성한 공지사항을 확인하세요" />
-      <div className="bg-white rounded-2xl shadow-sm p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-5">
         {notices.length === 0 ? (
           <p className="text-gray-500 text-center py-8">등록된 공지사항이 없습니다.</p>
         ) : (

@@ -227,30 +227,44 @@ export default function MainDashboard() {
     <div className="space-y-4">
 
       {/* ── 환영 배너 ── */}
-      <div className="bg-gradient-to-r from-[#1c2438] to-[#2d3a5a] rounded-xl px-7 py-5 flex items-center justify-between">
-        <div>
-          <p className="text-cyan-400 text-xs font-medium mb-1">{today}</p>
-          <h1 className="text-white text-xl font-bold mb-0.5">세명컴고 게임과 포털</h1>
-          <p className="text-gray-400 text-sm">공지·취업·진학·자료·일정 — 한 곳에서 확인하세요</p>
+      <div className="bg-gradient-to-r from-[#1c2438] to-[#2d3a5a] rounded-xl px-4 py-4 sm:px-7 sm:py-5">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-cyan-400 text-xs font-medium mb-1">{today}</p>
+            <h1 className="text-white text-lg sm:text-xl font-bold mb-0.5">세명컴고 게임과 포털</h1>
+            <p className="text-gray-400 text-xs sm:text-sm">공지·취업·진학·자료·일정 — 한 곳에서 확인하세요</p>
+          </div>
+          <div className="hidden md:flex flex-wrap gap-2 shrink-0 ml-4">
+            {[
+              { to: '/notices', label: '공지사항' },
+              { to: '/careers', label: '취업 정보' },
+              { to: '/admissions', label: '진학 정보' },
+              { to: '/materials', label: '자료실' },
+              { to: '/awards', label: '수상·포트폴리오' },
+            ].map(({ to, label }) => (
+              <Link key={to} to={to} className="no-underline px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg transition-colors">{label}</Link>
+            ))}
+          </div>
         </div>
-        <div className="hidden md:flex flex-wrap gap-2 shrink-0">
+        {/* 모바일 바로가기 */}
+        <div className="flex md:hidden gap-2 flex-wrap mt-3">
           {[
-            { to: '/notices', label: '공지사항' },
-            { to: '/careers', label: '취업 정보' },
-            { to: '/admissions', label: '진학 정보' },
+            { to: '/notices', label: '공지' },
+            { to: '/careers', label: '취업' },
+            { to: '/admissions', label: '진학' },
             { to: '/materials', label: '자료실' },
-            { to: '/awards', label: '수상·포트폴리오' },
+            { to: '/awards', label: '수상' },
           ].map(({ to, label }) => (
-            <Link key={to} to={to} className="no-underline px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg transition-colors">{label}</Link>
+            <Link key={to} to={to} className="no-underline px-3 py-1.5 bg-white/10 text-white text-xs font-semibold rounded-lg">{label}</Link>
           ))}
         </div>
       </div>
 
       {/* ── 메인 2컬럼: 공지사항(넓) + 학사/과제(좁) ── */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
 
         {/* 공지사항 */}
-        <div className="xl:col-span-2 bg-white rounded-xl shadow-sm overflow-hidden flex flex-col">
+        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm overflow-hidden flex flex-col">
           <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
             <div className="flex items-center gap-2.5">
               <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center text-sm">📢</div>
@@ -441,14 +455,16 @@ export default function MainDashboard() {
 
       {/* 전체 화면 중앙 모달 */}
       {selectedItem && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100]" onClick={handleCloseModal}>
-          <div 
-            className="bg-white rounded-xl p-8 w-[min(800px,90%)] max-h-[85vh] overflow-auto shadow-[0_8px_40px_rgba(0,0,0,0.3)]" 
+        <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-[100] p-0 sm:p-4" onClick={handleCloseModal}>
+          <div
+            className="bg-white rounded-t-2xl sm:rounded-xl p-4 sm:p-8 w-full sm:w-[min(800px,90%)] max-h-[90vh] sm:max-h-[85vh] overflow-auto shadow-[0_8px_40px_rgba(0,0,0,0.3)]"
             onClick={e => e.stopPropagation()}
           >
-            <div className="flex justify-between items-start mb-6 pb-4 border-b border-gray-200">
-              <div className="flex-1 pr-4">
-                <h2 className="m-0 text-2xl font-bold text-gray-800">{getItemDisplay(selectedItem, selectedType).title}</h2>
+            {/* 모바일 드래그 핸들 */}
+            <div className="sm:hidden w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
+            <div className="flex justify-between items-start mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-gray-200">
+              <div className="flex-1 pr-3">
+                <h2 className="m-0 text-lg sm:text-2xl font-bold text-gray-800">{getItemDisplay(selectedItem, selectedType).title}</h2>
                 {getItemDisplay(selectedItem, selectedType).author && (
                   <p className="text-gray-500 text-sm mt-1">작성자: {getItemDisplay(selectedItem, selectedType).author}</p>
                 )}

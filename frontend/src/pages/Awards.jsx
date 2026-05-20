@@ -111,7 +111,7 @@ function Awards() {
   return (
     <>
       <PageBanner icon="🏆" title="수상 / 포트폴리오" subtitle="학생들의 수상 내역과 포트폴리오를 확인하세요" />
-      <div className="bg-white rounded-2xl shadow-sm p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-5">
 
       {/* 카테고리 탭 */}
       <div className="flex gap-2 mb-5">

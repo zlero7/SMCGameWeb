@@ -109,7 +109,7 @@ function Materials() {
   return (
     <>
       <PageBanner icon="📚" title="자료실" subtitle="학습 자료를 다운로드하세요" />
-      <div className="bg-white rounded-2xl shadow-sm p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-5">
 
         {/* 카테고리 필터 */}
         {categories.length > 0 && (

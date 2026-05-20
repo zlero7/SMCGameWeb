@@ -6,6 +6,15 @@ function Calendar() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [currentDate, setCurrentDate] = useState(new Date())
+  const [viewMode, setViewMode] = useState('calendar')
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 640px)')
+    if (mq.matches) setViewMode('list')
+    const handler = (e) => { if (e.matches) setViewMode('list') }
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
 
   useEffect(() => {
     setLoading(true)
@@ -37,7 +46,6 @@ function Calendar() {
         setLoading(false)
       }
     }
-
     fetchEvents()
   }, [currentDate.getFullYear(), currentDate.getMonth()])
 
@@ -50,18 +58,13 @@ function Calendar() {
     const startDayOfWeek = firstDay.getDay()
 
     const days = []
-    for (let i = 0; i < startDayOfWeek; i++) {
-      days.push({ day: null, date: null })
-    }
-    for (let i = 1; i <= daysInMonth; i++) {
-      days.push({ day: i, date: new Date(year, month, i) })
-    }
+    for (let i = 0; i < startDayOfWeek; i++) days.push({ day: null, date: null })
+    for (let i = 1; i <= daysInMonth; i++) days.push({ day: i, date: new Date(year, month, i) })
     return days
   }
 
   const getEventsForDate = (date) => {
     if (!date) return []
-
     const year = date.getFullYear()
     const month = (date.getMonth() + 1).toString().padStart(2, '0')
     const day = date.getDate().toString().padStart(2, '0')
@@ -70,18 +73,12 @@ function Calendar() {
     return events.filter(ev => {
       const evStart = ev.start || ev.date || ''
       const evEnd = ev.end || ev.date || ev.start || ''
-
-      if (/^\d{8}$/.test(evStart)) {
-        return dateStr >= evStart && dateStr <= evEnd
-      }
-
+      if (/^\d{8}$/.test(evStart)) return dateStr >= evStart && dateStr <= evEnd
       try {
         const isoStart = new Date(evStart).toISOString().split('T')[0].replace(/-/g, '')
         const isoEnd = new Date(evEnd).toISOString().split('T')[0].replace(/-/g, '')
         return dateStr >= isoStart && dateStr <= isoEnd
-      } catch {
-        return false
-      }
+      } catch { return false }
     })
   }
 
@@ -105,11 +102,40 @@ function Calendar() {
     return colors[type] || 'bg-gray-100 text-gray-700'
   }
 
+  const getBadgeColor = (type, source) => {
+    if (source === 'manual' || (!source && type)) {
+      const c = { vacation: 'bg-blue-100 text-blue-700', exam: 'bg-red-100 text-red-700', event: 'bg-green-100 text-green-700', general: 'bg-orange-100 text-orange-700' }
+      return c[type] || 'bg-orange-100 text-orange-700'
+    }
+    const c = { vacation: 'bg-blue-100 text-blue-700', exam: 'bg-red-100 text-red-700', event: 'bg-green-100 text-green-700', holiday: 'bg-purple-100 text-purple-700' }
+    return c[type] || 'bg-gray-100 text-gray-700'
+  }
+
   const prevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))
   const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))
 
   const days = getDaysInMonth(currentDate)
   const weekDays = ['일', '월', '화', '수', '목', '금', '토']
+
+  // 리스트뷰: 이번달 일정 날짜 순 정렬
+  const listEvents = events
+    .map(ev => {
+      const raw = ev.start || ev.date || ''
+      let dateObj = null
+      if (/^\d{8}$/.test(raw)) {
+        dateObj = new Date(raw.slice(0, 4), parseInt(raw.slice(4, 6)) - 1, raw.slice(6, 8))
+      } else {
+        try { dateObj = new Date(raw) } catch { dateObj = null }
+      }
+      return { ...ev, _dateObj: dateObj }
+    })
+    .filter(ev => ev._dateObj)
+    .sort((a, b) => a._dateObj - b._dateObj)
+
+  const formatDateLabel = (ev) => {
+    if (!ev._dateObj) return ''
+    return ev._dateObj.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' })
+  }
 
   if (loading) return <div className="text-gray-500 p-4 text-center">로딩 중...</div>
   if (error) return <div className="text-red-500 p-4">오류: {error}</div>
@@ -117,68 +143,109 @@ function Calendar() {
   return (
     <>
       <PageBanner icon="📅" title="학사 일정" subtitle="NEIS 연동 학교 행사 및 학사 일정을 확인하세요" />
-      <div className="bg-white rounded-2xl shadow-sm p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-5">
 
-      <div className="flex justify-between items-center mb-4">
-        <button onClick={prevMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors font-bold text-gray-600">◀</button>
-        <h3 className="text-lg font-bold text-gray-800">
-          {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월
-        </h3>
-        <button onClick={nextMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors font-bold text-gray-600">▶</button>
-      </div>
-
-      <div className="grid grid-cols-7 border-l border-t border-gray-100 rounded-lg overflow-hidden">
-        {weekDays.map((day, i) => (
-          <div key={day} className={`text-center text-xs font-bold py-2.5 border-r border-b border-gray-100 bg-gray-50 ${i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : 'text-gray-500'}`}>
-            {day}
+        {/* 헤더: 월 이동 + 뷰 전환 */}
+        <div className="flex justify-between items-center mb-4 gap-2">
+          <button onClick={prevMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors font-bold text-gray-600 min-w-[40px] min-h-[40px]">◀</button>
+          <h3 className="text-base sm:text-lg font-bold text-gray-800">
+            {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월
+          </h3>
+          <button onClick={nextMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors font-bold text-gray-600 min-w-[40px] min-h-[40px]">▶</button>
+          {/* 뷰 전환 버튼 */}
+          <div className="flex rounded-lg border border-gray-200 overflow-hidden ml-2">
+            <button
+              onClick={() => setViewMode('calendar')}
+              className={`px-3 py-1.5 text-xs font-medium transition-colors ${viewMode === 'calendar' ? 'bg-cyan-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
+            >달력</button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`px-3 py-1.5 text-xs font-medium transition-colors ${viewMode === 'list' ? 'bg-cyan-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
+            >목록</button>
           </div>
-        ))}
-        {days.map((item, idx) => {
-          const dayEvents = getEventsForDate(item.date)
-          const isToday = item.date && item.date.toDateString() === new Date().toDateString()
-          const isSun = item.date && item.date.getDay() === 0
-          const isSat = item.date && item.date.getDay() === 6
+        </div>
 
-          return (
-            <div
-              key={idx}
-              className={`min-h-[80px] border-r border-b border-gray-100 p-1.5 ${isToday ? 'bg-cyan-50' : item.day ? 'hover:bg-gray-50' : 'bg-gray-50/50'} transition-colors`}
-            >
-              {item.day && (
-                <>
-                  <div className={`text-sm font-bold mb-1.5 w-6 h-6 flex items-center justify-center rounded-full ${
-                    isToday ? 'bg-cyan-500 text-white' : isSun ? 'text-red-400' : isSat ? 'text-blue-400' : 'text-gray-700'
-                  }`}>
-                    {item.day}
-                  </div>
-                  <div className="space-y-0.5">
-                    {dayEvents.slice(0, 3).map((ev, i) => (
-                      <div
-                        key={i}
-                        className={`text-[11px] px-1.5 py-0.5 rounded truncate ${getEventColor(ev.type, ev.source)}`}
-                        title={ev.title}
-                      >
-                        {ev.title}
+        {/* 달력 뷰 */}
+        {viewMode === 'calendar' && (
+          <div className="grid grid-cols-7 border-l border-t border-gray-100 rounded-lg overflow-hidden">
+            {weekDays.map((day, i) => (
+              <div key={day} className={`text-center text-xs font-bold py-2 border-r border-b border-gray-100 bg-gray-50 ${i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : 'text-gray-500'}`}>
+                {day}
+              </div>
+            ))}
+            {days.map((item, idx) => {
+              const dayEvents = getEventsForDate(item.date)
+              const isToday = item.date && item.date.toDateString() === new Date().toDateString()
+              const isSun = item.date && item.date.getDay() === 0
+              const isSat = item.date && item.date.getDay() === 6
+
+              return (
+                <div
+                  key={idx}
+                  className={`min-h-[52px] sm:min-h-[80px] border-r border-b border-gray-100 p-0.5 sm:p-1.5 ${isToday ? 'bg-cyan-50' : item.day ? 'hover:bg-gray-50' : 'bg-gray-50/50'} transition-colors`}
+                >
+                  {item.day && (
+                    <>
+                      <div className={`text-xs sm:text-sm font-bold mb-0.5 sm:mb-1.5 w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full ${
+                        isToday ? 'bg-cyan-500 text-white' : isSun ? 'text-red-400' : isSat ? 'text-blue-400' : 'text-gray-700'
+                      }`}>
+                        {item.day}
                       </div>
-                    ))}
-                    {dayEvents.length > 3 && (
-                      <div className="text-[11px] text-gray-400 pl-1">+{dayEvents.length - 3}개</div>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
-          )
-        })}
-      </div>
+                      <div className="space-y-0.5 hidden sm:block">
+                        {dayEvents.slice(0, 2).map((ev, i) => (
+                          <div key={i} className={`text-[10px] px-1 py-0.5 rounded truncate ${getEventColor(ev.type, ev.source)}`} title={ev.title}>
+                            {ev.title}
+                          </div>
+                        ))}
+                        {dayEvents.length > 2 && <div className="text-[10px] text-gray-400 pl-1">+{dayEvents.length - 2}</div>}
+                      </div>
+                      {/* 모바일: 이벤트 있으면 점만 표시 */}
+                      {dayEvents.length > 0 && (
+                        <div className="sm:hidden flex gap-0.5 flex-wrap mt-0.5">
+                          {dayEvents.slice(0, 3).map((ev, i) => (
+                            <span key={i} className={`w-1.5 h-1.5 rounded-full inline-block ${ev.type === 'vacation' ? 'bg-blue-400' : ev.type === 'exam' ? 'bg-red-400' : ev.type === 'holiday' ? 'bg-purple-400' : 'bg-orange-400'}`} />
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        )}
 
-      <div className="flex gap-4 mt-4 text-sm flex-wrap text-gray-500">
-        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-blue-100 rounded"></span> 방학 (NEIS)</span>
-        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-red-100 rounded"></span> 시험 (NEIS)</span>
-        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-green-100 rounded"></span> 행사 (NEIS)</span>
-        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-purple-100 rounded"></span> 공휴일 (NEIS)</span>
-        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-orange-100 border-l-2 border-orange-400 rounded"></span> 추가 일정</span>
-      </div>
+        {/* 리스트 뷰 */}
+        {viewMode === 'list' && (
+          <div className="space-y-2">
+            {listEvents.length === 0 ? (
+              <p className="text-gray-400 text-sm text-center py-8">이번 달 일정이 없습니다.</p>
+            ) : listEvents.map((ev, i) => (
+              <div key={i} className="flex items-start gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
+                <div className="shrink-0 w-10 h-10 rounded-xl bg-cyan-50 flex flex-col items-center justify-center">
+                  <span className="text-[10px] text-cyan-500 font-bold leading-none">{ev._dateObj.getMonth() + 1}월</span>
+                  <span className="text-sm text-cyan-700 font-bold leading-none">{ev._dateObj.getDate()}</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-gray-800 truncate">{ev.title}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">{formatDateLabel(ev)}</p>
+                </div>
+                <span className={`text-xs px-2 py-1 rounded-full font-medium shrink-0 ${getBadgeColor(ev.type, ev.source)}`}>
+                  {ev.type === 'vacation' ? '방학' : ev.type === 'exam' ? '시험' : ev.type === 'holiday' ? '공휴일' : ev.type === 'event' ? '행사' : '일정'}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* 범례 */}
+        <div className="flex gap-3 mt-4 text-xs flex-wrap text-gray-500">
+          <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 bg-blue-100 rounded"></span> 방학</span>
+          <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 bg-red-100 rounded"></span> 시험</span>
+          <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 bg-green-100 rounded"></span> 행사</span>
+          <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 bg-purple-100 rounded"></span> 공휴일</span>
+          <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 bg-orange-100 border-l-2 border-orange-400 rounded"></span> 추가 일정</span>
+        </div>
       </div>
     </>
   )
