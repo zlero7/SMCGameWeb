@@ -10,6 +10,10 @@
   "android": {
     "allowMixedContent": true
   },
+  "ios": {
+    "scheme": "App",
+    "limitsNavigationsToAppBoundDomains": false
+  },
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 2000,

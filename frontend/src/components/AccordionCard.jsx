@@ -8,6 +8,9 @@
 
 import React, { useState } from 'react'
 import { marked } from 'marked'
+import { API_BASE } from '../services/api'
+
+const SERVER_BASE = API_BASE.replace(/\/api$/, '')
 
 marked.setOptions({ breaks: true, gfm: true })
 
@@ -115,7 +118,7 @@ export default function AccordionCard({ id, title, content, date, status, author
           {imageUrl && (
             <div className="w-20 h-20 flex-shrink-0 bg-gray-100 flex items-center justify-center overflow-hidden">
               <img 
-                src={imageUrl.startsWith('http') ? imageUrl : window.location.origin + imageUrl} 
+                src={imageUrl.startsWith('http') ? imageUrl : SERVER_BASE + imageUrl} 
                 alt="썸네일" 
                 className="w-full h-full object-cover"
                 onError={(e) => { e.target.style.display = 'none' }}
@@ -188,7 +191,7 @@ export default function AccordionCard({ id, title, content, date, status, author
             {imageUrl && (
               <div className="mb-4">
                 <img 
-                  src={imageUrl.startsWith('http') ? imageUrl : window.location.origin + imageUrl} 
+                  src={imageUrl.startsWith('http') ? imageUrl : SERVER_BASE + imageUrl} 
                   alt="이미지" 
                   className="max-w-full h-auto rounded-lg border border-gray-200"
                   style={{ maxHeight: '400px', objectFit: 'contain' }}
@@ -218,7 +221,7 @@ export default function AccordionCard({ id, title, content, date, status, author
                   {attachmentData.map((file, idx) => {
                     const displayName = file.filename || file.originalname || `파일 ${idx + 1}`
                     // API 다운로드 엔드포인트 사용
-                    const downloadUrl = `/api/notices/${noticeId}/download/${idx}`
+                    const downloadUrl = `${API_BASE}/notices/${noticeId}/download/${idx}`
                     
                     return (
                       <a
@@ -243,7 +246,7 @@ export default function AccordionCard({ id, title, content, date, status, author
             {attachments && !Array.isArray(attachmentData) && (
               <div className="mt-4">
                 <a 
-                  href={attachments.startsWith('http') ? attachments : `${window.location.origin}${attachments}`}
+                  href={attachments.startsWith('http') ? attachments : `${SERVER_BASE}${attachments}`}
                   download
                   target="_blank"
                   rel="noopener noreferrer"

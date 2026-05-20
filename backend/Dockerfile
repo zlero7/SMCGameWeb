@@ -14,4 +14,4 @@ RUN npx prisma generate --schema=./prisma/schema.prisma
 
 EXPOSE 4000
 
-CMD ["npm", "run", "dev"]
+CMD ["sh", "-c", "npx prisma db push --skip-generate && node src/index.js"]

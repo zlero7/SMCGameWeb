@@ -58,15 +58,15 @@ async function apiFetch(endpoint, options = {}) {
 }
 
 // ===== 공지사항 API =====
-export const fetchNotices = () => apiFetch('/notices').catch(() => ({ data: [] }))
+export const fetchNotices = () => apiFetch('/notices')
 export const getNotice = (id) => apiFetch(`/notices/${id}`)
 
 // ===== 취업 정보 API =====
-export const fetchCareers = () => apiFetch('/careers').catch(() => ({ data: [] }))
+export const fetchCareers = () => apiFetch('/careers')
 export const getCareer = (id) => apiFetch(`/careers/${id}`)
 
 // ===== 진학 정보 API =====
-export const fetchAdmissions = () => apiFetch('/admissions').catch(() => ({ data: [] }))
+export const fetchAdmissions = () => apiFetch('/admissions')
 export const getAdmission = (id) => apiFetch(`/admissions/${id}`)
 
 // ===== 학사 일정 API =====

@@ -1,0 +1,60 @@
+workflows:
+  ios-workflow:
+    name: iOS - 세명컴고 게임과 포털
+    max_build_duration: 60
+
+    environment:
+      # Codemagic 웹 UI > Environment variables 에서 설정
+      # iOS 서명용 (Apple Developer 계정 필요)
+      ios_signing:
+        distribution_type: ad_hoc        # development | ad_hoc | app_store
+        bundle_identifier: com.semyeong.gameweb
+      vars:
+        # Codemagic 웹 UI > Environment variables 에서 API 주소 설정 가능
+        VITE_API_BASE_URL: http://10.26.138.120:4000/api
+      xcode: latest
+      cocoapods: default
+      node: v20
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: master
+          include: true
+
+    scripts:
+      - name: npm 의존성 설치
+        script: |
+          cd frontend
+          npm install
+
+      - name: 웹 앱 빌드 (모바일용)
+        script: |
+          cd frontend
+          # .env.mobile 에 API 주소 덮어쓰기 (Codemagic 환경변수 우선)
+          echo "VITE_API_BASE_URL=$VITE_API_BASE_URL" > .env.mobile
+          npm run build:mobile
+
+      - name: CocoaPods 설치
+        script: |
+          cd frontend/ios/App
+          pod install
+
+      - name: iOS IPA 빌드
+        script: |
+          xcode-project build-ipa \
+            --workspace frontend/ios/App/App.xcworkspace \
+            --scheme App
+
+    artifacts:
+      - frontend/ios/App/build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+
+    publishing:
+      email:
+        recipients:
+          - $CM_SUBMITTER_EMAIL
+        notify:
+          success: true
+          failure: true
