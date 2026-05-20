@@ -35,7 +35,7 @@ function CareerManager() {
   }
 
   const handleEdit = (career) => {
-    setEditingData(career)
+    setEditingData({ ...career, content: career.description })
     setShowModal(true)
   }
 

@@ -35,7 +35,7 @@ function AdmissionManager() {
   }
 
   const handleEdit = (admission) => {
-    setEditingData(admission)
+    setEditingData({ ...admission, title: admission.program, content: admission.requirements })
     setShowModal(true)
   }
 
