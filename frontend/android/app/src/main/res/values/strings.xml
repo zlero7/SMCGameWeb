@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">세명컴고 게임과 포털</string>
+    <string name="title_activity_main">세명컴고 게임과 포털</string>
+    <string name="package_name">com.semyeong.gameweb</string>
+    <string name="custom_url_scheme">com.semyeong.gameweb</string>
+</resources>

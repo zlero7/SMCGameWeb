@@ -21,6 +21,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 // 인증 컨텍스트 생성 (provider 없이 사용 불가)
 const AuthContext = createContext(null)
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api'
+
 /**
  * AuthProvider - 인증 상태를 제공하는 React 컴포넌트
  * App.jsx에서 전체 앱을 감싸서 사용합니다.
@@ -58,7 +60,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (token) {
       // 토큰이 있으면 /api/auth/me 로 사용자 정보 조회 후 업데이트
-      fetch('/api/auth/me', {
+      fetch(`${API_BASE}/auth/me`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => res.ok ? res.json() : null)
@@ -87,7 +89,7 @@ export function AuthProvider({ children }) {
    */
   const login = async (username, password) => {
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })

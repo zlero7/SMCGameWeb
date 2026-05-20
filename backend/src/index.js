@@ -75,7 +75,7 @@ const prisma = new PrismaClient()
 const PORT = process.env.PORT || 4000
 
 // [2-5] CORS — 허용 출처 명시
-const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000,http://10.26.138.120:3000,http://localhost:5173')
+const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000,http://10.26.138.120:3000,http://localhost:5173,capacitor://localhost,https://localhost,http://localhost')
   .split(',').map(s => s.trim())
 
 app.use(cors({

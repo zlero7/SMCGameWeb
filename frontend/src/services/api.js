@@ -18,8 +18,8 @@
  * - 인증이 필요한 API는 AuthContext의 api() 함수 사용 (자동 토큰 포함)
  */
 
-// API 기본 URL - Nginx 프록시를 통해 백엔드(4000포트)에 연결
-const API_BASE = '/api'
+// API 기본 URL - 웹: Nginx 프록시(/api), 모바일: 환경 변수로 실제 서버 URL 지정
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api'
 
 /**
  * 공통 API 호출 함수
