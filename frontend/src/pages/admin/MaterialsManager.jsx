@@ -21,6 +21,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
+import { API_BASE } from '../../services/api'
 
 /**
  * MaterialsManager - 자료 관리 컴포넌트
@@ -97,7 +98,7 @@ function MaterialsManager() {
       
       // 인증 토큰 추가
       const token = localStorage.getItem('token')
-      const res = await fetch('/api/materials', {
+      const res = await fetch(`${API_BASE}/materials`, {
         method: 'POST',
         headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: formData

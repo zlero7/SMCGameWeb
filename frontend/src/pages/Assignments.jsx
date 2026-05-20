@@ -21,7 +21,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
-import { fetchAssignments } from '../services/api'
+import { fetchAssignments, API_BASE } from '../services/api'
 import AccordionCard from '../components/AccordionCard'
 import PageBanner from '../components/PageBanner'
 
@@ -68,7 +68,7 @@ function Assignments() {
     }
     setSubmitting(true)
     try {
-      const response = await fetch('/api/assignments', {
+      const response = await fetch(`${API_BASE}/assignments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ ...form, dueDate: new Date(form.dueDate).toISOString(), author: user?.name || user?.username || '학생' })
@@ -96,7 +96,7 @@ function Assignments() {
     }
     if (!confirm('삭제하시겠습니까?')) return
     try {
-      const response = await fetch(`/api/assignments/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
+      const response = await fetch(`${API_BASE}/assignments/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
       if (!response.ok) {
         const data = await response.json()
         throw new Error(data.error || 'Failed to delete')

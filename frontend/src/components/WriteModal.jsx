@@ -5,6 +5,7 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { marked } from 'marked'
+import { API_BASE } from '../services/api'
 
 marked.setOptions({ breaks: true, gfm: true })
 
@@ -327,7 +328,7 @@ export default function WriteModal({
         const fd = new FormData()
         fd.append('file', file)
         const token = localStorage.getItem('token')
-        const res = await fetch('/api/upload/image', {
+        const res = await fetch(`${API_BASE}/upload/image`, {
           method: 'POST',
           headers: token ? { Authorization: `Bearer ${token}` } : {},
           body: fd
@@ -370,7 +371,7 @@ export default function WriteModal({
             const fd = new FormData()
             fd.append('file', file)
             const token = localStorage.getItem('token')
-            const res = await fetch('/api/upload/image', {
+            const res = await fetch(`${API_BASE}/upload/image`, {
               method: 'POST',
               headers: token ? { Authorization: `Bearer ${token}` } : {},
               body: fd

@@ -12,6 +12,9 @@
 import React, { useEffect, useState } from 'react'
 import { marked } from 'marked'
 import PageBanner from '../components/PageBanner'
+import { API_BASE } from '../services/api'
+
+const SERVER_BASE = API_BASE.replace(/\/api$/, '')
 
 marked.setOptions({ breaks: true, gfm: true })
 
@@ -61,7 +64,7 @@ function Awards() {
 
   // 데이터 조회
   useEffect(() => {
-    fetch(`/api/awards?category=${category}`)
+    fetch(`${API_BASE}/awards?category=${category}`)
       .then(res => res.json())
       .then(data => {
         setAwards(data.data || [])
@@ -89,7 +92,7 @@ function Awards() {
   const getImageUrl = (url) => {
     if (!url) return null
     if (url.startsWith('http')) return url
-    return `http://${window.location.hostname}:3000${url}`
+    return `${SERVER_BASE}${url}`
   }
 
   // URL을 링크로 변환하는 함수
@@ -229,7 +232,7 @@ function Awards() {
                     <div className="space-y-2">
                       {arr.map((file, idx) => {
                         const name = file.filename || file.originalname || `파일 ${idx + 1}`
-                        const url = `/api/awards/${selectedAward.id}/download/${idx}`
+                        const url = `${API_BASE}/awards/${selectedAward.id}/download/${idx}`
                         return (
                           <a key={idx} href={url}
                             className="flex items-center gap-2 p-2 bg-white rounded hover:bg-gray-100 transition-colors no-underline">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
+import { API_BASE } from '../../services/api'
 
 function CalendarManager() {
   const { api } = useAuth()
@@ -267,7 +268,7 @@ function CalendarManager() {
 
       <div className="mt-6">
         <a
-          href="/api/calendar/ics"
+          href={`${API_BASE}/calendar/ics`}
           download="gameweb-calendar.ics"
           className="inline-block px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 transition-colors no-underline"
         >

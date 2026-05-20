@@ -19,7 +19,7 @@
  */
 
 import React, { useEffect, useState } from 'react'
-import { fetchMaterials, fetchMaterialCategories } from '../services/api'
+import { fetchMaterials, fetchMaterialCategories, API_BASE } from '../services/api'
 import PageBanner from '../components/PageBanner'
 
 /**
@@ -76,11 +76,11 @@ function Materials() {
   const handleDownload = async (material) => {
     try {
       // 다운로드 횟수 증가 요청
-      await fetch(`/api/materials/${material.id}/download`, { method: 'POST' })
-      
+      await fetch(`${API_BASE}/materials/${material.id}/download`, { method: 'POST' })
+
       // 파일명을 UTF-8로 인코딩하여 다운로드
       const encodedFilename = encodeURIComponent(material.fileName)
-      const fullUrl = `${window.location.origin}/api/materials/${material.id}/file?filename=${encodedFilename}`
+      const fullUrl = `${API_BASE}/materials/${material.id}/file?filename=${encodedFilename}`
       
       const link = document.createElement('a')
       link.href = fullUrl

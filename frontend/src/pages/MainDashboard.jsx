@@ -26,7 +26,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { marked } from 'marked'
-import { fetchNotices, fetchCareers, fetchAdmissions, fetchCalendarEvents, fetchAssignments, fetchLabInspections, fetchMaterials } from '../services/api'
+import { fetchNotices, fetchCareers, fetchAdmissions, fetchCalendarEvents, fetchAssignments, fetchLabInspections, fetchMaterials, API_BASE } from '../services/api'
 import AccordionCard from '../components/AccordionCard'
 
 marked.setOptions({ breaks: true, gfm: true })
@@ -116,7 +116,7 @@ export default function MainDashboard() {
       fetchNotices().then(d => d?.data || d || []),
       fetchCareers().then(d => d?.data || d || []),
       fetchAdmissions().then(d => d?.data || d || []),
-      fetch(`/api/calendar/neis?fromYmd=${fromYmd}&toYmd=${toYmd}`).then(r => r.json()).catch(() => []),
+      fetch(`${API_BASE}/calendar/neis?fromYmd=${fromYmd}&toYmd=${toYmd}`).then(r => r.json()).catch(() => []),
       fetchAssignments().then(d => d?.data || d || []),
       fetchLabInspections().then(d => d?.data || d || []),
       fetchMaterials().then(d => d?.data || d || [])
@@ -530,7 +530,7 @@ export default function MainDashboard() {
                     try {
                       // 파일만 다운로드 (횟수 증가는 자료실 탭에서만)
                       const filename = encodeURIComponent(selectedItem.fileName)
-                      window.location.href = `/api/materials/${selectedItem.id}/file?filename=${filename}`
+                      window.location.href = `${API_BASE}/materials/${selectedItem.id}/file?filename=${filename}`
                     } catch (err) {
                       alert('다운로드 실패')
                     }

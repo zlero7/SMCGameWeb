@@ -144,8 +144,13 @@ export function AuthProvider({ children }) {
   const api = async (url, options = {}) => {
     const headers = { 'Content-Type': 'application/json', ...options.headers }
     if (token) headers.Authorization = `Bearer ${token}`
-    
-    const res = await fetch(url, { ...options, headers })
+
+    // /api/... 상대 경로를 환경에 맞는 절대 URL로 변환 (모바일 대응)
+    const fullUrl = url.startsWith('/api')
+      ? `${API_BASE}${url.slice(4)}`
+      : url
+
+    const res = await fetch(fullUrl, { ...options, headers })
     const text = await res.text()
     if (!text) throw new Error('서버 응답이 없습니다')
     const data = JSON.parse(text)

@@ -19,7 +19,7 @@
  */
 
 // API 기본 URL - 웹: Nginx 프록시(/api), 모바일: 환경 변수로 실제 서버 URL 지정
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api'
+export const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api'
 
 /**
  * 공통 API 호출 함수

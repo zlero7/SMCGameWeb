@@ -29,7 +29,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
-import { fetchLabInspections } from '../services/api'
+import { fetchLabInspections, API_BASE } from '../services/api'
 import AccordionCard from '../components/AccordionCard'
 import PageBanner from '../components/PageBanner'
 
@@ -78,7 +78,7 @@ function LabInspections() {
     }
     setSubmitting(true)
     try {
-      const response = await fetch('/api/lab-inspections', {
+      const response = await fetch(`${API_BASE}/lab-inspections`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ ...form, author: user?.name || user?.username || '학생' })

@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
+import { API_BASE } from '../../services/api'
 import WriteModal from '../../components/WriteModal'
 
 function CareerManager() {
@@ -51,7 +52,7 @@ function CareerManager() {
       const token = localStorage.getItem('token')
       const isEdit = editingData?.id
       
-      const res = await fetch(isEdit ? `/api/careers/${isEdit}` : '/api/careers', {
+      const res = await fetch(isEdit ? `${API_BASE}/careers/${isEdit}` : `${API_BASE}/careers`, {
         method: isEdit ? 'PUT' : 'POST',
         headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: data

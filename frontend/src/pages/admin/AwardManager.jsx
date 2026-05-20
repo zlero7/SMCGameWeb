@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
+import { API_BASE } from '../../services/api'
 import WriteModal from '../../components/WriteModal'
 
 function AwardManager() {
@@ -59,7 +60,7 @@ function AwardManager() {
       const token = localStorage.getItem('token')
       const isEdit = editingData?.id
       
-      const res = await fetch(isEdit ? `/api/awards/${isEdit}` : '/api/awards', {
+      const res = await fetch(isEdit ? `${API_BASE}/awards/${isEdit}` : `${API_BASE}/awards`, {
         method: isEdit ? 'PUT' : 'POST',
         headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: data

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PageBanner from '../components/PageBanner'
+import { API_BASE } from '../services/api'
 
 function Calendar() {
   const [events, setEvents] = useState([])
@@ -27,8 +28,8 @@ function Calendar() {
         const toYmd = `${year}${month.toString().padStart(2, '0')}31`
 
         const [neisRes, dbRes] = await Promise.all([
-          fetch(`/api/calendar/neis?fromYmd=${fromYmd}&toYmd=${toYmd}`),
-          fetch(`/api/calendar?month=${month}&year=${year}`)
+          fetch(`${API_BASE}/calendar/neis?fromYmd=${fromYmd}&toYmd=${toYmd}`),
+          fetch(`${API_BASE}/calendar?month=${month}&year=${year}`)
         ])
 
         const neisData = await neisRes.json()
