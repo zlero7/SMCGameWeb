@@ -1,11 +1,12 @@
 import jwt from 'jsonwebtoken'
 
 const JWT_SECRET = process.env.JWT_SECRET
-if (!JWT_SECRET || JWT_SECRET === 'REDACTED_JWT_SECRET') {
-  console.warn('⚠️  JWT_SECRET이 기본값이거나 설정되지 않았습니다. .env 파일을 확인하세요.')
+if (!JWT_SECRET) {
+  console.error('🚨 JWT_SECRET이 설정되지 않았습니다. .env 파일을 확인하세요.')
+  process.exit(1)
 }
 
-const SECRET = JWT_SECRET || 'REDACTED_JWT_SECRET'
+const SECRET = JWT_SECRET
 
 export function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization

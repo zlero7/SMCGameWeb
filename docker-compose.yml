@@ -6,12 +6,12 @@ services:
     restart: unless-stopped
     command: --lower-case-table-names=1
     environment:
-      MYSQL_ROOT_PASSWORD: REDACTED_ROOT_PASSWORD
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: gameweb
       MYSQL_USER: gameweb
-      MYSQL_PASSWORD: REDACTED_DB_PASSWORD
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3307:3306"
+      - "127.0.0.1:3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
@@ -34,7 +34,7 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_URL: mysql://gameweb:REDACTED_DB_PASSWORD@db:3306/gameweb
+      DATABASE_URL: mysql://gameweb:${MYSQL_PASSWORD}@db:3306/gameweb
       PORT: 4000
     volumes:
       - ./backend/uploads:/app/uploads

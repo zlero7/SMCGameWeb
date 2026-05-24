@@ -98,7 +98,7 @@ async function syncUsersFromExcel() {
         
         // password가 있으면 업데이트
         if (password) {
-          updateData.passwordHash = await bcrypt.hash(password, 10)
+          updateData.passwordHash = await bcrypt.hash(password, 12)
         }
         
         // 업데이트할 데이터가 있으면
@@ -117,7 +117,7 @@ async function syncUsersFromExcel() {
         await prisma.user.create({
           data: {
             username,
-            passwordHash: await bcrypt.hash(password, 10),
+            passwordHash: await bcrypt.hash(password, 12),
             name,
             role: validRole
           }
@@ -207,7 +207,7 @@ export async function register(req, res) {
       return res.status(400).json({ error: '이미 존재하는 아이디입니다' })
     }
 
-    const passwordHash = await bcrypt.hash(password, 10)
+    const passwordHash = await bcrypt.hash(password, 12)
     // 허용된 역할만 저장
     const allowedRoles = ['student', 'teacher', 'admin']
     const safeRole = allowedRoles.includes(role) ? role : 'student'
@@ -258,7 +258,7 @@ export async function importUsers(req, res) {
           where: { username: u.username },
           data: { 
             name: u.name,
-            passwordHash: u.password ? await bcrypt.hash(u.password, 10) : undefined
+            passwordHash: u.password ? await bcrypt.hash(u.password, 12) : undefined
           }
         })
         results.push({ username: u.username, action: 'updated' })
@@ -267,7 +267,7 @@ export async function importUsers(req, res) {
         await prisma.user.create({
           data: {
             username: u.username,
-            passwordHash: await bcrypt.hash(u.password || 'password123', 10),
+            passwordHash: await bcrypt.hash(u.password || 'password123', 12),
             name: u.name || u.username,
             role: 'student'
           }
@@ -357,7 +357,7 @@ export async function changePassword(req, res) {
     }
     
     // 새 비밀번호 해시 생성
-    const newHash = await bcrypt.hash(newPassword, 10)
+    const newHash = await bcrypt.hash(newPassword, 12)
     
     // 1. DB 비밀번호 업데이트
     await prisma.user.update({
@@ -419,7 +419,7 @@ export async function createUser(req, res) {
     const user = await prisma.user.create({
       data: {
         username,
-        passwordHash: await bcrypt.hash(password, 10),
+        passwordHash: await bcrypt.hash(password, 12),
         name,
         role: validRole
       },
@@ -463,7 +463,7 @@ export async function updateUser(req, res) {
       updateData.role = role
     }
     if (password) {
-      updateData.passwordHash = await bcrypt.hash(password, 10)
+      updateData.passwordHash = await bcrypt.hash(password, 12)
     }
     
     const updated = await prisma.user.update({

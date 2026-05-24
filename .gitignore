@@ -35,3 +35,15 @@ prisma/migrations/
 
 # Docker
 .dockerignore
+
+# Claude Code
+.claude/
+
+# User data files
+UserInfo.xlsx
+*.xlsx
+
+# Temporary/debug scripts
+NULL
+query
+check-*.js
