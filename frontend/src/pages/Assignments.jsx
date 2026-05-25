@@ -1,22 +1,21 @@
 /**
  * Assignments.jsx - 과제 일정 페이지 (Assignment Schedule Page)
- * 
+ *
  * 학생들이 과제를 확인하고 작성하는 페이지입니다.
- * 모든 사용자가 글을 작성하고 삭제할 수 있습니다.
- * 
+ *
  * [주요 기능]
  * - 과제 목록 조회 (모든 사용자가 가능)
- * - 글 작성 (모든 사용자가 가능)
- * - 글 삭제 (모든 사용자가 가능)
- * 
+ * - 글 작성 (로그인 필요)
+ * - 글 삭제 (작성자 본인 또는 admin/teacher만 가능)
+ *
  * [사용 컴포넌트]
  * - AccordionCard: 상세 내용을 모달로 표시
  * - 모달 폼: 글 작성용
- * 
+ *
  * [API]
  * - GET /api/assignments (목록 조회)
- * - POST /api/assignments (글 작성 - 인증 불필요)
- * - DELETE /api/assignments/:id (글 삭제 - 인증 불필요)
+ * - POST /api/assignments (글 작성 - 인증 필요)
+ * - DELETE /api/assignments/:id (글 삭제 - 작성자 또는 admin/teacher)
  */
 
 import React, { useEffect, useState } from 'react'
@@ -135,7 +134,12 @@ function Assignments() {
         <p className="text-gray-500 text-center py-8">등록된 과제가 없습니다.</p>
       ) : (
         <div className="space-y-2">
-          {assignments.map(a => (
+          {assignments.map(a => {
+            const canDelete = isLoggedIn && (
+              a.userId === user?.id ||
+              ['admin', 'teacher'].includes(user?.role)
+            )
+            return (
             <div key={a.id} className="flex items-start gap-2">
               <div className="flex-1 min-w-0">
                 <AccordionCard
@@ -145,14 +149,17 @@ function Assignments() {
                   author={a.author}
                 />
               </div>
-              <button
-                onClick={() => handleDelete(a.id)}
-                className="shrink-0 mt-1 px-2 py-2 bg-red-50 text-red-500 rounded-lg text-xs hover:bg-red-100 transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
-              >
-                🗑
-              </button>
+              {canDelete && (
+                <button
+                  onClick={() => handleDelete(a.id)}
+                  className="shrink-0 mt-1 px-2 py-2 bg-red-50 text-red-500 rounded-lg text-xs hover:bg-red-100 transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
+                >
+                  🗑
+                </button>
+              )}
             </div>
-          ))}
+            )
+          })}
         </div>
       )}
 
