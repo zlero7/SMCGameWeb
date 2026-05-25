@@ -74,7 +74,8 @@ export async function createAssignment(req, res) {
         title,
         description: content,  // content를 description으로 저장
         dueDate: dueDate ? new Date(dueDate) : new Date(),  // 기본값은 현재 시간
-        author: author || '익명'
+        author: req.user.name || req.user.username || '익명',
+        userId: req.user.id
       }
     })
 
@@ -106,9 +107,25 @@ export async function updateAssignment(req, res) {
   }
 }
 
-// DELETE /api/assignments/:id
+// DELETE /api/assignments/:id — 작성자 본인 또는 admin/teacher만 삭제 가능
 export async function deleteAssignment(req, res) {
   try {
+    const assignment = await prisma.assignment.findUnique({
+      where: { id: parseInt(req.params.id) }
+    })
+
+    if (!assignment) {
+      return res.status(404).json({ error: '과제를 찾을 수 없습니다' })
+    }
+
+    // 작성자 본인이거나 admin/teacher 권한이면 삭제 허용
+    const isOwner = assignment.userId === req.user.id
+    const isPrivileged = ['admin', 'teacher'].includes(req.user.role)
+
+    if (!isOwner && !isPrivileged) {
+      return res.status(403).json({ error: '본인이 작성한 과제만 삭제할 수 있습니다' })
+    }
+
     await prisma.assignment.delete({ where: { id: parseInt(req.params.id) } })
     res.json({ success: true })
   } catch (error) {
