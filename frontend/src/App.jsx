@@ -185,7 +185,7 @@ function PublicLayout() {
         )}
       </header>
 
-      <main className="flex-1 px-3 sm:px-6 pt-4 pb-8 bg-[#f0f2f8]">
+      <main className="flex-1 px-3 sm:px-6 pt-4 pb-8 main-bg">
         <Outlet />
       </main>
     </div>

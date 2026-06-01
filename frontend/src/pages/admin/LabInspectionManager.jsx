@@ -122,11 +122,11 @@ function LabInspectionManager() {
     }
   }
 
-  // 상태별 라벨 및 스타일
+  // 상태별 라벨 및 스타일 (Tailwind 클래스로 다크모드 대응)
   const statusLabels = {
-    pending: { label: '처리 이전', color: '#dc3545', bg: '#f8d7da' },
-    planned: { label: '처리 예정', color: '#fd7e14', bg: '#fff3cd' },
-    completed: { label: '처리 완료', color: '#28a745', bg: '#d4edda' }
+    pending:   { label: '처리 이전', cls: 'bg-red-100 text-red-600' },
+    planned:   { label: '처리 예정', cls: 'bg-orange-100 text-orange-500' },
+    completed: { label: '처리 완료', cls: 'bg-green-100 text-green-700' },
   }
 
   return (
@@ -182,11 +182,7 @@ function LabInspectionManager() {
                   <div className="flex items-center gap-2 mb-1">
                     <strong>{item.title}</strong>
                     {/* 상태 태그 */}
-                    <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
-                      style={{
-                        backgroundColor: statusLabels[item.status || 'pending'].bg,
-                        color: statusLabels[item.status || 'pending'].color,
-                      }}>
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${statusLabels[item.status || 'pending'].cls}`}>
                       {statusLabels[item.status || 'pending'].label}
                     </span>
                   </div>

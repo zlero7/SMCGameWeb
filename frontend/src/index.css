@@ -214,6 +214,57 @@ body.dark .rich-content th         { background: #252535 !important; }
 body.dark .rich-content td, body.dark .rich-content th { border-color: #374151 !important; }
 body.dark .rich-content code       { background: #252535 !important; border-color: #374151 !important; color: #f472b6 !important; }
 
+/* ── 메인 콘텐츠 배경 (테마 반응형) ── */
+.main-bg { background-color: #f0f2f8; }
+body.dark .main-bg { background-color: var(--color-bg) !important; }
+
+/* ── 폼 입력 필드 다크 배경 ── */
+body.dark input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="file"]),
+body.dark textarea,
+body.dark select {
+  background-color: var(--color-dark-block) !important;
+  color: var(--color-text-main) !important;
+  border-color: var(--color-border) !important;
+}
+body.dark input::placeholder,
+body.dark textarea::placeholder {
+  color: #888888 !important;
+}
+
+/* ── border-gray-100 (달력 격자 등) ── */
+body.dark .border-gray-100 { border-color: #2d3748 !important; }
+
+/* ── 드래그 핸들 / 반투명 회색 ── */
+body.dark .bg-gray-300        { background-color: #4b5563 !important; }
+body.dark .bg-gray-50\/50     { background-color: rgba(26,26,26,0.5) !important; }
+
+/* ── 캘린더 이벤트 배경 (다크) ── */
+body.dark .bg-blue-200        { background-color: #1e3a5f !important; }
+body.dark .bg-red-200         { background-color: #3d1515 !important; }
+body.dark .bg-green-200       { background-color: #14381e !important; }
+body.dark .bg-purple-100      { background-color: #2a1a4a !important; }
+body.dark .bg-yellow-100      { background-color: #332608 !important; }
+
+/* ── 텍스트 색상 누락 보완 (다크) ── */
+body.dark .text-blue-600      { color: #60a5fa !important; }
+body.dark .text-blue-700      { color: #60a5fa !important; }
+body.dark .text-blue-800      { color: #93c5fd !important; }
+body.dark .text-red-700       { color: #fca5a5 !important; }
+body.dark .text-red-800       { color: #fca5a5 !important; }
+body.dark .text-green-800     { color: #86efac !important; }
+body.dark .text-purple-700    { color: #c4b5fd !important; }
+body.dark .text-yellow-700    { color: #fde047 !important; }
+
+/* ── 캘린더 이벤트 좌측 보더 ── */
+body.dark .border-blue-500    { border-color: #3b82f6 !important; }
+body.dark .border-red-500     { border-color: #ef4444 !important; }
+body.dark .border-green-500   { border-color: #22c55e !important; }
+body.dark .border-orange-400  { border-color: #fb923c !important; }
+
+/* ── 설정·폰트 모달 호버 보완 ── */
+body.dark .hover\:bg-blue-50:hover       { background-color: #0d1a30 !important; }
+body.dark .hover\:border-gray-300:hover  { border-color: #555555 !important; }
+
 /* ── 리치 텍스트 콘텐츠 렌더링 (AccordionCard 상세 모달) ── */
 .rich-content {
   font-size: 1rem;
