@@ -186,7 +186,7 @@ function Calendar() {
               return (
                 <div
                   key={idx}
-                  className={`min-h-[52px] sm:min-h-[80px] border-r border-b border-gray-100 p-0.5 sm:p-1.5 ${isToday ? 'bg-cyan-50' : item.day ? 'hover:bg-gray-50' : 'bg-gray-50/50'} transition-colors`}
+                  className={`min-h-[72px] sm:min-h-[110px] border-r border-b border-gray-100 p-1 sm:p-2 ${isToday ? 'bg-cyan-50' : item.day ? 'hover:bg-gray-50' : 'bg-gray-50/50'} transition-colors`}
                 >
                   {item.day && (
                     <>
