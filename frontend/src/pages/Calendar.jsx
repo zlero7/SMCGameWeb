@@ -8,6 +8,7 @@ function Calendar() {
   const [error, setError] = useState(null)
   const [currentDate, setCurrentDate] = useState(new Date())
   const [viewMode, setViewMode] = useState('calendar')
+  const [selectedDay, setSelectedDay] = useState(null) // { date, events }
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 640px)')
@@ -186,7 +187,8 @@ function Calendar() {
               return (
                 <div
                   key={idx}
-                  className={`min-h-[72px] sm:min-h-[110px] border-r border-b border-gray-100 p-1 sm:p-2 ${isToday ? 'bg-cyan-50' : item.day ? 'hover:bg-gray-50' : 'bg-gray-50/50'} transition-colors`}
+                  onClick={() => item.day && dayEvents.length > 0 && setSelectedDay({ date: item.date, events: dayEvents })}
+                  className={`min-h-[72px] sm:min-h-[110px] border-r border-b border-gray-100 p-1 sm:p-2 ${isToday ? 'bg-cyan-50' : item.day ? 'hover:bg-gray-50' : 'bg-gray-50/50'} transition-colors ${item.day && dayEvents.length > 0 ? 'cursor-pointer' : ''}`}
                 >
                   {item.day && (
                     <>
@@ -239,6 +241,53 @@ function Calendar() {
                 </span>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* 날짜 클릭 모달 (모바일 일정 상세) */}
+        {selectedDay && (
+          <div
+            className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-[100] p-0 sm:p-4"
+            onClick={() => setSelectedDay(null)}
+          >
+            <div
+              className="bg-white rounded-t-2xl sm:rounded-xl w-full sm:max-w-md max-h-[70vh] overflow-hidden flex flex-col shadow-xl"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* 모바일 드래그 핸들 */}
+              <div className="sm:hidden w-10 h-1 bg-gray-300 rounded-full mx-auto mt-3 mb-1 shrink-0" />
+              {/* 헤더 */}
+              <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 shrink-0">
+                <h3 className="font-bold text-gray-800 text-base">
+                  {selectedDay.date.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' })}
+                </h3>
+                <button
+                  onClick={() => setSelectedDay(null)}
+                  className="p-2 rounded-lg hover:bg-gray-100 text-gray-400 transition-colors text-lg leading-none"
+                >✕</button>
+              </div>
+              {/* 일정 목록 */}
+              <div className="overflow-y-auto px-4 py-3 space-y-2">
+                {selectedDay.events.map((ev, i) => (
+                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
+                    <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+                      ev.type === 'vacation' ? 'bg-blue-400' :
+                      ev.type === 'exam'     ? 'bg-red-400' :
+                      ev.type === 'holiday'  ? 'bg-purple-400' :
+                      ev.type === 'event'    ? 'bg-green-400' :
+                      'bg-orange-400'
+                    }`} />
+                    <span className="flex-1 text-sm text-gray-800 font-medium">{ev.title}</span>
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${getBadgeColor(ev.type, ev.source)}`}>
+                      {ev.type === 'vacation' ? '방학' :
+                       ev.type === 'exam'     ? '시험' :
+                       ev.type === 'holiday'  ? '공휴일' :
+                       ev.type === 'event'    ? '행사' : '일정'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 
