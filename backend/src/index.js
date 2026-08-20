@@ -19,6 +19,7 @@ import { getAssignments, getAssignment, createAssignment, updateAssignment, dele
 import { getLabInspections, getLabInspection, createLabInspection, updateLabInspection, deleteLabInspection, autoDeleteCompleted } from './routes/labInspections.js'
 import materialsRouter from './routes/materials.js'
 import { getAwards, getAward, createAward, updateAward, deleteAward, downloadAwardAttachment } from './routes/awards.js'
+import { blockExecutableFiles } from './utils/uploadSecurity.js'
 
 dotenv.config()
 
@@ -31,7 +32,6 @@ const uploadDir = path.join(process.cwd(), 'uploads')
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true })
 
 // [2-6] 허용 파일 형식 및 차단 확장자
-const BLOCKED_EXT = /\.(exe|bat|cmd|sh|ps1|vbs|jar|app|msi|dll|php|py|rb|pl)$/i
 const ALLOWED_MIME = new Set([
   'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml',
   'application/pdf',
@@ -47,12 +47,7 @@ const ALLOWED_MIME = new Set([
   'application/octet-stream',
 ])
 
-const fileFilter = (req, file, cb) => {
-  if (BLOCKED_EXT.test(file.originalname)) {
-    return cb(new Error('실행 파일은 업로드할 수 없습니다'))
-  }
-  cb(null, true)
-}
+const fileFilter = blockExecutableFiles
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadDir),
@@ -73,6 +68,11 @@ const upload = multer({
 const app = express()
 const prisma = new PrismaClient()
 const PORT = process.env.PORT || 4000
+
+// nginx(1홉)를 통해서만 들어오므로 그 바로 앞 프록시 1개만 신뢰
+// (요청은 항상 nginx 컨테이너에서 오므로, 이게 없으면 rate limit이
+//  모든 사용자를 같은 IP로 취급해 브루트포스 방어가 무력화됨)
+app.set('trust proxy', 1)
 
 // [2-5] CORS — 허용 출처 명시
 const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000,http://10.26.138.120:3000,http://localhost:5173,capacitor://localhost,https://localhost,http://localhost')

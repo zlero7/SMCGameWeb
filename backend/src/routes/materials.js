@@ -11,6 +11,7 @@ import multer from 'multer'
 import path from 'path'
 import fs from 'fs'
 import { authMiddleware, adminOnly } from '../middleware/auth.js'
+import { blockExecutableFiles } from '../utils/uploadSecurity.js'
 
 const prisma = new PrismaClient()
 const router = express.Router()
@@ -32,8 +33,9 @@ const storage = multer.diskStorage({
   }
 })
 
-const upload = multer({ 
+const upload = multer({
   storage,
+  fileFilter: blockExecutableFiles,
   limits: { fileSize: 50 * 1024 * 1024 } // 50MB 제한
 })
 

@@ -33,9 +33,6 @@ coverage/
 # Prisma
 prisma/migrations/
 
-# Docker
-.dockerignore
-
 # Claude Code
 .claude/
 
