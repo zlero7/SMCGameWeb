@@ -28,21 +28,12 @@ import { Link } from 'react-router-dom'
 import { marked } from 'marked'
 import { fetchNotices, fetchCareers, fetchAdmissions, fetchCalendarEvents, fetchAssignments, fetchLabInspections, fetchMaterials, API_BASE } from '../services/api'
 import AccordionCard from '../components/AccordionCard'
+import { sanitizeHtml } from '../utils/sanitizeHtml'
 
 marked.setOptions({ breaks: true, gfm: true })
 
 // 실제 서식 HTML 여부 감지 (<br>만 있는 건 HTML로 취급 안 함)
 const isRichHtml = (text) => !!text && /<(strong|em|b|i|span|div|p|img|iframe|ul|ol|li|blockquote|h[1-6]|a[\s>]|table|figure)\b/i.test(text)
-
-// 에디터 잔재(× 버튼, 파일칩) 제거
-const sanitize = (html) => {
-  const div = document.createElement('div')
-  div.innerHTML = html
-  div.querySelectorAll('[data-delete-media]').forEach(el => el.remove())
-  div.querySelectorAll('[data-filename]').forEach(el => el.remove())
-  div.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'))
-  return div.innerHTML
-}
 
 // rich HTML 내 마크다운 링크 [text](url) → <a> 변환
 const mdLinks = (html) =>
@@ -50,11 +41,12 @@ const mdLinks = (html) =>
     '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:#1a73e8;text-decoration:underline;">$1</a>')
 
 // 콘텐츠 → HTML 변환
+// mdLinks가 링크 텍스트를 그대로 삽입하므로, 최종 결과물을 sanitizeHtml로 한 번 더 정제
 const toHtml = (text) => {
   if (!text) return ''
-  if (isRichHtml(text)) return mdLinks(sanitize(text))
+  if (isRichHtml(text)) return sanitizeHtml(mdLinks(text))
   const clean = text.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').trim()
-  return marked.parse(clean)
+  return sanitizeHtml(marked.parse(clean))
 }
 
 // 순수 텍스트 미리보기 추출

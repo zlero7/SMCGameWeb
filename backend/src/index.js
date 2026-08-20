@@ -180,17 +180,17 @@ app.post('/api/notices', upload.fields([{ name: 'image', maxCount: 1 }, { name: 
 app.put('/api/notices/:id', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'attachments', maxCount: 10 }]), authMiddleware, adminOnly, updateNotice)
 app.delete('/api/notices/:id', authMiddleware, adminOnly, deleteNotice)
 
-// Careers (public read, auth write)
+// Careers (public read, admin write)
 app.get('/api/careers', getCareers)
 app.get('/api/careers/:id', getCareer)
-app.post('/api/careers', upload.single('image'), authMiddleware, createCareer)
+app.post('/api/careers', upload.single('image'), authMiddleware, adminOnly, createCareer)
 app.put('/api/careers/:id', upload.single('image'), authMiddleware, adminOnly, updateCareer)
 app.delete('/api/careers/:id', authMiddleware, adminOnly, deleteCareer)
 
-// Admissions (public read, auth write)
+// Admissions (public read, admin write)
 app.get('/api/admissions', getAdmissions)
 app.get('/api/admissions/:id', getAdmission)
-app.post('/api/admissions', upload.single('image'), authMiddleware, createAdmission)
+app.post('/api/admissions', upload.single('image'), authMiddleware, adminOnly, createAdmission)
 app.put('/api/admissions/:id', upload.single('image'), authMiddleware, adminOnly, updateAdmission)
 app.delete('/api/admissions/:id', authMiddleware, adminOnly, deleteAdmission)
 

@@ -6,6 +6,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { marked } from 'marked'
 import { API_BASE } from '../services/api'
+import { sanitizeHtml } from '../utils/sanitizeHtml'
 
 marked.setOptions({ breaks: true, gfm: true })
 
@@ -842,7 +843,7 @@ export default function WriteModal({
               {editorMode === 'markdown' && mdPreview && (
                 <div
                   className="min-h-[320px] p-5 rich-content"
-                  dangerouslySetInnerHTML={{ __html: marked.parse(mdContent || '') }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(marked.parse(mdContent || '')) }}
                 />
               )}
             </div>

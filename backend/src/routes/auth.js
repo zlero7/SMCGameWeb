@@ -282,51 +282,6 @@ export async function importUsers(req, res) {
   }
 }
 
-// Excel 파일에서 비밀번호 업데이트
-async function updatePasswordInExcel(username, newPassword) {
-  const excelPath = path.join(process.cwd(), 'UserInfo.xlsx')
-  
-  if (!fs.existsSync(excelPath)) {
-    console.log('UserInfo.xlsx 파일이 없습니다. Excel 업데이트를 건너뜁니다.')
-    return false
-  }
-  
-  try {
-    const workbook = xlsx.readFile(excelPath)
-    const sheetName = workbook.SheetNames[0]
-    const sheet = workbook.Sheets[sheetName]
-    const data = xlsx.utils.sheet_to_json(sheet)
-    
-    // 사용자 찾기 (username 필드 찾기) - 문자열로 비교
-    let userFound = false
-    for (let i = 0; i < data.length; i++) {
-      const row = data[i]
-      const rowUsername = String(row.username || row.UserName || row.UserID || row.userID || '')
-      if (rowUsername === String(username)) {
-        data[i].password = newPassword
-        userFound = true
-        console.log(`Excel 비밀번호 업데이트: ${username}`)
-        break
-      }
-    }
-    
-    if (!userFound) {
-      console.log(`Excel에서 사용자를 찾을 수 없습니다: ${username}`)
-      return false
-    }
-    
-    // 새 시트 생성
-    const newSheet = xlsx.utils.json_to_sheet(data)
-    workbook.Sheets[sheetName] = newSheet
-    xlsx.writeFile(workbook, excelPath)
-    console.log(`Excel 저장 완료: ${username}`)
-    return true
-  } catch (error) {
-    console.error('Excel 업데이트 오류:', error.message)
-    return false
-  }
-}
-
 // 비밀번호 변경 (로그인한 사용자만)
 export async function changePassword(req, res) {
   try {
@@ -359,17 +314,14 @@ export async function changePassword(req, res) {
     // 새 비밀번호 해시 생성
     const newHash = await bcrypt.hash(newPassword, 12)
     
-    // 1. DB 비밀번호 업데이트
+    // DB 비밀번호 업데이트 (Excel에는 평문으로 남기지 않음)
     await prisma.user.update({
       where: { id: req.user.id },
       data: { passwordHash: newHash }
     })
-    
-    // 2. Excel 파일도 함께 업데이트
-    const excelUpdated = await updatePasswordInExcel(user.username, newPassword)
-    
-    console.log(`비밀번호 변경 완료: ${user.username} (Excel: ${excelUpdated ? '성공' : '실패/파일없음'})`)
-    
+
+    console.log(`비밀번호 변경 완료: ${user.username}`)
+
     res.json({ success: true, message: '비밀번호가 변경되었습니다' })
   } catch (error) {
     console.error('changePassword 오류:', error)

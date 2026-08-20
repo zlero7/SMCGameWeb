@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { API_BASE } from '../../services/api'
 import WriteModal from '../../components/WriteModal'
+import { sanitizeHtml } from '../../utils/sanitizeHtml'
 
 function AwardManager() {
   const { api } = useAuth()
@@ -175,7 +176,7 @@ function AwardManager() {
               </div>
               <h4 className="font-bold mb-2">{award.title}</h4>
               {/<[a-z][\s\S]*>/i.test(award.content || '') ? (
-                <div className="rich-content text-sm" dangerouslySetInnerHTML={{ __html: award.content }} />
+                <div className="rich-content text-sm" dangerouslySetInnerHTML={{ __html: sanitizeHtml(award.content) }} />
               ) : (
                 <p className="text-sm text-gray-600 whitespace-pre-wrap">{renderContent(award.content)}</p>
               )}

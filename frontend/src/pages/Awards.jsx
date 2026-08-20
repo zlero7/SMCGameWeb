@@ -13,21 +13,13 @@ import React, { useEffect, useState } from 'react'
 import { marked } from 'marked'
 import PageBanner from '../components/PageBanner'
 import { API_BASE } from '../services/api'
+import { sanitizeHtml } from '../utils/sanitizeHtml'
 
 const SERVER_BASE = API_BASE.replace(/\/api$/, '')
 
 marked.setOptions({ breaks: true, gfm: true })
 
 const isRichHtml = (text) => !!text && /<(strong|em|b|i|span|div|p|img|iframe|ul|ol|li|blockquote|h[1-6]|a[\s>]|table|figure)\b/i.test(text)
-
-const sanitize = (html) => {
-  const div = document.createElement('div')
-  div.innerHTML = html
-  div.querySelectorAll('[data-delete-media]').forEach(el => el.remove())
-  div.querySelectorAll('[data-filename]').forEach(el => el.remove())
-  div.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'))
-  return div.innerHTML
-}
 
 // rich HTML 내 마크다운 링크 [text](url) → <a> 변환
 const mdLinks = (html) =>
@@ -36,9 +28,10 @@ const mdLinks = (html) =>
 
 const toHtml = (text) => {
   if (!text) return ''
-  if (isRichHtml(text)) return mdLinks(sanitize(text))
+  // mdLinks가 링크 텍스트를 그대로 삽입하므로, 최종 결과물을 sanitizeHtml로 한 번 더 정제
+  if (isRichHtml(text)) return sanitizeHtml(mdLinks(text))
   const clean = text.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').trim()
-  return marked.parse(clean)
+  return sanitizeHtml(marked.parse(clean))
 }
 
 const stripHtml = (html) => {
