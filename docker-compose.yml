@@ -34,11 +34,9 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_URL: mysql://gameweb:${MYSQL_PASSWORD}@db:3306/gameweb
       PORT: 4000
     volumes:
       - ./backend/uploads:/app/uploads
-      - ./UserInfo.xlsx:/app/UserInfo.xlsx
 
   frontend:
     build:

@@ -147,18 +147,18 @@ function Calendar() {
       <PageBanner icon="📅" title="학사 일정" subtitle="NEIS 연동 학교 행사 및 학사 일정을 확인하세요" />
       <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-5">
 
-        {/* 헤더: 월 이동 + 뷰 전환 */}
-        <div className="relative flex items-center mb-4">
+        {/* 헤더: 월 이동 + 뷰 전환 (모바일: 세로로 쌓임 / sm 이상: 기존처럼 겹쳐 배치) */}
+        <div className="flex flex-col items-center gap-2 mb-4 sm:relative sm:flex-row sm:gap-0">
           {/* 가운데 정렬: ◀ 년/월 ▶ */}
-          <div className="flex items-center justify-center gap-2 flex-1">
+          <div className="flex items-center justify-center gap-2 sm:flex-1">
             <button onClick={prevMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors font-bold text-gray-600 min-w-[40px] min-h-[40px]">◀</button>
             <h3 className="text-base sm:text-lg font-bold text-gray-800 min-w-[120px] text-center">
               {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월
             </h3>
             <button onClick={nextMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors font-bold text-gray-600 min-w-[40px] min-h-[40px]">▶</button>
           </div>
-          {/* 오른쪽 고정: 뷰 전환 버튼 */}
-          <div className="absolute right-0 flex rounded-lg border border-gray-200 overflow-hidden">
+          {/* sm 이상에서만 오른쪽 고정: 뷰 전환 버튼 (모바일에서는 아래 줄에 자연스럽게 배치) */}
+          <div className="flex rounded-lg border border-gray-200 overflow-hidden sm:absolute sm:right-0">
             <button
               onClick={() => setViewMode('calendar')}
               className={`px-3 py-1.5 text-xs font-medium transition-colors ${viewMode === 'calendar' ? 'bg-cyan-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
